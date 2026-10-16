@@ -1,0 +1,84 @@
+GEKAN_AREA71 0x00200000 cam_UpdateScrollTarget CONFIRM cam_UpdateScrollTarget eases scroll toward player and clamps
+GEKAN_AREA71 0x002003bc parallax_UpdateScrollA CONFIRM parallax_UpdateScrollA drives sine fill, fade step, line table
+GEKAN_AREA71 0x00200470 parallax_FillSineTable CONFIRM parallax_FillSineTable fills row offsets from sine table
+GEKAN_AREA71 0x002004fe parallax_StepFade CONFIRM parallax_StepFade steps fade value and clamps
+GEKAN_AREA71 0x00200568 hscroll_BuildLineTable CONFIRM hscroll_BuildLineTable builds per-line scroll entries
+GEKAN_AREA71 0x0020089c scene_InitLevel CONFIRM scene_InitLevel level setup, registers camera callback
+GEKAN_AREA71 0x00200c98 parallax_UpdateScrollB CONFIRM parallax_UpdateScrollB second parallax scroll update
+GEKAN_AREA71 0x00200d3c scene_ResetCameraState CONFIRM scene_ResetCameraState resets camera and scroll globals
+GEKAN_AREA71 0x00200eb4 obj_Init_0020377c RENAME obj_InitFromSpriteTable address suffix; sets sprite record from table
+GEKAN_AREA71 0x00200f88 anim_RunFrameSequence CONFIRM anim_RunFrameSequence multi-state frame stepping then gfx load
+GEKAN_AREA71 0x002011b8 child_InitFollowA CONFIRM child_InitFollowA child copies parent facing
+GEKAN_AREA71 0x002011f0 child_UpdateFollowA CONFIRM child_UpdateFollowA follows parent position
+GEKAN_AREA71 0x00201280 child_InitFollowB CONFIRM child_InitFollowB child init copies parent facing
+GEKAN_AREA71 0x002012cc child_UpdateFollowB CONFIRM child_UpdateFollowB follows parent position
+GEKAN_AREA71 0x002013fa child_InitFollowC CONFIRM child_InitFollowC child init copies parent facing
+GEKAN_AREA71 0x0020142a child_UpdateFollowC CONFIRM child_UpdateFollowC follows parent position
+GEKAN_AREA71 0x002014fa obj_InitSpawnThree CONFIRM obj_InitSpawnThree spawns three callbacks, checks player range
+GEKAN_AREA71 0x0020164a obj_Update_00203f12 RENAME obj_UpdateRangeThenAnimDown address suffix; camera x range check then frame countdown
+GEKAN_AREA71 0x00201728 child_UpdateFollowD CONFIRM child_UpdateFollowD follows parent position
+GEKAN_AREA71 0x0020177e child_UpdateFollowE CONFIRM child_UpdateFollowE follows parent position
+GEKAN_AREA71 0x00201826 child_InitFollowD CONFIRM child_InitFollowD child init copies parent facing
+GEKAN_AREA71 0x002018a2 obj_Init_0020416a RENAME obj_InitSetFrameTable address suffix; sets frame pointer and flag
+GEKAN_AREA71 0x002018da anim_WaitAndLoadGfx CONFIRM anim_WaitAndLoadGfx waits then loads gfx record
+GEKAN_AREA71 0x00201a70 trigger_UpdateSetFlag CONFIRM trigger_UpdateSetFlag sets global flag 1 or 2 on player condition
+GEKAN_AREA71 0x00201b68 item_InitThrown UNSURE item_InitThrown thrown role not clear from callers
+GEKAN_AREA71 0x0020200c anim_PingPongFrame CONFIRM anim_PingPongFrame frame index ping-pong 0x32..0x3a
+GEKAN_AREA71 0x00202082 obj_SnapToFloorTile CONFIRM obj_SnapToFloorTile snaps y to floor tile
+GEKAN_AREA71 0x00202158 obj_UpdateHorizontalSpeed CONFIRM obj_UpdateHorizontalSpeed applies x speed
+GEKAN_AREA71 0x0020219a obj_UpdateSineArc CONFIRM obj_UpdateSineArc sine-driven arc motion
+GEKAN_AREA71 0x00202748 obj_UpdateHorizontalSpeed_2 RENAME obj_UpdateHorizontalSpeedB numeric suffix; same job as base variant
+GEKAN_AREA71 0x0020278a obj_UpdateSineArc_2 RENAME obj_UpdateSineArcB numeric suffix; sine arc variant
+GEKAN_AREA71 0x0020281a obj_AdvanceFrameTable UNSURE obj_AdvanceFrameTable frame table stepping, purpose unclear
+GEKAN_AREA71 0x002028b6 obj_SpawnFiveChildren CONFIRM obj_SpawnFiveChildren spawns five child objects
+GEKAN_AREA71 0x00202b36 obj_ApplyVelocityDecel CONFIRM obj_ApplyVelocityDecel applies velocity and decel
+GEKAN_AREA71 0x00202b64 sprite_QueueVdp1Cmd CONFIRM sprite_QueueVdp1Cmd builds VDP1 command
+GEKAN_AREA71 0x00202c58 obj_SpawnChildCopyFrame CONFIRM obj_SpawnChildCopyFrame spawns child copying frame
+GEKAN_AREA71 0x00202d8e anim_CycleFrame5 CONFIRM anim_CycleFrame5 cycles 5 frames
+GEKAN_AREA71 0x00202dcc sprite_QueueVdp1CmdFrame CONFIRM sprite_QueueVdp1CmdFrame queues VDP1 cmds per frame piece
+GEKAN_AREA71 0x00203118 obj_UpdateHorizontalSpeed_3 RENAME obj_UpdateHorizontalSpeedC numeric suffix; third speed variant
+GEKAN_AREA71 0x00203174 obj_UpdateSineArc_3 RENAME obj_UpdateSineArcC numeric suffix; third sine arc variant
+GEKAN_AREA71 0x00203208 anim_RampFrameIndex CONFIRM anim_RampFrameIndex ramps frame index
+GEKAN_AREA71 0x002033e2 obj_InitSimple CONFIRM obj_InitSimple basic init reads facing from spawn data
+GEKAN_AREA71 0x0020340c obj_SetFrameAndJump UNSURE obj_SetFrameAndJump jump target role unclear
+GEKAN_AREA71 0x00203694 spawn_CheckColumnRange CONFIRM spawn_CheckColumnRange column range test
+GEKAN_AREA71 0x00203736 spawn_ScanColumnList CONFIRM spawn_ScanColumnList scans spawn column list
+GEKAN_AREA71 0x002037d8 spawn_CreateObjectFromEntry CONFIRM spawn_CreateObjectFromEntry creates object from entry
+GEKAN_AREA71 0x002038b0 obj_CheckPlayerHitbox CONFIRM obj_CheckPlayerHitbox box test against player
+GEKAN_AREA71 0x002039ec obj_CheckOverlapAll UNSURE obj_CheckOverlapAll overlap loop target set unclear
+GEKAN_AREA71 0x00203b7e obj_InitSimple_2 RENAME obj_InitSimpleNoFacing numeric suffix; clears facing instead of reading spawn
+GEKAN_AREA71 0x00203ba0 obj_CheckOffscreenOrJump CONFIRM obj_CheckOffscreenOrJump offscreen test then jump
+GEKAN_AREA71 0x00203bf4 obj_IsOffscreenX CONFIRM obj_IsOffscreenX x offscreen test
+GEKAN_AREA71 0x00203c44 obj_ClearSpawnFlagAndJump CONFIRM obj_ClearSpawnFlagAndJump clears spawn flag then jumps
+GEKAN_AREA71 0x002040a4 enemy_SetHurtState CONFIRM enemy_SetHurtState sets hurt state
+GEKAN_AREA71 0x002040d8 enemy_SetHurtKnockback CONFIRM enemy_SetHurtKnockback sets hurt knockback velocity
+GEKAN_AREA71 0x002040fc anim_BounceFrameState CONFIRM anim_BounceFrameState bounce state frame handling
+GEKAN_AREA71 0x002043a0 obj_InitSwitch CONFIRM obj_InitSwitch switch init
+GEKAN_AREA71 0x0020441c obj_UpdateSwitchState CONFIRM obj_UpdateSwitchState switch state update
+GEKAN_AREA71 0x002047fe obj_LoadFrameFromTable CONFIRM obj_LoadFrameFromTable loads frame from table
+GEKAN_AREA71 0x00204870 obj_InitSlider CONFIRM obj_InitSlider slider init
+GEKAN_AREA71 0x00204950 obj_UpdateSliderAnim CONFIRM obj_UpdateSliderAnim slider animation update
+GEKAN_AREA71 0x00204b2c obj_PullPlayerToward CONFIRM obj_PullPlayerToward pulls player toward object
+GEKAN_AREA71 0x00204e04 boss_InitFromSpawnData CONFIRM boss_InitFromSpawnData boss init from spawn data
+GEKAN_AREA71 0x00204fd4 boss_UpdateStateMachine CONFIRM boss_UpdateStateMachine 19-state switch dispatch
+GEKAN_AREA71 0x0020544c boss_DecideApproachOrIdle CONFIRM boss_DecideApproachOrIdle picks attack, chase or idle by player distance
+GEKAN_AREA71 0x00205538 boss_UpdateWalkState CONFIRM boss_UpdateWalkState walk state update
+GEKAN_AREA71 0x002055c6 boss_UpdateBehaviorSelectTurn CONFIRM boss_UpdateBehaviorSelectTurn selects behavior or turns
+GEKAN_AREA71 0x0020567c boss_UpdateJumpLaunch CONFIRM boss_UpdateJumpLaunch jump launch
+GEKAN_AREA71 0x002056f8 boss_UpdateJumpAirbornLanding CONFIRM boss_UpdateJumpAirbornLanding airborne then landing
+GEKAN_AREA71 0x0020576c boss_UpdateLandedStartWalk CONFIRM boss_UpdateLandedStartWalk landed then walk
+GEKAN_AREA71 0x002057a8 boss_UpdateWalkTowardPlayer CONFIRM boss_UpdateWalkTowardPlayer walks toward player
+GEKAN_AREA71 0x0020588a boss_UpdateKnockback CONFIRM boss_UpdateKnockback knockback bounce then recover state 7
+GEKAN_AREA71 0x00205acc boss_EnterRecoverState CONFIRM boss_EnterRecoverState reverses facing, state 7, spawns effect
+GEKAN_AREA71 0x00205b1a boss_UpdateStagger CONFIRM boss_UpdateStagger stagger velocity by side, bounce, settle state 7
+GEKAN_AREA71 0x00205c6c boss_UpdateDefeatedSequence CONFIRM boss_UpdateDefeatedSequence multi-step hit/flash sequence ends state 8 or 0xf
+GEKAN_AREA71 0x00205e90 boss_ClampToGroundTiles CONFIRM boss_ClampToGroundTiles tile check below, bounce vertical and halve horizontal
+GEKAN_AREA71 0x00205f38 boss_UpdateFallPhysics CONFIRM boss_UpdateFallPhysics gravity-limited fall with tile test
+GEKAN_AREA71 0x00206044 boss_UpdateLaunchedAirborne CONFIRM boss_UpdateLaunchedAirborne launch velocity, bounce, settle state 7
+GEKAN_AREA71 0x0020610c boss_FlipFacingAndDecide CONFIRM boss_FlipFacingAndDecide clears flag, toggles facing, decides
+GEKAN_AREA71 0x0020612c boss_CheckTurnAtFrameD CONFIRM boss_CheckTurnAtFrameD at frame 0xd turns and returns to walk
+GEKAN_AREA71 0x00206180 boss_FlipFacingStartWalk CONFIRM boss_FlipFacingStartWalk toggles facing, state 0xb, walk speed
+GEKAN_AREA71 0x002061b8 boss_FlipFacingResetOwnerThenDecide CONFIRM boss_FlipFacingResetOwnerThenDecide clears owner counter then decides
+GEKAN_AREA71 0x002061e4 boss_SpawnEffectAndDecide CONFIRM boss_SpawnEffectAndDecide spawns effect, resets counters, decides
+GEKAN_AREA71 0x0020658c boss_DrawShadowPieces CONFIRM boss_DrawShadowPieces VDP1 piece commands scaled by depth, x mirrored by facing
+GEKAN_AREA71 0x002068b6 boss_DrawShadowPieces_2 RENAME boss_DrawShadowPiecesScaled numeric suffix; same drawing with separate x/y scale fields

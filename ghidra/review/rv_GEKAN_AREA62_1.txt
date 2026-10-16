@@ -1,0 +1,89 @@
+GEKAN_AREA62 0x00200000 camera_UpdateFollowPlayer CONFIRM camera_UpdateFollowPlayer name fits body and callers
+GEKAN_AREA62 0x0020020c camera_UpdateFollowPlayer_2 RENAME camera_UpdateFollowPlayerEdgeSnap body and callers favour this name
+GEKAN_AREA62 0x00200442 camera_UpdateFollowPlayer_3 RENAME camera_UpdateFollowPlayerClampOnly body and callers favour this name
+GEKAN_AREA62 0x00200938 obj_StartScriptedScene CONFIRM obj_StartScriptedScene name fits body and callers
+GEKAN_AREA62 0x002009f0 obj_StartScriptedScene_2 RENAME obj_StartScriptedSceneShort body and callers favour this name
+GEKAN_AREA62 0x00201000 obj_ResetMotionState RENAME player_ResetMotionState body and callers favour this name
+GEKAN_AREA62 0x0020114c enemy_InitSprite CONFIRM enemy_InitSprite name fits body and callers
+GEKAN_AREA62 0x0020126c enemy_UpdateDeathAnim CONFIRM enemy_UpdateDeathAnim name fits body and callers
+GEKAN_AREA62 0x00201388 fx_InitAttachedChild CONFIRM fx_InitAttachedChild name fits body and callers
+GEKAN_AREA62 0x0020143c fx_UpdateAttachedChild CONFIRM fx_UpdateAttachedChild name fits body and callers
+GEKAN_AREA62 0x00201604 enemy_InitJumper UNSURE enemy_InitJumper not enough evidence for a better name
+GEKAN_AREA62 0x002016a2 enemy_UpdateKnockbackArc UNSURE enemy_UpdateKnockbackArc not enough evidence for a better name
+GEKAN_AREA62 0x00201960 obj_InitClearFlags CONFIRM obj_InitClearFlags name fits body and callers
+GEKAN_AREA62 0x00201994 trigger_UpdateSimple CONFIRM trigger_UpdateSimple name fits body and callers
+GEKAN_AREA62 0x00201ac8 item_InitSpawner CONFIRM item_InitSpawner name fits body and callers
+GEKAN_AREA62 0x00201c94 trigger_UpdateSoundSpawn CONFIRM trigger_UpdateSoundSpawn name fits body and callers
+GEKAN_AREA62 0x00201faa boss_UpdateJumpPhysics RENAME enemy_UpdateJumpPhysics body and callers favour this name
+GEKAN_AREA62 0x00202594 child_InitHitboxAttached CONFIRM child_InitHitboxAttached name fits body and callers
+GEKAN_AREA62 0x0020262a child_UpdateParentTied CONFIRM child_UpdateParentTied name fits body and callers
+GEKAN_AREA62 0x002027c8 child_InitPositionTable CONFIRM child_InitPositionTable name fits body and callers
+GEKAN_AREA62 0x002028aa obj_InitCopyParentPos CONFIRM obj_InitCopyParentPos name fits body and callers
+GEKAN_AREA62 0x0020294a obj_DispatchState CONFIRM obj_DispatchState name fits body and callers
+GEKAN_AREA62 0x002029b0 obj_State0SpawnTwo CONFIRM obj_State0SpawnTwo name fits body and callers
+GEKAN_AREA62 0x002029f0 enemy_UpdateFallToGround CONFIRM enemy_UpdateFallToGround name fits body and callers
+GEKAN_AREA62 0x00202ade obj_InitCopyParentFlagsA CONFIRM obj_InitCopyParentFlagsA name fits body and callers
+GEKAN_AREA62 0x00202b86 obj_InitCopyParentFlagsB CONFIRM obj_InitCopyParentFlagsB name fits body and callers
+GEKAN_AREA62 0x00202c14 obj_SpawnWithParent CONFIRM obj_SpawnWithParent name fits body and callers
+GEKAN_AREA62 0x00202c76 obj_SpawnFromDescriptor CONFIRM obj_SpawnFromDescriptor name fits body and callers
+GEKAN_AREA62 0x00202daa vdp1_BuildSpriteCommand CONFIRM vdp1_BuildSpriteCommand name fits body and callers
+GEKAN_AREA62 0x00203000 enemy_InitPickup RENAME enemy_InitChest body and callers favour this name
+GEKAN_AREA62 0x0020313e enemy_UpdateChestOpen CONFIRM enemy_UpdateChestOpen name fits body and callers
+GEKAN_AREA62 0x002034fc enemy_InitFollowParent CONFIRM enemy_InitFollowParent name fits body and callers
+GEKAN_AREA62 0x00203634 obj_Init_00203108 RENAME obj_InitSpriteCheckCollected body and callers favour this name
+GEKAN_AREA62 0x00203718 obj_UpdateBlink CONFIRM obj_UpdateBlink name fits body and callers
+GEKAN_AREA62 0x0020384c enemy_InitJumper_2 UNSURE enemy_InitJumper_2 not enough evidence for a better name
+GEKAN_AREA62 0x002038f6 enemy_UpdateBobbingRise CONFIRM enemy_UpdateBobbingRise name fits body and callers
+GEKAN_AREA62 0x00203a7a child_InitFollowHitbox CONFIRM child_InitFollowHitbox name fits body and callers
+GEKAN_AREA62 0x00203ad4 child_UpdateFollowHitbox CONFIRM child_UpdateFollowHitbox name fits body and callers
+GEKAN_AREA62 0x00203df0 obj_StateIdleCounter CONFIRM obj_StateIdleCounter name fits body and callers
+GEKAN_AREA62 0x0020404c enemy_InitStaticObject CONFIRM enemy_InitStaticObject name fits body and callers
+GEKAN_AREA62 0x0020408c enemy_UpdateHitCounterSparks CONFIRM enemy_UpdateHitCounterSparks name fits body and callers
+GEKAN_AREA62 0x002042fc obj_Init_0020377c RENAME obj_InitSpriteFacingFromVariant body and callers favour this name
+GEKAN_AREA62 0x002043d0 enemy_UpdateAnimThenSpawnItem CONFIRM enemy_UpdateAnimThenSpawnItem name fits body and callers
+GEKAN_AREA62 0x00204600 child_InitFollowA CONFIRM child_InitFollowA name fits body and callers
+GEKAN_AREA62 0x00204638 child_UpdateFollowA CONFIRM child_UpdateFollowA name fits body and callers
+GEKAN_AREA62 0x002046c8 child_InitFollowB CONFIRM child_InitFollowB name fits body and callers
+GEKAN_AREA62 0x00204714 child_UpdateFollowB CONFIRM child_UpdateFollowB name fits body and callers
+GEKAN_AREA62 0x00204842 child_InitFollowC CONFIRM child_InitFollowC name fits body and callers
+GEKAN_AREA62 0x00204872 child_UpdateFollowC CONFIRM child_UpdateFollowC name fits body and callers
+GEKAN_AREA62 0x00204942 obj_InitSpawnThree CONFIRM obj_InitSpawnThree name fits body and callers
+GEKAN_AREA62 0x00204a92 obj_Update_00203f12 RENAME obj_UpdateRetractWhenPlayerFar body and callers favour this name
+GEKAN_AREA62 0x00204b70 child_UpdateFollowD RENAME child_InitFollowParentYOffset body and callers favour this name
+GEKAN_AREA62 0x00204bc6 child_UpdateFollowE CONFIRM child_UpdateFollowE name fits body and callers
+GEKAN_AREA62 0x00204c6e child_InitFollowD CONFIRM child_InitFollowD name fits body and callers
+GEKAN_AREA62 0x00204c9e obj_Dispatch_0020411e RENAME obj_UpdateInitOnceCheckSpawnItem body and callers favour this name
+GEKAN_AREA62 0x00204cea obj_Init_0020416a RENAME obj_InitFrameTable body and callers favour this name
+GEKAN_AREA62 0x00204d22 enemy_CheckSpawnItemFromTable CONFIRM enemy_CheckSpawnItemFromTable name fits body and callers
+GEKAN_AREA62 0x00204eb8 trigger_UpdateSetFlag CONFIRM trigger_UpdateSetFlag name fits body and callers
+GEKAN_AREA62 0x00204fb0 item_InitThrown CONFIRM item_InitThrown name fits body and callers
+GEKAN_AREA62 0x002051f8 enemy_InitCollectible CONFIRM enemy_InitCollectible name fits body and callers
+GEKAN_AREA62 0x002052f4 enemy_UpdateCollectiblePickup CONFIRM enemy_UpdateCollectiblePickup name fits body and callers
+GEKAN_AREA62 0x00205414 enemy_InitEffectFollower CONFIRM enemy_InitEffectFollower name fits body and callers
+GEKAN_AREA62 0x002054d8 enemy_RunMainLoopA CONFIRM enemy_RunMainLoopA name fits body and callers
+GEKAN_AREA62 0x00205580 enemy_InitFromSpawnPointA CONFIRM enemy_InitFromSpawnPointA name fits body and callers
+GEKAN_AREA62 0x00205700 player_UpdateStateMachine RENAME enemy_UpdateStateMachine behaviour and callers point to a better name (actor is an enemy-type, not the player)
+GEKAN_AREA62 0x00205afa enemy_AdvanceAttackCounter CONFIRM enemy_AdvanceAttackCounter name fits body and callers
+GEKAN_AREA62 0x00205b3e player_StateE RENAME enemy_StateE behaviour and callers point to a better name (actor is an enemy-type, not the player)
+GEKAN_AREA62 0x00205bb4 player_StateF RENAME enemy_StateF behaviour and callers point to a better name (actor is an enemy-type, not the player)
+GEKAN_AREA62 0x00205c68 player_State0 RENAME enemy_State0 behaviour and callers point to a better name (actor is an enemy-type, not the player)
+GEKAN_AREA62 0x00205d92 player_State5 RENAME enemy_State5 behaviour and callers point to a better name (actor is an enemy-type, not the player)
+GEKAN_AREA62 0x002060ec player_State4 RENAME enemy_State4 behaviour and callers point to a better name (actor is an enemy-type, not the player)
+GEKAN_AREA62 0x0020622a player_State6 RENAME enemy_State6 behaviour and callers point to a better name (actor is an enemy-type, not the player)
+GEKAN_AREA62 0x002062c4 player_StateB RENAME enemy_StateB behaviour and callers point to a better name (actor is an enemy-type, not the player)
+GEKAN_AREA62 0x00206308 enemy_CheckPlayerHitBox CONFIRM enemy_CheckPlayerHitBox name fits body and callers
+GEKAN_AREA62 0x00206464 player_State1Transition RENAME enemy_StateReturnOnAnimEnd behaviour and callers point to a better name (actor is an enemy-type, not the player)
+GEKAN_AREA62 0x00206480 player_StateC RENAME enemy_StateC behaviour and callers point to a better name (actor is an enemy-type, not the player)
+GEKAN_AREA62 0x0020655a player_States7to10 RENAME enemy_States7to10 behaviour and callers point to a better name (actor is an enemy-type, not the player)
+GEKAN_AREA62 0x002068ac boss_SubStateHandler RENAME enemy_SubStateHandler behaviour and callers point to a better name (actor is an enemy-type, not the player)
+GEKAN_AREA62 0x00206a0e actor_HitReaction CONFIRM actor_HitReaction name fits body and callers
+GEKAN_AREA62 0x00206b90 actor_ApplyGravity CONFIRM actor_ApplyGravity name fits body and callers
+GEKAN_AREA62 0x00206be0 actor_ResetVelocity CONFIRM actor_ResetVelocity name fits body and callers
+GEKAN_AREA62 0x00206c24 actor_SpawnHelper CONFIRM actor_SpawnHelper name fits body and callers
+GEKAN_AREA62 0x00206c76 vdp1_BuildSpriteShadowCommands CONFIRM vdp1_BuildSpriteShadowCommands name fits body and callers
+GEKAN_AREA62 0x00207114 obj_SpawnProjectileIfFlag CONFIRM obj_SpawnProjectileIfFlag name fits body and callers
+GEKAN_AREA62 0x00207140 enemy_RunMainLoopB CONFIRM enemy_RunMainLoopB name fits body and callers
+GEKAN_AREA62 0x002071b6 enemy_RunMainLoopC CONFIRM enemy_RunMainLoopC name fits body and callers
+GEKAN_AREA62 0x0020725e enemy_InitFromSpawnPointB CONFIRM enemy_InitFromSpawnPointB name fits body and callers
+GEKAN_AREA62 0x0020736c enemy_InitFromSpawnPointC CONFIRM enemy_InitFromSpawnPointC name fits body and callers
+GEKAN_AREA62 0x002074b0 enemy_UpdateSimpleWalker CONFIRM enemy_UpdateSimpleWalker name fits body and callers

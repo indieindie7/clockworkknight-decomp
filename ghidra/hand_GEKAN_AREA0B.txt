@@ -1,0 +1,96 @@
+0x00200000 func boss_RunStateMachine hand dispatches boss state byte 0x11 to init, phase handlers and hit check
+0x002000ac func boss_InitIntro hand sets object fields, runs helper calls on table pointers, clears flags, sets timers for intro state
+0x0020026c func boss_UpdateIntro hand per-frame intro movement, increments counter, advances state byte when thresholds reached
+0x0020038c func boss_CheckHitReaction hand tests hit flag bits on parts, switches boss substate to 9 or 10 on damage
+0x0020170a func boss_UpdateDefeatSequence hand falling and explosions, random sound ids 0x54 0x55 0x60 0x61 via LCG, frame animation
+0x00201a74 func boss_InitPart1 hand init body part: reset, visibility, size fields, random byte from LCG masked
+0x00201ab4 func boss_FollowParentPart1 hand copies parent frame index, offsets position each frame, calls handler past limit
+0x00201b2c func boss_UpdatePosePart1 hand switch on boss substate 0-10 choosing frame table and position offsets, RNG timer reroll
+0x00201d8c func boss_FollowParentPart1b hand offsets position and copies parent animation frame, selects frame pointer table
+0x00201e5a func boss_InitPart2 hand stores object in global, resets, sets visibility and size fields
+0x00201e98 func boss_FollowParentPart2 hand copies parent frame, offsets xyz, calls handler when below limit
+0x00201eea func boss_UpdatePosePart2 hand switch on boss substate 0-10 selecting animation table and xyz offset per pose
+0x002021d0 func boss_FallPart2 hand part detaches: applies stored velocity to position, gravity, kills below floor
+0x002022f8 func boss_InitPart3 hand stores object in global, resets, sets visibility and size fields
+0x00202324 func boss_FollowParentPart3 hand copies parent frame, offsets xyz, calls handler when below limit
+0x002023a0 func boss_UpdatePosePart3 hand switch on boss substate 0-10 selecting animation table and xyz offset per pose
+0x00202674 func boss_FallPart3 hand part detaches: applies velocity to position with gravity, kills below floor
+0x0020279c func boss_InitPart4 hand stores object in global, resets, sets visibility and size fields
+0x002027c8 func boss_FollowParentPart4 hand copies parent frame, offsets xyz, calls handler when below limit
+0x00202844 func boss_UpdatePosePart4 hand switch on boss substate 0-10 selecting animation table and xyz offset per pose
+0x00202b48 func boss_FallPart4 hand part detaches: applies velocity to position with gravity, kills below floor
+0x00202c6c func boss_InitPart5 hand stores object in global, resets, sets visibility and size fields
+0x00202c98 func boss_FollowParentPart5 hand copies parent frame, offsets xyz, calls handler when below limit
+0x00202d14 func boss_UpdatePosePart5 hand switch on boss substate 0-10 selecting animation table and xyz offset per pose
+0x00202ffa func boss_FallPart5 hand part detaches: applies velocity to position with gravity, kills below floor
+0x00203124 func boss_InitPart6 hand stores object in global, resets, sets visibility and size fields
+0x00203150 func boss_FollowParentPart6 hand copies parent frame, offsets xyz, calls handler when below limit
+0x002031cc func boss_UpdatePosePart6 hand switch on boss substate 0-10 selecting animation table and xyz offset per pose
+0x002034cc func boss_FallPart6 hand part detaches: velocity applied with gravity, kills below floor
+0x002035fc func boss_InitPart7 hand stores object in global, resets, sets visibility and size fields
+0x00203628 func boss_FollowParentPart7 hand copies parent frame, offsets xyz, calls handler when below limit
+0x002036a4 func boss_UpdatePosePart7 hand switch on boss substate 0-10 selecting animation table and xyz offset per pose
+0x0020399c func boss_FallPart7 hand part detaches: applies velocity to position with gravity, kills below floor
+0x00203ab0 func boss_InitPart8 hand stores object in global, resets, sets visibility and size fields
+0x00203adc func boss_FollowParentPart8 hand copies parent frame, offsets xyz, calls handler when below limit
+0x00203b58 func boss_UpdatePosePart8 hand switch on boss substate 0-10 selecting animation table and xyz offset per pose
+0x00203dfa func boss_BobPart8 hand part bobs with velocity, plays sound 0x54 via LCG timer, spawns effects
+0x00203f3c func boss_RunPartStateMachine hand per-state dispatch 0, 2, 3 to init, update, final handlers via state byte 0x11
+0x00203fd6 func boss_InitPartTail hand stores object in global, resets, sets visibility, y speed, size fields
+0x00204048 func boss_UpdatePartTail hand switch on parent substate poses, hit-box check on parent substate 0x19 or 0x3b
+0x002042da func boss_FallPartTail hand part falls with y velocity and gravity until reaching parent y
+0x00204478 func boss_InitWeaponPart hand sets visibility, picks side from parent flags, positions from parent anim data, writes hitbox record
+0x00204690 func boss_StoreWeaponOffset hand updates hitbox record at table plus side times 0x3c from object position
+0x00204714 func boss_MaskWeaponFlags hand clears flag bits then tail jumps to common handler
+0x00205c24 func boss_ComputeLimbAngles hand computes distance and angles using sqrt and atan helpers and sine table, fills angle fields
+0x00205ef0 func math_IntSqrt hand integer square root by stepped search
+0x00205f84 func boss_TransformLimbVertices hand rotates three joint point groups by Euler angles using sin cos tables
+0x002066b0 func boss_InitArmPart hand init of part using reset helper 0x00207476, visibility, size fields, then tail jump
+0x002066e6 func boss_UpdateArmPart hand animation stepping by parent state, hit death, bounds, spawns effects, falling
+0x00206be0 func boss_DetachArmPart hand part death and knock-off: sets launch velocities by side, falls until below floor
+0x00206d1a func boss_ResetPartStub hand calls reset helper, sets visibility flag, returns 0x28
+0x00206d34 func boss_UpdateArmChild hand follows parent state, collision check sets flag, ends on detach
+0x00206e36 func boss_CheckPartDoneFlag hand if flag byte is set jumps to finish handler
+0x00206e64 func boss_UpdateDefeatedPart hand wrapper runs init once then update, copies state from parent
+0x00206ea4 func boss_InitDefeatedPart hand init head or main part: reset, places by player side, size fields, calls two helpers
+0x00206f1a func boss_UpdateDefeatedPartFrame hand calls physics 0x00206f9a and jitter 0x00207084, then draws or tail jumps
+0x00206f9a func boss_UpdateDefeatedPhysics hand gravity and jump physics bouncing off floor, flags in byte 0xf
+0x00207084 func boss_JitterPositionX hand random call result shifts x position left or right by constant
+0x002070f4 func boss_InitHiddenPart hand resets object, flags cleared, size fields set
+0x0020711c func boss_UpdateHiddenPart hand conditional tail call chosen by flag
+0x00207190 func boss_InitSparkPart hand resets object, init with sprite data and anim pointer
+0x002071e0 func boss_AnimateSparkFrame hand cycles animation frame with table, copies frame offsets
+0x0020723a func boss_UpdateSparkPart hand animates spark then branches by flag to draw or other handler
+0x002072d0 func boss_InitFlashPart hand resets object, visibility, size fields
+0x002072fc func boss_UpdateDefeatFade hand timer-based effect: calls palette fade 0x00207374 and flash 0x00207430, ends on parent y
+0x00207374 func boss_FadeDefeatPalette hand increments frame counter, sound 0x51 at count 0x50, shifts palette colours
+0x00207430 func boss_FlashDefeatPalette hand sets palette entries and plays sounds 0x51 and 0x53
+0x00207476 func boss_ResetObject hand zeroes frame, state, velocity, position delta and counters of object and extension
+0x00207550 func boss_InitDebrisParticle hand random choice via LCG picks source and positions particle, plays sound
+0x002076b8 func boss_SpawnDebrisIfReady hand conditional tail call to spawn handler
+0x00207714 func boss_InitSmokePuff hand init particle at random offset from parent position
+0x002077f8 func boss_InitExplosionSpark hand places spark randomly near parent with LCG masks, picks sprite
+0x002078ce func boss_SpawnSparkIfReady hand conditional tail call to spawn handler
+0x0020793c func boss_InitHitSpark hand positions effect from parent or weapon data, sets sprite table
+0x00207a3e func boss_SpawnHitSparkIfReady hand conditional tail call to spawn handler
+0x00207a74 func boss_UpdateFaceAnimation hand boss animation state machine by state byte 0x11 driving frame table indices
+0x00207cf4 func boss_AdvanceIdleFaceFrame hand animation counter increment wrapping at 0x40
+0x00207d16 func boss_AdvanceAttackFaceFrame hand counter driven animation frame sequencing with thresholds
+0x00207dc0 func boss_AdvanceFaceFrameShort hand short animation frame sequence by counter
+0x00207df4 func boss_AdvanceHurtFaceFrame hand animation frame sequence then advances phase after timeout
+0x00207e3c func boss_AdvanceDizzyFaceFrame hand animation frame sequence cycling then advances phase
+0x00207ea0 func boss_AdvanceRecoverFaceFrame hand animation frame sequence then resets phase
+0x00207eec func boss_UpdateCamera hand camera and scroll update dispatcher by state, stores target position
+0x00207ff6 func boss_TrackCameraBetweenTargets hand camera scroll follows two targets with eased speed and clamps
+0x00208230 func boss_TrackCameraOnPart hand camera follow variant tracking a part with eased speed and clamps
+0x002083dc func boss_TrackCameraDefault hand camera scroll smoothing toward player position with shifts and clamps
+0x00208584 func boss_InitScene hand VDP2 scroll and display setup init, clears display flags, sets camera fields
+0x00208690 func boss_InitPlayerFields hand resets camera and state record fields to initial values
+0x002086fc func boss_ReadPadSetFacing hand converts pad direction input to player flag bits
+0x00208744 func boss_ReadPadSetFlagsAlt hand converts pad direction input to flags variant
+0x002087ae func boss_TickBlinkTimer hand blink or flash timer, rerolls from LCG when it reaches zero
+0x00208808 func boss_CallHelperStub hand tail call wrapper with constant arguments
+0x0020886c func boss_StepPaletteFade hand palette fade steps with countdown timers
+0x0020892c func boss_LoadPaletteFrame hand copies 0x10 bytes from table entry for palette or DMA
+0x0020894c func boss_FindOverlappingObject hand loops object list, builds bounding box, tests overlap and returns hit object
+0x0024be6e func stub_0024be6e hand bad instruction data halt, two byte stub

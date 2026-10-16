@@ -1,0 +1,77 @@
+GEKAN_AREA7B 0x0020306c boss_UpdateMain CONFIRM boss_UpdateMain body and callers fit the name
+GEKAN_AREA7B 0x00203238 boss_StateWalkIn RENAME boss_StateReposition state 1 picks a random x slot different from the last, slides there, rises, picks a lane from player x; not a walk-in
+GEKAN_AREA7B 0x002037b4 boss_StateAttackWindup RENAME boss_StateHitReact entered when hit bit 2 set by hitbox_HandleHit with hp left; counts hits vs difficulty threshold, no attack
+GEKAN_AREA7B 0x00203904 boss_StateHurtSlide UNSURE boss_StateHurtSlide state 3 ignores hits (invulnerable) and moves y until frame 0x1f; hurt role unproven
+GEKAN_AREA7B 0x002039b2 boss_StateIdleBob CONFIRM boss_StateIdleBob body and callers fit the name
+GEKAN_AREA7B 0x00203a7c boss_StateRetreat UNSURE boss_StateRetreat state 4 triggered by hp exhausted bit; body returns to state 3, role unclear
+GEKAN_AREA7B 0x00203b0c boss_StateDefeatedInit UNSURE boss_StateDefeatedInit state 5 one-shot anim and y; trigger not visible in these bodies
+GEKAN_AREA7B 0x00203ce0 bossPart_Init CONFIRM bossPart_Init body and callers fit the name
+GEKAN_AREA7B 0x00203d36 bossPart_NextAnimA CONFIRM bossPart_NextAnimA body and callers fit the name
+GEKAN_AREA7B 0x00203d46 bossPart_NextAnimB CONFIRM bossPart_NextAnimB body and callers fit the name
+GEKAN_AREA7B 0x00203d6c bossPart_LookupFrameOffset CONFIRM bossPart_LookupFrameOffset body and callers fit the name
+GEKAN_AREA7B 0x00203d92 bossPart_StepAnimTable CONFIRM bossPart_StepAnimTable body and callers fit the name
+GEKAN_AREA7B 0x00203dc6 bossPart_Update CONFIRM bossPart_Update body and callers fit the name
+GEKAN_AREA7B 0x00203e44 bossPart_StateBody CONFIRM bossPart_StateBody body and callers fit the name
+GEKAN_AREA7B 0x00203f0c bossPart_SubInit CONFIRM bossPart_SubInit body and callers fit the name
+GEKAN_AREA7B 0x00203f2a bossPart_CopyFrameFromParent CONFIRM bossPart_CopyFrameFromParent body and callers fit the name
+GEKAN_AREA7B 0x00203f36 bossPart_SetAnimStub CONFIRM bossPart_SetAnimStub body and callers fit the name
+GEKAN_AREA7B 0x00203f4c bossPart_CopyFrameStep CONFIRM bossPart_CopyFrameStep body and callers fit the name
+GEKAN_AREA7B 0x00203f58 bossPart_SetAnimStub_2 RENAME bossPart_SetAnimStubB distinct from SetAnimStub (different script); avoid numeric suffix
+GEKAN_AREA7B 0x00203f60 bossPart_CopyFrameStep_2 RENAME bossPart_CopyFrameStepB avoid numeric suffix; same body as CopyFrameStep
+GEKAN_AREA7B 0x00203f6c bossPart_SubSetAnimTurn RENAME bossPart_SubSetAnimLaneDist flag = parent lane index differs from current slot (global) by more than 1; no turning
+GEKAN_AREA7B 0x00203fd4 bossPart_SubBlink RENAME bossPart_SubFireProjectiles steps mouth frames and calls boss_SpawnProjectile twice with sound; not a blink
+GEKAN_AREA7B 0x0020414c bossPart_SubSetAnimCopyFrame CONFIRM bossPart_SubSetAnimCopyFrame body and callers fit the name
+GEKAN_AREA7B 0x00204170 bossPart_CopyFrameStep_3 RENAME bossPart_CopyFrameStepC avoid numeric suffix; same body as CopyFrameStep
+GEKAN_AREA7B 0x00204184 bossPart_StateBodyB CONFIRM bossPart_StateBodyB body and callers fit the name
+GEKAN_AREA7B 0x002041ee bossPart_StateBodyB_Init CONFIRM bossPart_StateBodyB_Init body and callers fit the name
+GEKAN_AREA7B 0x00204218 bossPart_CopyFrameStub_A CONFIRM bossPart_CopyFrameStub_A body and callers fit the name
+GEKAN_AREA7B 0x00204224 bossPart_CopyFrameStub_B CONFIRM bossPart_CopyFrameStub_B body and callers fit the name
+GEKAN_AREA7B 0x00204230 bossPart_StateBodyC CONFIRM bossPart_StateBodyC body and callers fit the name
+GEKAN_AREA7B 0x00204282 bossPart_StateBodyC_Init CONFIRM bossPart_StateBodyC_Init body and callers fit the name
+GEKAN_AREA7B 0x00204292 bossPart_StateBodyC_Step CONFIRM bossPart_StateBodyC_Step body and callers fit the name
+GEKAN_AREA7B 0x0020429e bossPart_StateIdle CONFIRM bossPart_StateIdle body and callers fit the name
+GEKAN_AREA7B 0x002042f6 bossPart_StateIdle_Init CONFIRM bossPart_StateIdle_Init body and callers fit the name
+GEKAN_AREA7B 0x0020431e bossPart_StateIdle_Step CONFIRM bossPart_StateIdle_Step body and callers fit the name
+GEKAN_AREA7B 0x0020432e bossPart_StateEnd CONFIRM bossPart_StateEnd body and callers fit the name
+GEKAN_AREA7B 0x00204388 bossPart_StateEnd_Init CONFIRM bossPart_StateEnd_Init body and callers fit the name
+GEKAN_AREA7B 0x00204392 bossPart_StateEnd_Flicker CONFIRM bossPart_StateEnd_Flicker body and callers fit the name
+GEKAN_AREA7B 0x002043d4 boss_SpawnProjectile CONFIRM boss_SpawnProjectile body and callers fit the name
+GEKAN_AREA7B 0x002044b4 boss_PickLaneByPlayerX CONFIRM boss_PickLaneByPlayerX body and callers fit the name
+GEKAN_AREA7B 0x00204528 boss_PickLanePatternA CONFIRM boss_PickLanePatternA body and callers fit the name
+GEKAN_AREA7B 0x0020457e boss_PickLanePatternB CONFIRM boss_PickLanePatternB body and callers fit the name
+GEKAN_AREA7B 0x002045dc boss_PickLanePatternC CONFIRM boss_PickLanePatternC body and callers fit the name
+GEKAN_AREA7B 0x00204686 debris_Init CONFIRM debris_Init body and callers fit the name
+GEKAN_AREA7B 0x002046cc debris_Update CONFIRM debris_Update body and callers fit the name
+GEKAN_AREA7B 0x00204840 debris_Launch CONFIRM debris_Launch body and callers fit the name
+GEKAN_AREA7B 0x0020490a fragment_Init CONFIRM fragment_Init body and callers fit the name
+GEKAN_AREA7B 0x00204968 fragment_Update CONFIRM fragment_Update body and callers fit the name
+GEKAN_AREA7B 0x002049e8 fragment_FollowParent CONFIRM fragment_FollowParent body and callers fit the name
+GEKAN_AREA7B 0x00204a3e fragment_StateFlight CONFIRM fragment_StateFlight body and callers fit the name
+GEKAN_AREA7B 0x00204a7a fragment_Launch CONFIRM fragment_Launch body and callers fit the name
+GEKAN_AREA7B 0x00204b5c fragment_UpdateMotion CONFIRM fragment_UpdateMotion body and callers fit the name
+GEKAN_AREA7B 0x00204cba target_Init RENAME waveSurface_Init object kind 1 drives wave polygon table; not a target
+GEKAN_AREA7B 0x00204d34 target_Update RENAME waveSurface_Update draws, kind 1 calls wave_UpdatePositions and stores wave offset used by floater and hand
+GEKAN_AREA7B 0x00204da8 wave_UpdatePositions CONFIRM wave_UpdatePositions body and callers fit the name
+GEKAN_AREA7B 0x00204fd8 floater_Init CONFIRM floater_Init body and callers fit the name
+GEKAN_AREA7B 0x00205030 floater_Update CONFIRM floater_Update body and callers fit the name
+GEKAN_AREA7B 0x00205334 pickup_SpawnRandomA UNSURE pickup_SpawnRandomA spawns object of unseen type at random pos; pickup not proven
+GEKAN_AREA7B 0x002053dc pickup_SpawnRandomB UNSURE pickup_SpawnRandomB spawns object near parent at random offset; type unseen, pickup not proven
+GEKAN_AREA7B 0x002054ca shadow_Init UNSURE shadow_Init depth-based anim and x flip, but update adds y velocity; shadow not proven
+GEKAN_AREA7B 0x00205528 shadow_Update UNSURE shadow_Update adds y velocity then helper test; role unclear
+GEKAN_AREA7B 0x002055c8 hand_Init CONFIRM hand_Init body and callers fit the name
+GEKAN_AREA7B 0x0020560a hand_Update CONFIRM hand_Update body and callers fit the name
+GEKAN_AREA7B 0x0020568c hand_PlaceKind0 CONFIRM hand_PlaceKind0 body and callers fit the name
+GEKAN_AREA7B 0x002056b0 hand_PlaceKindN CONFIRM hand_PlaceKindN body and callers fit the name
+GEKAN_AREA7B 0x00205870 hitbox_Init CONFIRM hitbox_Init body and callers fit the name
+GEKAN_AREA7B 0x002058a2 hitbox_Update CONFIRM hitbox_Update body and callers fit the name
+GEKAN_AREA7B 0x00205b00 hitbox_HandleHit CONFIRM hitbox_HandleHit body and callers fit the name
+GEKAN_AREA7B 0x00205c66 hitbox_UpdateKind8 CONFIRM hitbox_UpdateKind8 body and callers fit the name
+GEKAN_AREA7B 0x00205d2a hitbox_Overlap CONFIRM hitbox_Overlap body and callers fit the name
+GEKAN_AREA7B 0x00205efa camera_UpdateTargets CONFIRM camera_UpdateTargets body and callers fit the name
+GEKAN_AREA7B 0x00205f76 camera_ModeDispatch CONFIRM camera_ModeDispatch body and callers fit the name
+GEKAN_AREA7B 0x00205fe6 camera_FollowPlayer CONFIRM camera_FollowPlayer body and callers fit the name
+GEKAN_AREA7B 0x00206130 camera_FollowMidpoint CONFIRM camera_FollowMidpoint body and callers fit the name
+GEKAN_AREA7B 0x0020648a camera_FollowSimple CONFIRM camera_FollowSimple body and callers fit the name
+GEKAN_AREA7B 0x002065d8 particle_InitVelocity RENAME particle_InitRandomPos sets random x,y via RNG helper, zero velocities
+GEKAN_AREA7B 0x00206850 rng_StepLcg CONFIRM rng_StepLcg body and callers fit the name
+GEKAN_AREA7B 0x0020688a anim_SetScript CONFIRM anim_SetScript body and callers fit the name

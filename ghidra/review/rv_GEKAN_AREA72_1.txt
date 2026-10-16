@@ -1,0 +1,31 @@
+GEKAN_AREA72 0x00200000 enemy_UpdateScrollFollowOffset RENAME camera_UpdateScrollFollowOffset reads player x/y, writes scaled follow offset into camera-like object +8/+0xc, no enemy logic
+GEKAN_AREA72 0x0020051c obj_UpdateOrbitPosition CONFIRM obj_UpdateOrbitPosition adds velocity to +0x70/+0x74 and recomputes sin/cos offsets for orbiting parts
+GEKAN_AREA72 0x00200788 obj_Init_0020377c RENAME obj_InitSpriteFromTable inits state, flags and sprite size/frame pointers from per-area table, address suffix is not a name
+GEKAN_AREA72 0x00200a8c child_InitFollowA CONFIRM child_InitFollowA child init copying parent facing and off-screen flag
+GEKAN_AREA72 0x00200ac4 child_UpdateFollowA CONFIRM child_UpdateFollowA state check on parent, bumps parent counter, clears flag
+GEKAN_AREA72 0x00200b54 child_InitFollowB CONFIRM child_InitFollowB copies parent facing and sets y from parent y plus table offset
+GEKAN_AREA72 0x00200ba0 child_UpdateFollowB CONFIRM child_UpdateFollowB tracks parent y and steps own state from parent state
+GEKAN_AREA72 0x00200cce child_InitFollowC CONFIRM child_InitFollowC child init copying parent facing
+GEKAN_AREA72 0x00200cfe child_UpdateFollowC CONFIRM child_UpdateFollowC sets parent/child to next state on helper result
+GEKAN_AREA72 0x00200dce obj_InitSpawnThree CONFIRM obj_InitSpawnThree calls spawn helper three times then checks player box proximity
+GEKAN_AREA72 0x00200f1e obj_Update_00203f12 RENAME obj_UpdateSpawnThreeCountdown state 0 waits for player x range, state 1 counts down child index and switches anim pointer
+GEKAN_AREA72 0x00200ffc child_UpdateFollowD RENAME child_InitFollowE sets init flags and y from parent y plus +0x50 table, same offset field as child_UpdateFollowE that follows
+GEKAN_AREA72 0x00201052 child_UpdateFollowE CONFIRM child_UpdateFollowE steps state from parent state and follows parent y
+GEKAN_AREA72 0x002010fa child_InitFollowD CONFIRM child_InitFollowD child init copying parent facing
+GEKAN_AREA72 0x00201176 obj_Init_0020416a RENAME obj_InitAnimPointer sets state flag and loads first animation frame pointer from table, address suffix is not a name
+GEKAN_AREA72 0x0020143c item_InitThrown CONFIRM item_InitThrown places item by parent facing offset and sets x speed/frame sizes like a thrown object
+GEKAN_AREA72 0x00204050 boss_UpdateMainStateMachine CONFIRM boss_UpdateMainStateMachine transition tables then switch of state handlers and collision calls
+GEKAN_AREA72 0x0020451c boss_CheckWallAhead CONFIRM boss_CheckWallAhead tile lookup ahead of boss sets state 0xd or flag by tile type
+GEKAN_AREA72 0x00204630 boss_UpdatePatrolMove CONFIRM boss_UpdatePatrolMove timer-driven speed table, wall/distance reversal, picks attack when player in range
+GEKAN_AREA72 0x002047d8 boss_CheckOutsideCameraRange RENAME boss_CheckInsideCameraRange returns 1 when inside camera rectangle and 0 when outside, name was inverted
+GEKAN_AREA72 0x00204836 boss_UpdatePhaseLogic RENAME boss_UpdateLeapAttack substate script waits anim, launches arc toward target, gravity, lands and flips facing
+GEKAN_AREA72 0x002050e2 boss_UpdateHoverPatrol CONFIRM boss_UpdateHoverPatrol timer table sets vertical speed, reverses at limits
+GEKAN_AREA72 0x002051b0 boss_AimVelocityAtPlayer CONFIRM boss_AimVelocityAtPlayer angle from dx/dy via table sets signed x/y speeds, used by charge
+GEKAN_AREA72 0x0020529c boss_StateRecoilLaunch CONFIRM boss_StateRecoilLaunch plays sound, sets knock velocity by facing, bounces then state 10
+GEKAN_AREA72 0x00205364 boss_StateStaggerCheck CONFIRM boss_StateStaggerCheck checks hit points on entry, death or knock velocity and timers
+GEKAN_AREA72 0x00205440 boss_StateFlipAndLand CONFIRM boss_StateFlipAndLand flips facing on frame, moves, lands into state 10
+GEKAN_AREA72 0x002054ee boss_StateHitReaction CONFIRM boss_StateHitReaction advances hit stages by damage counter, scale, death when hit points exhausted
+GEKAN_AREA72 0x002057c2 boss_StateDefeatedSpawnDrops UNSURE boss_StateDefeatedSpawnDrops state 6 finds object, spawns effect then goes to death 0xd, but ends in charge state 5 so role is unclear
+GEKAN_AREA72 0x002058a0 boss_StateChargeMove CONFIRM boss_StateChargeMove aims at target, wind-up timer then charge with tile checks, state 5 in main machine
+GEKAN_AREA72 0x00205bb0 boss_StateRecoilSelect CONFIRM boss_StateRecoilSelect picks recoil substate 0xd/0xe by flags, sets velocity, checks landing and spawns effects
+GEKAN_AREA72 0x00205e14 boss_StateDeathSequence CONFIRM boss_StateDeathSequence on entry zeroes speed, spawns effects, switches anim table, state 0xe

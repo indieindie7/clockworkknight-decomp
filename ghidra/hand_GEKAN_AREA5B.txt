@@ -1,0 +1,73 @@
+0x00200000 func boss5b_ObjectUpdate hand boss object state dispatcher by param+0x11 (init, run, state 2, state 3), decrements two timers
+0x002000f4 func boss5b_Init hand boss init, copies VRAM/palette data, clears state vars, builds history table and spawns child tasks
+0x00200488 func boss5b_IntroSequence hand animation stepper with 0x78-frame timer, button 0x10 skip, picks frame table by direction bits (was boss5b_UpdateTitleAnim)
+0x002005cc func boss5b_JumpStub hand provisional: tail-jump stub through pointer to another routine
+0x00202c24 func boss5b_IntroWaveAnim hand part animation update, frame counter 0x7e wrap, sound 100, records trail via UpdateTrail (was boss5b_PartUpdateA)
+0x00202d44 func boss5b_PartTrackAndAnimate hand record trail, steer facing, select animation frame by angle bits then run frame script
+0x0020330c func boss5b_UpdateFadeCounter hand ramps a counter between 1 and 0x20 up or down by direction flag, calls setter
+0x002033d6 func boss5b_BossPhaseState hand boss main phase state machine (cases 0-8), moves to target, sounds 0x6b and 5, sets flags
+0x002036ac func boss5b_PartFrameAdvance hand trail record, frame step by 3 up to 0x1f, sound 0x6d at frame 3, spawn child at frame 9
+0x00203a36 func boss5b_UpdateTrail hand appends position/anim to 16-entry history ring when moved, classifies anim frame ranges to pick type byte
+0x00203bd8 func boss5b_SteerFacingToTrail hand computes heading from trail positions via atan helper and turns facing by 0x40 step
+0x00204028 func boss5b_MoveToHomePos hand eases x/y/z toward home table entry by step, increments state when all three arrive
+0x00204744 func boss5b_MoveToHomePosWait hand like MoveToHomePos but advances state only when flag mask is also set, then clears it
+0x00204904 func boss5b_MoveToHomePosStart hand eases x/y/z toward home table entry, increments state when all arrive, alternate constants (was boss5b_MoveToHomePos_2)
+0x002049da func boss5b_OrbitAroundHome hand rotates angle by speed, sin/cos table offsets x/y/z around home point with direction clamps
+0x00204ba0 func boss5b_SegmentSwayLeft hand segment sway: when idle slide left, else sine-swing with random via helper for segments 5-17
+0x00204c7a func boss5b_SegmentSwayRight hand mirror of SegmentSwayLeft sliding right with sine swing for segments 5-17
+0x00204d66 func boss5b_SegmentCirclePos hand places segment 5-17 on circle using sin/cos tables and random helper, radius from parent
+0x00204e54 func boss5b_SegmentArcLeft hand segments below 7 move y down, 7-13 arc position using sin table and random helper
+0x00204f0e func boss5b_SegmentArcRight hand segments below 7 move y up, 7-13 arc position using sin table and random helper
+0x0020502a func boss5b_SegmentInitFindFree hand init sets anim fields, scans flags table for first free flagged slot, claims it, runs script
+0x002050d0 func boss5b_SegmentAnimTick hand calls update helper, steps frame every wrap up to 0xe, loads frame script pointer
+0x00205138 func boss5b_SegmentStateUpdate hand state switch 0x18-0x52 calling sway/arc helpers, flag 0x20 spawns five children, steps frame
+0x002052fc func boss5b_SegmentFallOrDie hand if flag 8 set apply gravity velocity to y, clear task at floor; else animate frame
+0x00205488 func boss5b_SegmentInitClaimSlot hand init anim fields, finds free slot with flags&3==0, claims it, random-seeds frame and runs script
+0x00205560 func boss5b_SegmentAnimTickSlow hand calls TrailRecord, advances animation frame every 2 ticks up to 0xe (was boss5b_SegmentTrailAnimTick)
+0x002055cc func boss5b_SegmentStateUpdateSlowAnim hand same state switch as SegmentStateUpdate with extra frame field write on spawn, steps frame (was boss5b_SegmentStateUpdate_2)
+0x00205792 func boss5b_SegmentThrownUpdate hand thrown part: applies velocity in x/y, gravity, sound 0x6c on landing, compares to parent position to attach
+0x002059ba func boss5b_SegmentSpawnLast hand init anim fields, takes last slot flags, sets flag 1, increments counter, runs script
+0x00205a54 func boss5b_HeadBlinkUpdate hand trail record, rises y to target then counts frames 0x3f to set flag 0x10, animates blink table
+0x00205b54 func boss5b_MainBodyUpdate hand boss body per-frame: flag 8 fall, state 8-0x3f switch calls move helpers and projectile spawn, animates
+0x00205fb4 func boss5b_BodyFalling hand applies velocity to y/z, decelerates by 0x80, clears task when y reaches floor
+0x0020601a func boss5b_PaletteCycleAnim hand three-state palette/frame cycler indexing tables, timer 0x28, writes VDP color word
+0x0020612e func boss5b_ApplyTrailPosition hand pulls next trail entry, sets position, special handling for frame types by calling collision/pos helpers
+0x00206408 func boss5b_ApplyTrailPositionSimple hand pulls next trail entry and sets position, type 2 uses PlaceOnCircleB, updates trail ring
+0x002065c8 func boss5b_PlaceOnCircleA hand positions from home table plus sin/cos of trail angle times radius, three axis modes
+0x002066e8 func boss5b_PlaceOnCircleB hand positions from home table plus sin/cos of trail angle times radius, alternate table pointer
+0x00206804 func boss5b_FormationMoveTo hand eases x/y/z toward formation slot (segment index ranges 0-6, 7-12, 13-18, 19) with sin wave 0x5000, sets mask when done
+0x00206b6c func boss5b_FormationWobble hand segments wobble along sine/random on y/z, slide x within bounds, update anim fields if distances small
+0x00206faa func boss5b_MoveToTrailSlot hand eases x/y/z toward trail slot ring entry, ORs bit mask result from helper when all arrive
+0x0020714a func boss5b_ChildInit hand child task init copies segment index from parent, sets start frame from parent, loads script ptr
+0x0020718e func boss5b_PartHitReaction hand hit/flag state machine on +0x28 flags, plays sound 0x68, spawns effect, damage counters, sets flag 1
+0x00207504 func boss5b_SetFlagReturnState hand sets bit 1 in flags +0x28 and returns state byte
+0x00207518 func boss5b_ShadowUpdate hand provisional: copies state from parent, dispatches by param+0x11 to init, run, finish helpers, copies stage byte
+0x0020756c func boss5b_ShadowInit hand provisional: reset object fields, set anim fields, zero position, spawn four child tasks
+0x002075b2 func boss5b_RunScriptToEnd hand runs frame script entries until null, resets index and loads loop pointer
+0x00207630 func boss5b_ShadowRun hand provisional: checks y range, clears or sets flag, per-state position table selection, runs script entries
+0x002077fc func boss5b_RunScriptToEndAlt hand runs frame script entries until null, resets index and loads loop pointer (was boss5b_RunScriptToEnd_2)
+0x002078b6 func boss5b_EffectInit hand reset fields, set anim fields, if flag bit 2 clear spawn two child tasks
+0x002078fc func boss5b_EffectDrawFrame hand loads frame script pointer by index and jumps to it (was boss5b_EffectJumpFrame)
+0x0020793c func boss5b_EffectStateUpdate hand state switch choosing frame table from table index, steps frame up to 0x4f
+0x00207a64 func boss5b_EffectDrawFrameAlt hand loads frame script pointer by index and jumps to it (was boss5b_EffectJumpFrame_2)
+0x00207c48 func boss5b_EffectInitFrame hand reset fields, set anim fields, frame index from parent field, load script ptr
+0x00207ccc func boss5b_SparkleInit hand sets pos near parent with random offset via LCG, y from parent minus camera, sound 0x6f
+0x00207dd0 func boss5b_ShadowTrackTask hand runs init on first tick, calls update helper and finish helper when it returns nonzero (was boss5b_SparkleTask)
+0x00207e08 func boss5b_ShadowTrackInit hand copies parent position, sets sprite fields, y screen offset from camera plus 0x40
+0x00207e5c func boss5b_CallIfNonzero hand calls a helper and tail-calls second helper with argument only if first returned nonzero
+0x00207eba func boss5b_DebrisInit hand sets sprite fields, random offset within parent frame box via LCG, y from camera, flag 1 on rare roll
+0x00207fbc func boss5b_DebrisTick hand calls helper, if nonzero runs update and clears a global when frame field is zero
+0x002082d0 func boss5b_TrailSlotsInit hand resets fields, sets anim fields, initialises four 6-byte table entries with index and 3 mask
+0x0020836c func boss5b_ResetObjectFields hand zeroes object and child fields: position, velocity, frame, flags, timers
+0x002083c0 func boss5b_CameraFollowUpdate hand camera follow task: dispatch by state, picks target-follow routine, writes camera x/y/z globals
+0x0020843c func boss5b_CameraInit hand sets camera position constants and copies them to previous position slots
+0x00208478 func boss5b_CameraFollowTarget hand camera eases toward midpoint of two objects on x with distance clamps, scroll speed limits
+0x00208784 func boss5b_CameraFollowTarget2D hand camera follow using x and y distances of two objects with clamps, alt for state Q
+0x002089b4 func boss5b_BgInit hand init background: set VDP2 scroll fields, copies pattern data via DMA helpers, sets flags
+0x00208b3a func boss5b_BgRegsReset hand sets VDP2-like background registers struct constants, clears flags
+0x00208bb8 func boss5b_SetBgFadeMode hand sets bg flags and fade parameter, mode by arg 0, 1-0x20, above 0x20
+0x00208c54 func boss5b_BuildLineScrollTable hand builds per-line scroll table from sine and camera offset clamped 0..max, sets update flag
+0x00208dc8 func boss5b_HitBoxOverlapA hand AABB overlap vs player using +0x5c frame box, returns side bits 1/2 and 4/8 or 0
+0x00208f00 func boss5b_HitBoxOverlapSmall hand AABB overlap vs player with half-size box, returns direction bits or 0
+0x0020906a func boss5b_HitBoxOverlapB hand AABB overlap vs player with slightly tighter x margins, returns direction bits or 0
+0x002091a4 func boss5b_CopyTwoBlocks hand calls copy helper twice with same dest and two source pointers and size

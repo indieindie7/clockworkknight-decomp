@@ -1,0 +1,443 @@
+0x06003000 func stub_06003000 hand provisional indirect jump through pointer constant, tail-call trampoline
+0x060030dc func sys_WaitVblankFlag hand =CK2USA_A =GEKAN 0x060030ac clears a flag word then spins until the interrupt handler sets it
+0x060030ec func vdp2_UpdatePauseIconBlink hand toggles flag on pad bit 8, draws or clears 7x2 tile icon, calls 31b2, 3192, 31ce
+0x06003192 func vdp2_DrawIconTiles hand copies 2 rows of 7 halfwords from source table into VDP2 map area
+0x060031b2 func vdp2_ClearIconTiles hand clears 2 rows of 7 halfwords in VDP2 map area to zero
+0x060031ce func sound_ApplyMuteToggle hand on flag change sends sound driver commands 3 then 2 with channels 1-7, or command 4
+0x060032b6 func menu_GetPlayerStateClass hand returns -1, 0, 1 or 2 by state byte at +0x11 of current object, compared to set of codes
+0x06003354 func sys_HaltOnError hand =CK2USA_A executes SH-2 sleep, returns status register masked with 0xf0 interrupt bits (was sys_SleepStandby)
+0x06003368 func sound_InitCommandTable hand =CK2USA_A =GEKAN 0x06003384 loops 0x40 and 0x20 table entries calling function pointers, then clears sound state flags
+0x060034fe func cdc_PollStatusNotify hand =CK2USA_A =GEKAN 0x0600356c calls helper with 16-byte buffer, if first byte is 0x26 calls second helper (was sound_ReadCommandStatus)
+0x0600357c func smpc_IssueIntbackCommand hand waits for SMPC SF busy bit, sets SF, writes COMREG-style values, returns status bit 2 (was smpc_WaitAndSetCommand)
+0x06003664 func sys_InitSubsystems hand boot reset: calls init routines in sequence, clears many globals, sets flags, ORs a mask into register
+0x06003794 func sys_ResetGameState hand =CK2USA_A =GEKAN 0x06003838 clears flags, calls init helpers, zeroes state variables and sets a flag bit
+0x06003880 func list_ResetHead hand =CK2USA_A =GEKAN 0x06003930 zeroes four fields of a list header structure
+0x06003894 func obj_AllocChildAtTail hand =CK2USA_A =GEKAN 0x06003944 callocs 0x38-byte object, links it after list tail at header+8, sets parent and depth
+0x060038d0 func obj_AllocChildAfter hand =CK2USA_A =GEKAN 0x0600398c callocs 0x38-byte node linked right after given node, updates tail pointer if needed
+0x06003910 func obj_AllocChildAtHead hand =CK2USA_A =GEKAN 0x060039d0 callocs 0x38-byte node linked after list head at header+4, sets parent
+0x0600394c func obj_AllocChildren hand =CK2USA_A =GEKAN 0x06003a18 allocates count objects via obj_AllocChildAtTail, numbering each; returns number made
+0x06003988 func obj_AllocChildrenFromList hand =CK2USA_A =GEKAN 0x06003a54 allocates a child object for each entry of a zero-terminated function pointer list
+0x060039be func obj_KillDeeperThan hand =CK2USA_A zeroes update pointer of list nodes whose depth byte at +0x13 exceeds the argument
+0x060039dc func task_RunAndFreeList hand walks linked list of tasks, calls handler, or frees 8 pairs of buffers and node when handler null
+0x06003a42 func task_BuildListFromTable hand allocates 0x38-byte nodes for each non-zero table entry and links them into list, clearing flags
+0x06004626 func player_ResetStateByMode hand provisional param 0 or 2 initialises struct fields (position, speeds, flags) with constant tables
+0x060046fa func vdp2_BlinkMapRowsTimer4 hand =CK2USA_A frame counter bit 4 toggles between vdp2_CopyMapRows23 and vdp2_ClearMapRows23
+0x06004734 func vdp2_BlinkMapRowsTimer32 hand =CK2USA_A frame counter bit 0x20 toggles between vdp2_CopyMapRows23 and vdp2_ClearMapRows23
+0x060047a4 func vdp2_CopyMapRows23 hand =CK2USA_A =GEKAN 0x06005e5c copies two rows of 0x17 shorts adding tile offset constant into a map buffer
+0x060047cc func vdp2_ClearMapRows23 hand =CK2USA_A zeroes the same two rows of 0x17 shorts in the VDP2 map buffer
+0x06004826 func cmd_ClearTwoSlots hand =CK2USA_A zeroes fields of both command slot structures reached through a two-pointer table
+0x06004844 func cmd_SetSlot hand =CK2USA_A fills slot struct selected by index with id, parameter, pointer and sets active byte to 1
+0x060049d6 func boot_WaitVblankLoadProgram hand calls two routines, second with signed char argument, returns 0 (was stub_060049d6)
+0x060049f2 func pad_GetButtonCode hand masks pad word, maps 0x10 to 12, 0x40 to 13, others to 11 or 10, else -1
+0x06004a2c func menu_SelectSoundTableByButton hand reads pad code and picks one of five pointer tables, passes it to a setter (was menu_SelectPadHandlerTable)
+0x06004aa4 func vdp1_InitSpriteDisplayState hand =CK2USA_A =GEKAN 0x060063b4 zeroes sprite window words, resets vdp1 state, sets sprite parameters, adds clip command
+0x06004af4 func vdp1_ResetCommandBuffers hand =CK2USA_A =GEKAN 0x06006410 resets VDP1 command list pointers, counters and double-buffer offsets to initial values
+0x06004b24 func vdp1_FlushCommandBuffer hand =CK2USA_A =GEKAN 0x06006490 if commands pending DMA-copies command buffer to VDP1 VRAM, toggles buffer index
+0x06004bc4 func vdp1_BeginFrameCommands hand =CK2USA_A waits on VDP1 flag, writes system clip command with screen limits, picks other buffer, resets count
+0x06004c60 func vdp1_AddClipCommand hand =CK2USA_A =GEKAN 0x060065fe appends a 0x20-byte VDP1 command to the command list if space remains
+0x06004cfc func sprite_SortByRadixLinks hand radix sort of 0x20-byte records by nibble keys at +0x1e using linked list at +2, three passes
+0x06005064 func pad_ClearPlayerInputSlot hand =CK2USA_A =GEKAN 0x0600b598 zeroes player input structures selected by index and fills 13 shorts with 5
+0x060050ea func pad_ParseSaturnPeripheral hand =CK2USA_A =GEKAN 0x0600b648 decodes SMPC peripheral report for digital, 3D and analog pads; returns type
+0x060052e0 func pad_InitDemoPlayback hand =CK2USA_A =GEKAN 0x0600b83c clears input buffers and sets mode 0, 1 or 2; recorded modes pick an input script
+0x0600535c func pad_UpdateInput hand =CK2USA_A =GEKAN 0x0600b8b6 reads peripheral, records or plays back demo input, builds held, pressed, released words
+0x060055cc func pad_AnalogToDirectionBits hand =CK2USA_A =GEKAN 0x0600bb44 converts two signed axis bytes to direction button bits with deadzone
+0x06005654 func data_DecompressDispatch hand =CK2USA_A =GEKAN 0x0600bbf0 reads type byte: 0 uses stream LZSS decode, 1 simple LZSS decode, else returns -1
+0x06005678 func data_InitLzssStream hand =CK2USA_A =GEKAN 0x0600bc1c stores source pointer, reads size fields from header, resets bit counters
+0x06005724 func lzss_DecompressToGlobals hand LZSS-style decompress using global pointers, flag byte bits, 12-bit offset 4-bit length plus 2
+0x06005816 func lzss_Decompress hand LZSS decompress from header with 24-bit size at bytes 1-3 into param_2, returns size
+0x060058ae func data_DecompressPairEncoded hand =CK2USA_A =GEKAN 0x0600be7a byte pair encoding decompressor with size header and stack-based expansion
+0x060059a4 func data_DecompressRle hand =CK2USA_A =GEKAN 0x0600bfa0 RLE decompressor with bit flag bytes: literal bytes or runs; 32-bit size header
+0x06005a28 func vdp2_ResetRegisterShadow hand =CK2USA_A =GEKAN 0x0600c028 copies 0x48 words between two buffers, clears flags and counters (was text_ResetBuffers)
+0x06005aea func vdp2_SyncRegisterShadow hand =CK2USA_A =GEKAN 0x0600c0d0 copies 0x20 words from table to registers or restores 0x48 words from buffer (was text_SyncBuffers)
+0x06005c08 func vdp2_CopyDirtyTables hand =CK2USA_A =GEKAN 0x0600c17c copies two tables to VDP2 RAM if their dirty byte flags are set, clears flags
+0x06005c88 func text_QueueString hand =CK2USA_A =GEKAN 0x0600c200 queues a null-terminated byte string widened to shorts with VDP2 map position
+0x06005d40 func text_QueueHexString hand queues 8-digit hex number into text buffer entry, position row*0x80 plus column*2, max 0x20 entries
+0x06005dd4 func text_QueueHexWord_Blank hand =CK2USA_A =GEKAN 0x0600c372 queues 8 hex digits with leading zeros replaced by spaces
+0x06005e6c func text_QueueHexWord hand =CK2USA_A =GEKAN 0x0600c2d4 queues 8 hex digit characters of a 32-bit value at map position
+0x06005f0a func text_QueueHexShort_Blank hand =CK2USA_A =GEKAN 0x0600c4f4 queues 4 hex digits of a 16-bit value with leading zeros blanked
+0x06005fcc func text_QueueHexByte hand =CK2USA_A =GEKAN 0x0600c634 queues two hex digit characters of a byte at map position
+0x06006024 func text_QueueHexByte_Blank hand =CK2USA_A queues two hex digits of a byte, high digit replaced by space when zero
+0x0600608e func text_QueueSignedDecimal3 hand =CK2USA_A =GEKAN 0x0600c6ae queues signed decimal of a char with leading spaces and minus sign
+0x06006232 func text_QueueSignedDecimal5 hand =CK2USA_A =GEKAN 0x0600c8aa queues signed decimal of a short with leading spaces and minus sign
+0x060062dc func text_QueueSignedDecimal hand queues signed decimal number with space padding and minus sign into text buffer, calls div helpers
+0x060063a8 func text_FlushQueue hand =CK2USA_A =GEKAN 0x0600ca54 copies each queued string into the VDP2 map destination, then resets queue count
+0x060063f4 func vdp2_ExpandRunTable hand expands run-length interpolation table (start, count, step) into 32-bit or 16-bit array by type byte
+0x06006484 func vdp2_ExpandMapRunTable hand expands compressed map entries with flip bits, run increment, decrement or repeat into 32-bit words
+0x06006524 func vdp2_BlitMapByType hand chooses vdp2_BlitMap16 or vdp2_BlitMap32 by type byte 2 at +0xd
+0x06006548 func vdp2_BlitMap32 hand =CK2USA_A =GEKAN 0x0600cc34 copies width by height 32-bit map cells adding base offset into a VDP2 page
+0x060065b2 func vdp2_BlitMap16 hand =CK2USA_A =GEKAN 0x0600cc9e copies width by height 16-bit map cells adding base offset into a VDP2 page
+0x0600662a func vdp2_CommitRegisterCache hand =CK2USA_A =GEKAN 0x0600cd2c if dirty flag set copies cached VDP2 register block into hardware shadow
+0x060067c0 func vdp2_BuildRotationParams hand =CK2USA_A sine table fills rotation scroll matrix coefficients of a parameter block from two angles
+0x0600699c func vdp2_BuildRotationParamsB hand =CK2USA_A one angle via sine table sets rotation scroll start coordinates and increments
+0x06006aa0 func vdp2_FillRotationLineTable hand =CK2USA_A fills line table words from per-line helper, selected by mode byte of params
+0x06006bfe func vdp2_CommitColorRamCache hand =CK2USA_A =GEKAN 0x0600d34c if dirty byte set copies words to color RAM and sets an update flag
+0x06006c2c func vdp2_SetScrollPriorities4 hand =CK2USA_A =GEKAN 0x0600d37c unpacks four byte values into shorts for VDP2 register cache, sets dirty
+0x06006c68 func vdp2_SetScrollPriorities3 hand =CK2USA_A =GEKAN 0x0600d3dc unpacks three byte values into shorts for VDP2 register cache, sets dirty flag
+0x06006d68 func collide_PrepareMeshTest hand =CK2USA_A =GEKAN 0x0600f190 clears face flag buffer, transforms mesh then calls overlap test helpers
+0x06006e00 func math_BuildRotationMatrix hand builds 3x3 matrix from three angles with sine and cosine tables, 14-bit fixed multiply
+0x0600705c func collide_TransformBackfaceVerts hand rotates normals and verts with 3x3 matrix, flags backfacing faces vs camera, perspective-divides verts
+0x060074d4 func collide_TransformVertsFixedBuf hand translates verts with optional X mirror, marks visible faces by dot product, divides by depth, calls check
+0x06007c54 func collide_ComputeFaceFacingFlags hand =CK2USA_A =GEKAN 0x0601063c transforms mesh vertices, 64-bit MAC dot products per face for backface flags (was collide_TestObjectVsMesh)
+0x06007f10 func collide_FaceBoundsCheck hand =CK2USA_A =GEKAN 0x06010c5c min/max bounds of a quad face four vertices versus screen limits
+0x0600809a func collide_FaceBoundsCheckA hand computes min and max of four face vertices on x y z, rejects when outside screen bounds or depth
+0x0600820c func collide_BuildFaceSprite hand =CK2USA_A =GEKAN 0x06010f40 builds clamped projected quad points of a face and queues a sprite command
+0x06008318 func collide_BuildFaceSpriteA hand builds VDP1-like sprite command from four vertices with screen_ClampX/Y, texture pointer, calls 8fe0
+0x06008718 func collide_ComputeFaceFacingFlagsByteVerts hand =CK2USA_A variant of mesh test using per-face 0xc00 table offset, MAC backface flags (was collide_TestObjectVsMesh_2)
+0x06008a14 func collide_FaceBoundsCheckFixedBuf hand like bounds check with packed vertex indices from high bits of first byte, rejects off-screen or depth
+0x06008d2a func collide_BuildFaceSpriteFixedBuf hand builds sprite command from packed indexed vertices via screen_ClampX/Y, then calls 8fe0
+0x06008e7e func sprite_QueueQuadCommand hand =CK2USA_A =GEKAN 0x06011ec8 allocates 16-halfword VDP1 command entry with limit check and fills it from sprite data (was sprite_QueueCommand_2)
+0x06008fe0 func vdp1_WriteSpriteCommand hand appends 0x20-byte VDP1 command entry with control, color, address, four corner coordinates, checks max count
+0x06009144 func screen_ClampX hand =CK2USA_A =GEKAN 0x0601205e clamps signed short to min/max screen coordinate range
+0x0600916a func screen_ClampY hand =CK2USA_A =GEKAN 0x06012094 clamps signed short to min/max screen coordinate range
+0x06009190 func collide_FaceBoundsCheckFixedBuf_09190 hand =CK2USA_A =GEKAN 0x060120c8 variant of quad face bounds check using fixed vertex buffer (was collide_FaceBoundsCheck_2)
+0x0600931e func collide_BuildFaceSpriteFixedBuf_0931e hand =CK2USA_A =GEKAN 0x06012242 variant building clamped projected quad points and queuing a sprite command (was collide_BuildFaceSprite_2)
+0x0600946c func collide_ProcessVisibleFaces hand loops faces flagged visible, calls collide_FaceBoundsCheckFixedBuf and collide_BuildFaceSpriteFixedBuf, returns -1 on hit
+0x06009512 func mem_CopyHalfwords_thunk hand jump thunk to mem_CopyHalfwords
+0x0600951e func mem_CopyHalfwords hand =CK2USA_A =GEKAN 0x06012480 copies count 16-bit values from src to dst
+0x06009528 func mem_CopyLongs_thunk hand jump thunk to mem_CopyLongs
+0x06009534 func mem_CopyLongs hand =CK2USA_A copies count 32-bit values from src to dst
+0x060095b0 func math_DivS32 hand =GEKAN_A signed 32-bit divide via unrolled DIV1 steps
+0x0600966e func math_DivU32 hand =GEKAN_A unsigned 32-bit divide via unrolled DIV1 steps
+0x06009732 func math_ShiftByCountSigned hand arithmetic shift of r0 by r1 count using fallthrough switch, both signs, 0x20 cases
+0x0600978e func math_ShiftRightLogicalByCount hand logical right shift of r0 by r1 using fallthrough switch cases
+0x060097e6 func math_ShiftLeftByCount hand left shift of r0 by r1 count using fallthrough switch cases
+0x060099e0 func mem_CopyBytesReg hand =GEKAN_A byte copy of count r0 from r2 to r1, register-argument helper
+0x06009a0a func mem_CopyLongsReg hand =GEKAN_A long-word copy from r2 to r1, register-argument helper
+0x06009c78 func stub_06009cd0 hand =CK2USA_A tiny function that only clears a single flag byte
+0x06009c80 func sys_VblankUpdateTasks hand =CK2USA_A =GEKAN 0x0600d4e0 pattern, runs flagged callbacks, a countdown and the copy-queue flush
+0x06009dc4 func data_UnpackAssetEntry hand =CK2USA_A =GEKAN 0x0600e400 copies raw bytes or decompresses depending on type byte of queued entry
+0x06009e24 func data_QueueAssetCopyFromEntry hand =CK2USA_A =GEKAN 0x0600e51c if entry pointer set, queues copy of source, destination and size
+0x06009e72 func data_FlushCopyQueue hand =CK2USA_A =GEKAN 0x0600e598 executes queued short-word copies and resets the queue count
+0x06009ea4 func gfx_LoadImageByType hand =CK2USA_A =GEKAN 0x0600e6c2 switches on type byte: 0 loads directly, 1-3 decompress via helper then load
+0x06009f64 func mem_ClearBlock64 hand =CK2USA_A =GEKAN 0x0600e7bc zeroes a block of longwords in pairs, size from constant
+0x0600a0fc func math_Atan2Table hand =CK2USA_A angle from a ratio via divide helper and lookup table; similar to GEKAN 0x0600f0ec
+0x0600a1cc func snd_LoadDriver hand =CK2USA_A loads string SNDDRV.BIN through a file-load call and sets sound flags
+0x0600a272 func snd_ClearCommandState hand =CK2USA_A zeroes the sound state words and a table of longword pairs
+0x0600a2d0 func snd_SendSoundRecordList hand =CK2USA_A sends setup command then walks record list pushing sound commands via a694, calls sound driver
+0x0600a412 func snd_LoadDriverXsndTbtlBin hand =CK2USA_A SMPC sound off, loads XSNDTBTL.BIN into sound RAM, sound on, sets driver pointers =GEKAN 0x06025da0
+0x0600a61c func snd_QueueCommandStop hand =CK2USA_A calls snd_QueueCommand8 with command 6 and all other params zero =GEKAN 0x0602625e
+0x0600a63c func snd_QueueCommand8 hand =CK2USA_A packs eight byte params into a record and pushes onto sound command ring =GEKAN 0x06026284
+0x0600a66c func snd_QueueCommandFromTable5 hand =CK2USA_A 5-byte record from table by index plus command byte pushed to sound ring =GEKAN 0x060262ca
+0x0600a6bc func snd_QueueCommandFromStageTable hand =CK2USA_A 5-byte record via stage and index tables pushed to sound ring =GEKAN 0x06026324
+0x0600a70a func snd_QueueCommandFromPtr hand =CK2USA_A command 1 with 5-byte record at pointer index, -1 if null =GEKAN 0x06026440
+0x0600a7b4 func snd_RingPushCommand hand =CK2USA_A pushes 16-byte record to 32-entry ring, returns -1 if full else 0 =GEKAN 0x0602648e
+0x0600a7fc func snd_RingPopCommandToDriver hand =CK2USA_A pops one 16-byte record from ring into driver mailbox when free =GEKAN 0x060264de
+0x0600a868 func gfs_InitOrSystemError hand =CK2USA_A initialises library, prints SYSTEM ERROR string on negative result =GEKAN 0x06026540
+0x0600a99c func gfs_LoadFileVerifySize hand =CK2USA_A opens file by name, reads, compares size, calls error handler on mismatch =GEKAN 0x06026664
+0x0600aa4c func gfs_LoadFileToAddress hand =CK2USA_A opens file via function pointer, on negative result retries with 3-word lookup, reports error (was gfs_OpenFileByNameRetry)
+0x0600aaec func gfs_LoadNamedFileOrError hand =CK2USA_A opens file, on negative result retries with zero offset, closes and finalizes handle (was gfs_OpenFileCloseOnError)
+0x0600ac28 func gfs_FinishLoadWaitAndFree hand =CK2USA_A queries two CD values, adds one when nonzero, passes to reader then tail-calls handler (was gfs_ChainNextSectorRead)
+0x0600ac90 func sys_ReadErrorScreen hand =CK2USA_A prints READ ERROR and PRESS ANY BUTTON strings with pad wait loop, never returns =GEKAN 0x06026758
+0x0600ae18 func vdp2_InitScrollStateDefault hand =CK2USA_A initialises fields of global control struct, flags and limit values =GEKAN 0x060268c8 (was cd_ResetControlBlockFields)
+0x0600aeac func smpc_RestartSlaveSh2 hand =CK2USA_A SMPC SF busy wait, commands 3 then 2 around ten-call loop, restarts slave SH-2 =GEKAN 0x06026990
+0x0600aff0 func heap_Init hand =CK2USA_A initialises two linked sentinel blocks of allocator and sets free pointer =GEKAN 0x06026f3c
+0x0600b014 func heap_Alloc hand =CK2USA_A first-fit allocator over circular free list, rounds size up to 4, splits block =GEKAN 0x06026f62
+0x0600b08e func heap_AllocZeroed hand =CK2USA_A calls heap_Alloc for count times size and clears memory to zero =GEKAN 0x06026ffe
+0x0600b0ca func heap_Free hand =CK2USA_A frees block if in heap range, coalesces with previous and next free blocks =GEKAN 0x06027042
+0x0600b180 func dbg_MemoryViewerLoop hand =CK2USA_A pad d-pad scrolls address in 0x10 steps, draws rows of words and blinking cursor =GEKAN 0x060274a4
+0x0600b65c func buf_CopyWordsFromGlobal hand copies words from global source pointer into fixed buffer of constant size
+0x0600b680 func buf_InsertHeadFromGlobal hand shifts 6-byte entries up in buffer, then fills first 0x10 bytes from global pointer, returns buffer
+0x0600b6d2 func buf_ShiftDownAppendFromGlobal hand shifts 6-byte entries down by 0x10 bytes then appends words from global pointer, returns buffer
+0x0600b724 func buf_CopyWordsToGlobal hand copies words from fixed buffer back to global destination pointer
+0x0600b75c func text_WriteHexByteTiles hand writes 8 hex digit characters from string 0123456789ABCDEF into VDP2 map at row*0x40 plus column
+0x0600b7ca func text_WriteSpaceTile hand writes space tile 0x20 into VDP2 map at row*0x40 plus column
+0x0600b7e8 func anim_InitObject hand =CK2USA_A zeroes animation object fields (frame, timer, flags at +0x26, +0x2c), sets table and calls setup
+0x0600b838 func anim_UpdateAndDraw hand =CK2USA_A steps animation object frame table and writes VDP1 sprite words from frame data
+0x0600ba00 func anim_AdvanceFrame hand =CK2USA_A advances frame counter and sequence index in animation object, wraps at table end
+0x0600bac0 func backup_WriteClockDataFile hand via backup RAM function table reads format, builds CLOCK_DATA save entry and writes it, returns 0 1 or 2
+0x0600bd0c func bup_WriteBlock hand =CK2USA_A backup RAM routine using SMPC lock and device vtable, writes data block and checks status 2
+0x0600be48 func backup_WriteClockData hand writes CLOCK DATA record to backup memory via function table, using SMPC date/time fields, returns status
+0x0600c134 func smpc_InitClockDefaults hand reads SMPC RTC via smpc_GetClock, decodes BCD year/month/day into work struct, defaults if invalid
+0x0600c280 func smpc_CheckClockSignature hand compares 8 bytes of work area against expected signature bytes, returns 1 if equal
+0x0600c2f0 func smpc_ReadClockRegs hand waits SF flag, issues SMPC command, copies OREG bytes into 4-byte buffer
+0x0600c394 func vdp2_LoadScreenSetByMode hand =CK2USA_A initialises video, loads background tables for mode 1 or 2, sets VDP2 bit
+0x0600c3cc func vdp2_InitAndWaitVblank hand =CK2USA_A initialises video, sets VDP2 flag, loops calling function until TVSTAT bit 3
+0x0600c410 func video_InitHardwareRegs hand =CK2USA_A SMPC busy wait, command 3, interrupt mask, then programs VDP2 register tables
+0x0600c510 func vdp2_InitRegisterShadowDefaults hand =CK2USA_A fills display struct fields (+0xe,+0x28,+0x30,+0x10) with constants, same shape as ae70 (was video_InitScreenStructA)
+0x0600c5c6 func vdp2_FillMapTableA hand =CK2USA_A calls table copy-with-offset helper with 0x1d columns and 2 rows
+0x0600c5de func vdp2_ClearMapTable hand =CK2USA_A nested loop writes constant word into 2 rows of 0x1d entries
+0x0600c602 func vdp2_LoadBackgroundSetA hand =CK2USA_A copies two data blocks via helper then fills 0x2c by 0x1c map with offset
+0x0600c698 func vdp2_LoadBackgroundSetB hand =CK2USA_A copies two data blocks via helper then fills 0x2c by 0x1c map with offset
+0x0600c6c4 func mem_CopyWordTableAddOffset hand =CK2USA_A copies rows of words from source to destination adding constant offset to each entry
+0x0600c728 func vdp2_LoadTitleGraphics hand =CK2USA_A series of decompress and copy calls loading title screen character and palette data
+0x0600c7e0 func vdp2_LoadPaletteAndMapData hand =CK2USA_A copies palette words into color RAM and sets map pages with calls to helpers
+0x0600ca20 func sys_InitSubsystemsZero hand =CK2USA_A calls ten init function pointers with zero args =GEKAN 0x06026b70
+0x0600ca74 func boot_LoadTerminalOverlayTRMCN1 hand clears flag, waits for state match, loads TRMCN1.BIN overlay and jumps to it with params
+0x0600cb64 func movie_LoadTrmorgBin hand =CK2USA_A loads TRMORG.BIN overlay then jumps into it, resets video first
+0x0600cbe4 func boot_LoadTerminalOverlayTRMEND hand loads GDRAM.BIN and TRMEND.BIN overlays, then calls entry with argument 2
+0x0600cca8 func movie_ListStateMachine hand =CK2USA_A five-state machine plays AVI list entries with pad input and timers, advances index to 0xb
+0x0600cdd8 func movie_LoadXimgdatBin hand =CK2USA_A loads XIMGDAT.BIN, resets video and sets register flags
+0x0600cec8 func movie_SetupSceneByIndex hand =CK2USA_A switch on scene index selecting constants, then initialises scene via helpers
+0x0600cfc4 func vdp2_InitRegisterShadowDefaultsB hand =CK2USA_A fills display struct fields with constants, same shape as ae70 and c66c (was video_InitScreenStructB)
+0x0600d07c func mem_CopyWordTableAddOffset_2 hand =CK2USA_A second copy of word table copy adding constant offset to each entry
+0x0600d0ce func mem_CopyWords16 hand =CK2USA_A copies count 16-bit words from source to destination
+0x0600d120 func movie_PlayAviByIndex hand =CK2USA_A index 0..0x10 selects AVI file name (JOPEN, ASTORY, LASTBOSS and so on) and plays it
+0x0600d20c func boot_LoadProgramByRegion hand =CK2USA_A picks JAPUS.BIN, GAPUS.BIN or ZAPUS.BIN per region and loads it; also BTITLE, APUS, BAPUSG
+0x0600d346 func title_CheckSecretCode hand compares pad input against 12-entry button sequence table, sets mode 0x15 on completion
+0x0600d3d4 func title_Init hand =CK2USA_A clears VDP2 control bits, loads title graphics, zeroes state and fills sprite tables
+0x0600d48e func title_UpdateScreen hand steps title animation, pushes sprite command, state machine on start button, returns done after 0x78 frames
+0x0600d5c4 func title_PushSpriteCommand hand =CK2USA_A appends 0x20-byte VDP1 sprite command with position from globals and random offsets
+0x0600d75c func title_StepAnimation hand =CK2USA_A steps title animation frame counters from tables and pushes sprite commands
+0x0600d930 func title_DrawSpriteGroup hand =CK2USA_A builds several VDP1 sprite commands in loop from tables
+0x0600db10 func math_Div1Chain32 hand =GEKAN_A unrolled SH-2 DIV1 sequence 32-bit signed division, zero divisor stores constant
+0x0600dbec func str_CompareThunk hand =GEKAN_A tiny stub that only tail-calls a function pointer and returns its result (was stub_06027dbc)
+0x0600dc00 func str_CompareThunk_600dc00 hand =GEKAN_A tiny stub that only tail-calls a function pointer and returns its result (was stub_06027dbc)
+0x0600dc14 func strcspn hand returns index of first char in param_1 that appears in set param_2 (C runtime)
+0x0600dc50 func strlen hand =GEKAN_A C runtime strlen, counts bytes until NUL
+0x0600dc60 func strstr hand finds substring param_2 in param_1 using length helper and compare helper, returns pointer or 0
+0x0600dce0 func strcmp hand =GEKAN_A C runtime strcmp, byte loop when unaligned else calls aligned word variant
+0x0600dd44 func strcpy hand =GEKAN_A C runtime strcpy, byte loop when unaligned else tail-calls aligned word variant
+0x0600dd94 func memcmp hand =CK2USA_A C runtime memory compare with count =GEKAN 0x06027f74
+0x0600ddc8 func memmove hand =CK2USA_A C runtime memmove, copies forward or backward by overlap =GEKAN 0x06027fb0
+0x0600de10 func strcmp_Aligned hand =CK2USA_A word-at-a-time string compare for aligned strings =GEKAN 0x06027ffc
+0x0600de88 func strcpy_Aligned hand =CK2USA_A word-at-a-time string copy for aligned strings =GEKAN 0x06027eac
+0x0600df02 func math_ShiftLeft14 hand =GEKAN_A tiny helper returning r0 shifted left by 14 bits
+0x0600e038 func memset hand =CK2USA_A C runtime fill memory with byte for count =GEKAN 0x060281bc
+0x0600e050 func strncmp hand =CK2USA_A C runtime bounded string compare =GEKAN 0x060281d8
+0x0600e090 func strncpy hand =CK2USA_A C runtime bounded string copy with zero padding =GEKAN 0x06028220
+0x0600e0c4 func gfs_Init hand =GEKAN_A GFS-style init validating open max 1..24 and work area alignment, sets DMA, error code on bad args
+0x0600e1b0 func gfs_OpenFileByIdOrName hand opens GFS file handle by id, gets size, calls loader callee; else error check on name-less case
+0x0600e24e func gfs_SetDirTable hand =GEKAN_A stores directory table info in GFS work area, error code 0 on success
+0x0600e2a0 func gfs_NameToId hand =GEKAN_A looks up directory entry for index in current dir table, error -9 on failure (was gfs_GetDirEntryName)
+0x0600e2ee func gfs_GetDirectoryEntryPtr hand validates directory table, bounds checks file id, returns pointer to entry plus 0xc, gfs_SetError codes
+0x0600e350 func gfs_OpenFileById hand allocates handle via gfs_AllocHandle, selects init by directory type, initializes handle, error codes via gfs_SetError
+0x0600e3e0 func gfs_Close hand =GEKAN_A releases handle by calling cleanup and freeing, sets error 0 (was gfs_FreeHandle)
+0x0600e3fc func gfs_Seek hand seeks handle with whence 0 set 1 current 2 end, range checked against file size, calls vtable seek
+0x0600e4a4 func gfs_HandleGetPosition hand =GEKAN_A calls per-type function pointer from handle table, error -11 if null handle
+0x0600e4e2 func gfs_IsEndOfFile hand returns whether handle position has reached file size, gfs_HandleGetPosition and gfs_GetHandleFileSize
+0x0600e52a func gfs_GetHandleBlockCount hand =GEKAN_A reads handle info and calls transfer function when size non-zero (was gfs_HandleStartRead)
+0x0600e574 func gfs_GetHandleFileSize hand =CK2USA_A calls driver info function, returns size, clears result when flags 8 and 0x10 set
+0x0600e5d8 func gfs_GetFileInfo hand =GEKAN_A fills sector and offset into byte offset ((sector-1)*0x800+off), masks flag bits
+0x0600e642 func gfs_ReadFileFromOffset hand =GEKAN_A allocs handle, reads data count, calls transfer, error -15 on failure (was gfs_ReadFromHandle)
+0x0600e6ec func gfs_TransferWaitLoop hand =GEKAN_A polls transfer status until done or error, timeout returns error -22
+0x0600e81c func gfs_StartTransferToBuffer hand =GEKAN_A sets up read of min(count, remaining) bytes, registers handle in active list, error -16 if busy
+0x0600e90e func gfs_StartRead hand clamps byte count to remaining file size, starts transfer, marks handle active, gfs_AddHandleToActiveList
+0x0600e9ba func gfs_AbortHandle hand =GEKAN_A clears handle state, unlinks from active list and returns remaining position, error -11 on null
+0x0600e9f8 func gfs_GetHandleStatus hand =GEKAN_A returns handle state and transferred byte count, zero when flagged invalid
+0x0600ea60 func gfs_PollPendingHandle hand =GEKAN_A marks handle done when CD status call returns 2, returns state field
+0x0600ea8a func gfs_PollHandle hand steps driver and transfer state machine of handle, finishes and removes from active list, returns state
+0x0600eb02 func gfs_PollAllActiveHandles hand loops over active handle list calling gfs_PollHandle, returns first handle and aggregate status
+0x0600eb74 func gfs_SetHandleField58 hand =GEKAN_A swaps handle field at +0x58 and returns old value, error -17 if invalid
+0x0600ebcc func gfs_SetTransferMode hand =GEKAN_A stores param at handle +0xa4 and forwards it to CD driver call (was gfs_SetHandleParamA4)
+0x0600ec2a func gfs_SetHandleParam hand sets field at offset 0x68 of handle unless file is directory (flag 0x40), returns previous value
+0x0600ec86 func gfs_CallHandleDriverFunc hand =GEKAN_A calls driver function pointer on handle subobject at +0x6c, returns its result
+0x0600ecda func gfs_LockHandle hand =GEKAN_A calls driver lock on handle, records current handle in work area, reports error code
+0x0600ed4c func mem_CopyLongsThunk hand =GEKAN_A tiny wrapper that calls a function pointer and returns its result (was gfs_CallGlobalVfunc)
+0x0600ed64 func gfs_GetDirEntryInfo hand =GEKAN_A copies 12-byte directory entry by index into buffer, error -10 when out of range
+0x0600eddc func gfs_InitVtableDefaults hand =GEKAN_A stores four default callback pointers into GFS work area
+0x0600edf4 func gfs_InitWorkArea hand =GEKAN_A zeroes GFS work area fields and handle slots for given open max, installs default callbacks
+0x0600ee98 func gfs_FindFirstSetFlagIndex hand =GEKAN_A scans entries calling per-type test function until bit 0 set, returns index plus one or zero
+0x0600eefa func gfs_AllocHandleSlot hand scans handle pool for free slot, marks used (1), returns pointer or 0 if full
+0x0600ef42 func gfs_MarkHandleFree hand =GEKAN_A tiny helper that writes zero to the first word of its argument (was gfs_ClearFirstWord)
+0x0600ef4a func gfs_ReleaseHandleResources hand =GEKAN_A clears lock owner and calls driver close function for handle, resets fields
+0x0600efc6 func gfs_SetError hand =GEKAN_A stores error code in work area and calls error callback if nonzero, returns code
+0x0600f004 func gfs_FindHandleInActiveList hand =GEKAN_A linear search of active handle list, returns index or -1
+0x0600f038 func gfs_AddHandleToActiveList hand =GEKAN_A appends handle to active list if not present, increments count
+0x0600f070 func gfs_RemoveHandleFromActiveList hand =GEKAN_A removes handle from active list and shifts remaining entries down
+0x0600f0c4 func gfs_InitHandleSlot hand initializes allocated handle via two callees (stream init, open), clears state fields, returns handle or 0
+0x0600f118 func gfs_ReadAndVerifyDiscHeader hand checks CD status, opens handle, reads header via gfs_TransferWaitLoop, compares with signature, returns error code
+0x0600f1fc func gfs_ReadVolumeDescriptor hand =GEKAN_A reads volume descriptor, extracts start sector and size into info struct, error -2 -3
+0x0600f2b6 func gfs_OpenVolume hand =GEKAN_A reads volume info, opens handle, calls loader with handle and size, frees handle
+0x0600f32c func gfs_StepHandleDriver hand =GEKAN_A runs driver step function for handle, tracks owner on state 1 or 4, reports errors
+0x0600f3cc func gfs_StepHandleTransfer hand =GEKAN_A checks driver idle then runs transfer step, updates owner field, returns state 1 or 6
+0x0600f470 func gfs_GetDirEntryOffset hand =GEKAN_A gets entry info and returns base plus param or sector-size times length plus base
+0x0600f4d2 func gfs_SetReadLength hand sets transfer length field at 0x54 or calls start function if no stream; clears counter 0x50
+0x0600f50a func gfs_UnpackFileInfo hand =GEKAN_A copies optional output fields from file info struct, byte fields at +0xe and +0xf
+0x0600f562 func gfs_CloseHandle hand =GEKAN_A removes handle from lists, clears it, then tail-calls driver close routine
+0x0600f59c func gfs_GetStreamField58 hand returns field at offset 0x58 of stream structure
+0x0600f5a8 func gfs_IsHandleFinished hand =GEKAN_A returns 1 when handle state is 4 and driver check says idle or flagged
+0x0600f5f4 func gfs_MapCdStatusToError hand maps CD status code 3,5,6,7,8,9 to GFS error values, sets handle error and gfs_SetError
+0x0600f680 func cdc_GetStatusCmd0 hand =GEKAN_A builds CD block command 0 packet via helpers, executes it, copies 8-byte status result to param
+0x0600f6bc func cdc_CallAndReturn0 hand =GEKAN_A provisional: calls one function pointer and returns 0, thin wrapper
+0x0600f6ca func cdc_GetStatusChecked hand reads stable CR via cdc_ReadStableCR, copies status, returns -8 on invalid status flags
+0x0600f722 func cdc_ReadStableCR hand =GEKAN_A reads CR1-4 registers repeatedly until two consecutive reads match, up to 100 tries, else -3
+0x0600f7b0 func cdc_GetHardwareInfo hand =GEKAN_A CD block command 1 packet, copies five result bytes to output buffer
+0x0600f800 func cdc_CommandSimple02 hand builds CD command with opcode 2, sends it, masks response and passes to result handler
+0x0600f858 func cdc_GetSessionInfo hand =GEKAN_A CD block command 3 with param byte, executes and stores returned word in param_2 (was cdc_SetStatusByteCmd3)
+0x0600f8ac func cdc_InitSystemCmd4 hand =GEKAN_A CD block command 4 init packet with 4 args, optional delay loop and extra 0x40 execute when flag bit 1 set
+0x0600f958 func cdc_OpenTrayCmd5 hand =GEKAN_A builds command 5 packet and executes it, returns result
+0x0600f978 func cdc_WaitHirqCheck hand =GEKAN_A waits on flag mask, on param 1 checks 0x80 bit for error -4, on failure calls cdc_GetCmd6Result, then callback
+0x0600f9d8 func cdc_EndDataTransfer hand =GEKAN_A CD block command 6 execute, stores result masked into out word, then invokes callback with constant (was cdc_GetCmd6Result)
+0x0600fa38 func scu_DmaSetupWordCopy hand sets up SCU DMA transfer of count words (shifted left 1 for bytes) with mode params, records src and byte count
+0x0600fac4 func scu_DmaSetupLongCopy hand sets up SCU DMA transfer of long words (count shifted left 2 for bytes), records src and byte count
+0x0600fb4c func scu_DmaPollStatus hand reads DMA status, returns 1 if status 4, 2 if no pending, otherwise reissues request and returns 0
+0x0600fba4 func sh2_DisableIntReturnOldMask hand =GEKAN_A sets SR interrupt mask to 0xf, calls function with constant and 0, clears a flag, returns old SR mask (was sh2_DisableIntRestoreSR)
+0x0600fbf4 func scu_DmaCopyRangeChecked hand =GEKAN_A masks interrupts, validates two address params against ranges, fills request block and calls submit function, sets ready flag (was sh2_QueueRangeCheckedRequest)
+0x0600fd24 func scu_PollQueuedDma hand =CK2USA_A if request-pending flags set, polls request status call, returns 2 when done flag else submits queued args, returns 0 (was sh2_PollQueuedRequest)
+0x0600fdf8 func gfs_ReadDirectoryEntries hand =GEKAN_A if param_1 nonzero checks status 0x80 and prepares, then reads directory via 0x0c-stride or 0x18-stride reader by flag
+0x0600fe68 func gfs_FindDirEntryByName hand =GEKAN_A loops directory records of 0x18 bytes, compares name at +0xc length 0xc, stops at last-record flag bit 1, returns index or -1
+0x0600fec4 func gfs_Index12Ptr hand =GEKAN_A returns base plus index times 0xc
+0x0600fed8 func gfs_Index24Ptr hand =GEKAN_A returns base plus index times 0x18
+0x0600feea func gfs_GetEntry12Flags hand =GEKAN_A returns byte at index*0xc+base+0xb, directory entry attribute flags
+0x0600fefe func gfs_GetEntry24Flags hand =GEKAN_A returns byte at index*0x18+base+0xb, directory entry attribute flags
+0x0600ff14 func cdc_WaitReadyDefault hand wrapper calling cdc_WaitReady with default constant timeout
+0x0600ff20 func cdc_WaitReady hand loops CD command with code 0x17 until success, maps errors to GFS codes, final status check -0x10 to 0xffffffe7
+0x0600ff9c func gfs_LoadDirShort hand =GEKAN_A reads directory records via iterator into 0xc-byte entries, sets last flag on final entry, returns count
+0x0601000a func gfs_ReadDirectoryEntries_1000a hand iterates directory records with gfs_DirIterInit and parse, copies compact 0x18-byte entries, marks last entry
+0x060100b0 func gfs_DirIterInit hand =GEKAN_A initializes directory iterator struct: handle, buffer ptr, position -1, counter, length from handle+0x20
+0x060100d8 func gfs_IterRead hand =GEKAN_A buffered read of param_3 bytes from sector stream, refills 2048-byte buffer via CD read callback, zero-fills if no handle
+0x060101ac func gfs_IterReadU8 hand =GEKAN_A reads 1 byte through gfs_IterRead, stores error, returns signed byte
+0x060101c8 func gfs_IterReadS16 hand =GEKAN_A reads 2 bytes through gfs_IterRead, stores error, returns signed short
+0x060101e8 func gfs_IterReadS16Both hand =GEKAN_A reads two shorts (little then big endian ISO9660 pair), returns the second, error in param_2
+0x0601022c func gfs_IterReadU32Both hand =GEKAN_A reads two 32-bit words (both-endian ISO9660 field), returns second, error in param_2
+0x06010270 func gfs_IterReadU32 hand =GEKAN_A reads one 32-bit word via gfs_IterRead, stores error, returns it
+0x0601028c func gfs_IterNextRecordLen hand =GEKAN_A reads record length byte, advances record counter, refills sector buffer when record length is zero (sector padding)
+0x06010304 func gfs_ParseDirRecord hand parses ISO9660 directory record: LBA, size, flags, name up to ';' version and '.', via gfs_IterRead helpers
+0x0601062a func gfs_CopyDirRecordCompact hand =GEKAN_A copies parsed directory record fields (extent, size, flags, name id) into compact 12-byte entry
+0x06010666 func gfs_DispatchGetPending hand =GEKAN_A indirect call through transfer-mode vtable (stride 0x10, slot 0) selected by field 0x28 (was gfs_DispatchStart)
+0x06010680 func gfs_DispatchAllocBuffer hand =GEKAN_A indirect call through transfer-mode vtable slot at offset 4 selected by field 0x28 (was gfs_DispatchSlot1)
+0x060106a0 func gfs_DispatchSlot2 hand =GEKAN_A indirect call through transfer-mode vtable slot at offset 8 using field 0x1c of object
+0x060106c8 func gfs_DispatchReleaseBuffer hand =GEKAN_A indirect call through transfer-mode vtable slot at offset 0xc selected by field 0x28 (was gfs_DispatchSlot3)
+0x060106f0 func gfs_TransferInit hand =GEKAN_A zeroes transfer descriptor fields, sets default unit 1 and mode 3, returns the struct
+0x06010726 func gfs_TransferSetMode hand =GEKAN_A stores new mode at +0x38, clears +0x24/+0x28 position fields, returns old mode
+0x06010732 func gfs_TransferSetUnit hand =GEKAN_A stores unit size multiplier at +0x2c
+0x06010736 func gfs_TransferSetSize hand =GEKAN_A sets requested size at +0x18, clears +0x1c, rounds size to multiple of 4 via callback if state was 6
+0x06010788 func gfs_SwapField14 hand stores new value at offset 0x14 and returns previous value
+0x0601078e func gfs_TransferSetFlag hand =GEKAN_A sets flag field +0x30 to 1
+0x0601079a func gfs_FinishTransfer hand runs transfer step loop until state 0, 6 or 7, flushes buffers, releases request slot, sets state 6
+0x06010830 func gfs_StepTransfer hand runs transfer state step once or twice depending on mode, returns state 7 or step result
+0x060108b2 func gfs_TransferStepNoDest hand =GEKAN_A simplified transfer step: allocates buffer, sends it, advances counters, state 5/6 when remaining bytes done (was gfs_TransferStepSimple)
+0x06010926 func gfs_TransferStateMachine hand state machine 0..6: allocate buffer, request slot, start copy, copy chunk, check, finish; returns state
+0x06010a24 func gfs_TransferAllocBuffer hand =GEKAN_A computes chunk size min of block and remaining bytes, allocates buffer via callback, resets position at +0x8c
+0x06010a9c func gfs_TransferAcquireSlot hand computes request size from remaining bytes and buffer size, acquires request slot via gfs_AcquireRequestSlot
+0x06010ba4 func sh2_SetupDmacTransfer hand =GEKAN_A sets up SCU-style DMA descriptor with add values from signs of params 3 and 5, size words/4, starts and writes tail count (was scu_SetupDmaTransfer)
+0x06010d2c func mem_CopyStrided32 hand =GEKAN_A copies words with separate source and destination strides, then copies tail bytes
+0x06010d78 func gfs_TransferStartCopy hand =GEKAN_A masks destination address, picks DMA or CPU copy handler from table indexed by mode, returns result (was gfs_TransferCopyDispatch)
+0x06010dca func gfs_TransferCopyChunk hand =GEKAN_A performs one chunk copy by mode handler or user callback, updates copied byte counter at +0x8c
+0x06010eac func gfs_TransferDispatchCheck hand checks transfer slot status, dispatches through function table by type, returns completion flag
+0x06010f24 func mem_CopyTailBytes hand =GEKAN_A copies up to 3 remaining bytes from a source word into byte destination
+0x06010f6c func gfs_TransferRemaining hand =GEKAN_A returns field4 times unit minus field8, bytes remaining in buffer
+0x06010f7e func gfs_AcquireRequestSlot hand =GEKAN_A takes a free request slot from global table (busy flag at +0x10), fills address, count 1, length, marks busy
+0x06010fac func gfs_ReleaseRequestSlot hand =GEKAN_A adds slot length to counter field 8 and clears busy flag
+0x06010fc8 func gfs_TransferSetDest hand =GEKAN_A stores three params and zero into a small buffer descriptor (+0,+4,+0x2c,+8) (was gfs_BufferInit)
+0x06010fe0 func cd_InitDriveSetFlag hand =GEKAN_A clears bit 0 of global status, issues CD command, sets bit on success, maps error codes -0x10..-0xd to negative results (was cd_ClearFlagCmdRetry)
+0x06011084 func gfs_FileHandleInit hand =GEKAN_A fills file handle from directory entry (extent, size, attributes), computes sector count by size/2048, sets stream state, returns success
+0x06011176 func gfs_FileSetPosition hand =GEKAN_A stores position at +0x54, seeks via callback and stores offset delta at +0x58
+0x060111ac func gfs_FileGetInfo hand =GEKAN_A copies optional file handle fields (id, extent, size, attributes, sector count, remaining) to out pointers, returns attribute flags
+0x060113f0 func gfs_PendingHandleTryStart hand =GEKAN_A checks pipe state then issues filter/pipe command with fixed params, returns 2 on success or 8 on failure (was gfs_FileSeekSelectFilter)
+0x06011468 func gfs_FileSeekToSector hand =GEKAN_A checks drive status, locks pipe, issues seek to start sector plus offset, maps errors -0xd,-9 to codes
+0x06011504 func gfs_FileSectorOffset hand =GEKAN_A converts byte offset to sector with sector-size helper when mode byte nonzero, else returns it unchanged
+0x0601154e func cdc_GetStatusCode hand reads CD status, maps low nibble of status byte to coarse status code 0-6, optional outputs
+0x06011620 func gfs_SectorSizeFromAttr hand =GEKAN_A maps file attribute bits 0x40/0x10/0x08 to sector data size constant (form1, form2 or zero)
+0x0601165e func gfs_MapCdStatusToState hand =GEKAN_A maps CD status code 0..6 to transfer state out value 1,3,5,6,8,9
+0x060116e4 func gfs_StreamPlanRead hand =GEKAN_A computes bytes to read this pass from position and sector size, sets play range or advances position, outputs state 1/2/4
+0x0601182c func gfs_StreamOpen hand =GEKAN_A initialises stream: allocates CD drive resources, sets filter, connects pipe and starts play, returns 1 on success
+0x06011930 func gfs_ComputeReadSize hand queries sector range, adjusts remaining count with transfer info, returns size in sectors
+0x060119ec func gfs_StreamSetCallback hand =GEKAN_A provisional: stores callback at +0x18, notifies CD, if not ok tail-calls handler
+0x06011a28 func gfs_StreamFlushCall hand =GEKAN_A calls CD flush routine with stream id then tail-calls handler
+0x06011a40 func gfs_GetEndPosition hand returns sum of fields at 0x20 and 0x24 of structure
+0x06011a5c func gfs_StreamSeek hand =GEKAN_A seeks stream to absolute or relative offset, discards buffered sectors, restarts reading when outside window, returns new position
+0x06011cc0 func gfs_StreamSeekDisc hand =GEKAN_A calls close callback with param and stream handle field +0x1c (was gfs_StreamCloseCall)
+0x06011cd2 func gfs_StreamQueueSeekAndWait hand =GEKAN_A connects stream to CD pipe with params, returns 1 on success else 0 (was gfs_StreamOpenPipe)
+0x06011d0e func gfs_SetHandleStream hand calls function returning stream id, stores into field 0x1c, returns 1 on success or 0 if negative
+0x06011d46 func gfs_StreamIsLocked hand =GEKAN_A calls free callback on handle at +0x1c (was gfs_StreamFreeHandle)
+0x06011d52 func gfs_StreamUnlockDrive hand =CK2USA_A =GEKAN 0x0602beea calls reset callback on handle at +0x1c (was gfs_StreamResetHandle)
+0x06011d68 func cdc_InitDrive hand =GEKAN_A long CD block initialisation: reads status, resets, waits for HIRQ flags with retry counters, verifies TOC, returns negative codes on failure
+0x06011fbe func cd_AllocFileSlot hand =GEKAN_A finds free slot among 0x18 flags at table+0x18, marks it used, returns index or -3
+0x06011ff8 func cd_FreeFileSlot hand =GEKAN_A validates index below 0x18 and in-use, clears slot flag, returns error codes -7/-6
+0x06012026 func cd_AllocPipeSlot hand =GEKAN_A finds free slot among 0x18 flags in table, marks used and returns index or -4
+0x06012054 func cd_ReleasePipeSlot hand =GEKAN_A validates and frees pipe slot after clearing it and waiting for drive state, returns 0 or error codes
+0x060120dc func cdc_ReadTrackInfoMasked hand =GEKAN_A two-pass read of CD block register into local word, returns value masked by constant (was cdc_ReadHirqMasked)
+0x06012102 func cd_LockDrive hand =GEKAN_A sets lock flag at +0x30, increments lock counter at +0x38, returns counter or -5 if already locked
+0x06012140 func cd_UnlockDrive hand =GEKAN_A clears lock flag if lock id matches, else returns -9 (not locked) or -9 mismatch variants
+0x06012166 func cd_IsLockedBy hand =GEKAN_A returns true when drive locked and lock id equals param
+0x0601218c func cdq_QueueSimpleCmd hand =GEKAN_A validates in-use slot id, appends 16-byte command entry (slot, byte, two params) to task-0 command queue (max 0x18), runs queue pump
+0x06012228 func cdq_ConnectPipeToFilter hand =GEKAN_A provisional: calls two CD callbacks with filter/pipe ids, returns -10 on failure, then calls finishing routine
+0x0601226a func cdq_QueueSeekTask hand validates file slot and queue count, sets pending flag and target, runs cdq_ExecTask1
+0x060122ca func cdq_QueuePlayTask hand checks queue count and CD status, errors on paused or fatal status 7, starts play via callees
+0x06012332 func cdq_QueueTask2 hand =GEKAN_A fills task-2 request (5 params) if idle, marks busy, runs task-2 executor, returns -1 when busy
+0x060123a0 func cdq_QueueTask3 hand =GEKAN_A if task 3 idle and no owner, records owner id at +0x34, fills 3 params and runs task-3 executor
+0x060123f4 func cdq_CancelTask hand if task slot active, calls cancel, clears slot to -1, returns error code on failure
+0x0601243a func cdq_QueueTask4 hand =GEKAN_A if task 4 idle and owner differs, fills request with slot and two params, runs task-4 executor
+0x06012494 func cdq_IsTask4IdleFor hand =GEKAN_A returns 0 if task-4 busy with the given slot id, else 1 (was cdq_IsTask4ActiveFor)
+0x060124b4 func cdc_GetCurrentStatus hand reads CD status with cached or fresh query, on status 0xa and no error flag issues stop commands, returns status flags
+0x0601252e func cdq_QueueStopTask hand validates queue count and CD status like play, then issues stop/abort callee
+0x0601259c func cdq_QueueTask5 hand =GEKAN_A validates two slot ids, fills task-5 request with 4 params if idle and runs task-5 executor
+0x0601262a func cdq_ReleaseSlot hand bounds checks slot 0..0x17, verifies slot used, releases it, calls cdq_CacheStatus
+0x06012674 func cdq_QueueTask7 hand =GEKAN_A validates slot pair, fills task-7 request (id, slot, param), mode 3 when id is constant else 1, runs task-7 executor
+0x060126f8 func cdq_QueueTask6 hand =GEKAN_A validates three slot ids, appends 12-byte entry to task-6 queue (max 0x18), runs task-6 executor
+0x060127f0 func cdq_ReadSectorToBuffer hand ensures sector in CD buffer range, requests sector via CDC then reads it, sets last-sector flag, returns 0 or -11
+0x060128be func cd_GetSessionInfo hand =GEKAN_A calls info callback, runs finish handler, returns one of the returned words, -10 on failure
+0x060128f0 func cdq_PumpTasks hand =GEKAN_A polls CD HIRQ, handles timeout counter, reads status, runs each pending task 0..7 via cdq_RunTask, returns 0 idle,1 busy,2 error,3 abort
+0x060129e2 func cdq_IsSlotEmpty hand picks field by index 0..7 from CD queue structure, returns true if value is zero
+0x06012a5a func cdq_RunTask hand =GEKAN_A dispatches to task executor 0..7 (cc88, ce20, ce8c, cfdc, d06c, d194, d4a2, d2c4) with counter pointer
+0x06012ab6 func cdq_SetTimeout hand =GEKAN_A stores timeout counter at +0x3c of queue state
+0x06012abe func cdq_PumpUntilDone hand sets timeout then pumps tasks while result 1, resets timeout, returns result
+0x06012af0 func cdq_ExecTask0 hand =GEKAN_A executes queued simple command entries through three-step state machine (cmd, wait, params), compacts remaining queue
+0x06012c88 func cdq_ExecTask1 hand =GEKAN_A two-state executor: issues command with slot id, then waits for completion flag 0x40 to go idle
+0x06012cf4 func cdq_ExecTask2 hand =GEKAN_A three-state executor: gets size, clips against request, starts transfer, waits for completion, stores output word count doubled
+0x06012e44 func cdq_ExecTask3 hand =GEKAN_A two-step executor: issues command with three queued params, then waits for completion callback and returns idle
+0x06012ed4 func cdq_ExecTask4 hand =GEKAN_A multi-state executor: issues command, waits HIRQ bits 0x40 and constant flag, returns busy bool, resets on finish
+0x06012ffc func cdq_ExecTask5 hand =GEKAN_A five-state executor: reads info, sets up transfer with 4 params, waits HIRQ flags, finishes at 0x40
+0x0601312c func cdq_ExecTask7 hand =GEKAN_A executor that checks TOC range for requested sector, seeks if outside, waits, issues play command, stores sector count
+0x0601330a func cdq_ProcessPendingSeeks hand iterates 12-byte pending entries, issues each with flags, compacts remaining queue, clears busy on HIRQ 0x40
+0x060134a4 func cdc_TestHirq hand =GEKAN_A reads HIRQ register via callback and returns whether any bit in mask param is set
+0x060134d4 func cdq_ResetQueueState hand =GEKAN_A clears slot tables (0x17 entries), lock fields, task busy words and counters in global CD queue state
+0x0601354e func cdq_CacheStatus hand =GEKAN_A reads CD status packet and stores first byte into queue state +0x40
+0x06013588 func cdc_WaitHirqAck hand =GEKAN_A loops reading HIRQ up to N times until masked bit set, then writes acknowledge value, returns 0 or 1 on timeout
+0x060135e4 func cdc_GetHirqClearConst hand =GEKAN_A returns constant value (HIRQ all-flags mask)
+0x060135ea func cdc_ReadHirq hand =GEKAN_A returns 16-bit HIRQ register value (0x25890008)
+0x060135f0 func cdc_ClearHirqAndSet hand =GEKAN_A ORs HIRQ into shadow flags then writes (param OR 1) back to HIRQ
+0x06013604 func cdc_WriteHirq hand =GEKAN_A writes 16-bit value to HIRQ register
+0x06013618 func cdc_ResetHirqShadow hand =GEKAN_A writes constant to HIRQ and clears shadow flag word
+0x0601362a func cdc_OrHirqShadow hand =GEKAN_A ORs mask into HIRQ shadow flag word
+0x06013654 func cdc_ReadWordsToBuffer hand sets up read, copies param_1 halfwords from data register to buffer, verifies count else -7
+0x060136ba func cdc_ExecCmdWrapper hand =GEKAN_A calls cdc_ExecCommand and returns its result
+0x060136f8 func cdc_ExecCommand hand =GEKAN_A ORs shadow HIRQ, checks mask, writes CR1-4 packet, waits HIRQ bit 1 (CMOK), reads response; -1/-2/-5/-6 error codes
+0x060137a0 func cdc_WaitHirqBit hand =GEKAN_A polls HIRQ register for mask up to N times, stores value, returns 0 or -3
+0x060137d2 func cdc_WriteCR hand =GEKAN_A writes four 16-bit command words to CD block CR1-CR4 registers (stride 2)
+0x06013800 func cdc_ReadCR hand =GEKAN_A reads four 16-bit response words from CD block CR1-CR4 registers
+0x06013824 func cdc_ClearCmdPacket hand =GEKAN_A tail-calls a function pointer and returns result (was cdc_CallCmdPtr)
+0x06013836 func cdc_ExecCmdReply hand =GEKAN_A calls cdc_ExecCmdStore with no arguments (was cdc_ExecCmdNoArgs)
+0x0601383a func cdc_ExecCmdCopy hand =GEKAN_A runs cdc_ExecCmdStore with local 12-byte buffer and copy flag 1
+0x0601384c func cdc_SendCommandGetStatus hand sends CD command, then stores first status byte or expands status packet into global
+0x060138bc func sh2_SetIntMaskCall hand =GEKAN_A raises SR interrupt mask to 0xf, calls function with param and previous mask, returns restored SR bits
+0x06013900 func cdc_ExpandStatusPacket hand =GEKAN_A copies 5 status bytes into spread positions of destination and a masked word at +8
+0x06013924 func sh2_ConfigDmaOr hand =GEKAN_A updates DMAOR (0xffffffb0) bits according to flag word: priority, master enable, clears NMIF and AE flags
+0x0601396c func sh2_ConfigDmacChannel hand =GEKAN_A programs SH-2 DMAC channel (0xffffff80 + ch*0x10): SAR, DAR, TCR, CHCR fields chosen by flag mask, optional vector number
+0x06013a60 func sh2_DmacEnableChannel hand =GEKAN_A sets CHCR bit 0 (DE) of DMAC channel param
+0x06013a72 func sh2_DmacDisableChannel hand =GEKAN_A clears CHCR bit 0 (DE) of DMAC channel param
+0x06013a90 func sh2_DmacGetDmaorFlags hand =GEKAN_A reads DMAOR (0xffffffb0) and returns AE (bit 2) and NMIF (bit 1) flags
+0x06013aa2 func sh2_DmacGetTransferEnd hand =GEKAN_A returns TE bit (bit 1) of CHCR for the DMAC channel
+0x06013ab0 func scu_ConfigDmaLevel hand =GEKAN_A writes SCU DMA level registers (stride 0x20): read addr, write addr, count, add, mode/enable from struct
+0x06013b10 func intc_SetupVectorIrq hand SH-2 interrupt setup for index 0..2: vector 0x4b/4a/49, stores old handlers, installs new, sets priority
+0x06013be0 func scu_GetDmaLevelFlag hand =GEKAN_A returns byte flag for DMA level from table, with interrupt mask handling
+0x06013d88 func sh2_ClearCacheArray hand =CK2USA_A clears cache address array of four ways in 0x40 steps through CCR-style register then sets mode bits, param ORed into bit 3
+0x06013e68 func sh2_PurgeCacheRange hand =GEKAN_A zero-fills memory from address (masked to uncached mirror) in 16-byte stride for param_2 bytes (was mem_ClearWords16)
+0x06013e98 func cdc_GetSessionInfo_2 hand =GEKAN_A CD block command 0x50 execute, returns three fields from response (word, byte, word) (was cdc_GetCmd50Info)
+0x06013ef4 func cdc_GetSectorNumber hand =GEKAN_A CD block command 0x51 (get sector number) for selector param_1, returns count word in param_2
+0x06013f44 func cdc_CalculateActualSize hand =GEKAN_A CD block command 0x52 builds packet with selector, start sector and count, executes
+0x06013f90 func cdc_GetActualSize hand =GEKAN_A CD block command 0x53 (get actual size), runs checked executor, returns masked 24-bit word
+0x06013fdc func cdc_ExecIfReady hand =GEKAN_A checks HIRQ ready bit 0x40 via callback, returns -1 if not set else executes command packet
+0x06014014 func cdc_GetSectorInfo hand =GEKAN_A CD block command 0x54 for selector and sector, returns FAD (masked) plus four subheader bytes
+0x060140f0 func cdc_GetSectorDataCmd56 hand =GEKAN_A CD block command 0x56 (get sector data) via checked executor, returns sector size, number and masked word
+0x06014158 func cdc_SetSectorLength hand =GEKAN_A CD block command 0x60 (set sector length) with two byte params, executes through generic path
+0x06014198 func cdc_GetSectorData hand =GEKAN_A CD block command 0x61 (get sector data) with selector, sector number, count, executes
+0x060141f0 func cdc_DeleteSectorData hand =GEKAN_A CD block command 0x62 (delete sector data) with selector, start sector and count
+0x0601423c func cdc_GetThenDeleteSectorData hand =GEKAN_A CD block command 0x63 (get and delete sector data) with selector, sector number, count
+0x06014294 func cdc_PutSectorData hand =GEKAN_A CD block command 0x64 (put sector data) with selector and count
+0x060142d4 func cdc_CopySectorData hand =GEKAN_A CD block command 0x65 (copy sector data) with source, start, count and destination selector
+0x06014338 func cdc_MoveSectorData hand =GEKAN_A CD block command 0x66 (move sector data) with source, start, count and destination selector
+0x06014390 func cdc_GetCopyError hand =GEKAN_A CD block command 0x67 (get copy error), returns error byte
+0x060143dc func cdc_ChangeDirectory hand =GEKAN_A CD block command 0x70 (change directory) with filter id and directory record number
+0x06014418 func cdc_ReadDirectory hand =GEKAN_A CD block command 0x71 (read directory) with filter id and directory record number
+0x06014460 func cdc_GetFileSystemScope hand =GEKAN_A CD block command 0x72 (get file system scope), returns directory count, flag and masked file count
+0x060144c2 func cdc_CommandOp73 hand builds CD command opcode 0x73 with 24-bit argument, sends, masks response and passes to result handler
+0x06014530 func cdc_ReadFile hand =GEKAN_A CD block command 0x74 (read file) with file id, offset and count fields packed in 24-bit words
+0x06014588 func cdc_AbortFile hand =GEKAN_A CD block command 0x75 (abort file), calls pre-callback then executes
+0x060145c0 func cdc_SetDeviceConnection hand =GEKAN_A CD block command 0x30 (set CD device connection) with filter number, 0x40 flag
+0x060145f2 func cdc_GetDeviceConnection hand =GEKAN_A CD block command 0x31 (get CD device connection), returns connection byte
+0x0601463c func cdc_GetLastBufferDest hand =GEKAN_A CD block command 0x32 (get last buffer destination), returns selector byte
+0x06014680 func cdc_PlayDisc hand =GEKAN_A CD block command 0x10 (play disc): packs start and end positions with mode byte via cdc_PackPosition, executes
+0x060146be func cdc_PackFilterParams hand packs CD parameter struct by type 0-3 into three bytes (0x80 flag for type 1), else calls default
+0x0601473e func cdc_SeekDisc hand =GEKAN_A CD block command 0x11 (seek disc) with packed position
+0x06014778 func cdc_ScanDisc hand =GEKAN_A CD block command 0x12 (scan disc) with direction param
+0x060147b4 func cdc_SetFilterRange hand =GEKAN_A CD block command 0x40 (set filter range) with filter number, start FAD and count in 24-bit fields
+0x06014804 func cdc_GetFilterRange hand =GEKAN_A CD block command 0x41 (get filter range), returns masked start FAD and count
+0x06014874 func cdc_SetFilterSubheader hand =GEKAN_A CD block command 0x42 (set filter subheader) with file, channel, submode, coding info bytes from struct
+0x060148e4 func cdc_CommandOp43 hand builds CD command opcode 0x43 with one-byte arg, sends, unpacks six response bytes into output buffer
+0x06014956 func cdc_SetFilterMode hand =GEKAN_A CD block command 0x44 (set filter mode) with filter number and mode byte
+0x060149a4 func cdc_GetFilterMode hand =GEKAN_A CD block command 0x45 (get filter mode), returns mode byte
+0x060149f4 func cdc_SetFilterConnection hand =GEKAN_A CD block command 0x46 (set filter connection) with true/false output connectors and flags
+0x06014a54 func cdc_GetFilterConnection hand =GEKAN_A CD block command 0x47 (get filter connection), returns two connector bytes
+0x06014aac func cdc_ResetSelector hand =GEKAN_A CD block command 0x48 (reset selector) with flags and buffer selector number

@@ -1,0 +1,83 @@
+0x00200000 func scroll_UpdateCameraTarget hand computes scroll offsets from player position and clamps against world bounds, stores via two helper calls
+0x0020022c func obj_SetupProjectedQuad hand computes screen-space quad corners from world offsets and perspective scale, picks sprite index table entry
+0x00200518 func obj_InitFromStageTable hand =GEKAN_AREA61_LO object init (was obj_Init_0020377c)
+0x002006d6 func obj_AnimateThenSpawnFromTable hand advances frame counter, at animation end loads spawn parameters from stage table into globals
+0x0020081c func child_InitFollowA hand =GEKAN_AREA61_LO small child follow init
+0x00200854 func child_UpdateFollowA hand =GEKAN_AREA61_LO child follow update tied to parent state
+0x002008e4 func child_InitFollowB hand =GEKAN_AREA61_LO small child follow init
+0x00200930 func child_UpdateFollowB hand =GEKAN_AREA61_LO child follow update tied to parent state
+0x00200a5e func child_InitFollowC hand =GEKAN_AREA61_LO small child follow init
+0x00200a8e func child_UpdateFollowC hand =GEKAN_AREA61_LO child follow update tied to parent state
+0x00200ada func obj_UpdateSpawnerPlayer hand provisional: init via obj_InitSpawnThree on first run, then update with obj_Update_00203f12 and tail-call to draw
+0x00200b5e func obj_InitSpawnThree hand =GEKAN_AREA61_LO init spawning three objects and checking player proximity
+0x00200cae func obj_UpdateRangeTriggeredAnim hand =GEKAN_AREA61_LO object update following spawn of children (was obj_Update_00203f12)
+0x00200d8c func child_UpdateFollowD hand =GEKAN_AREA61_LO child follow update tied to parent state
+0x00200de2 func child_UpdateFollowE hand =GEKAN_AREA61_LO child follow update tied to parent state
+0x00200e8a func child_InitFollowD hand =GEKAN_AREA61_LO small child follow init
+0x00200eba func obj_UpdateSpawnTrigger hand =GEKAN_AREA61_LO state dispatcher (was obj_Dispatch_0020411e)
+0x00200f06 func obj_InitSpawnTrigger hand =GEKAN_AREA61_LO object init (was obj_Init_0020416a)
+0x00200f3e func obj_CheckTriggerLoadSpawnData hand if triggered, copies spawn record from stage table into globals and sets state 1
+0x002010d4 func trigger_UpdateSetFlag hand =GEKAN_AREA61_LO update setting a flag, possibly level end trigger
+0x002011cc func item_InitThrown hand =GEKAN_AREA61_LO provisional: init for thrown item
+0x0020148c func obj_UpdateFallingAnimated hand cycles 30-frame animation forward or reverse, applies velocity and gravity, bounces on tile hit
+0x00201662 func obj_InitIdleAnim hand initializes object fields offset size and sprite table pointer, clears state and ticks
+0x002016a0 func obj_UpdateHitFlashToggle hand on hit flag plays sound 7, runs 3-frame animation, toggles facing variant, tail-calls draw
+0x002017a8 func obj_InitStateTwoSprite hand sets state 2, sprite table and first frame from parent data, facing 1
+0x002017de func obj_UpdateFollowParentAnim hand follows parent object state, plays 9-frame forward or reverse animation, tail-calls draw
+0x00201b4c func obj_FindFreeSlot hand scans 15 three-word slots in a per-index table for the first empty entry
+0x00201b80 func obj_ClampXToRightEdge hand if object X is beyond other's top edge clamps it and returns -1, else 0 (was obj_ClampToPlatformTop)
+0x00201ba4 func obj_TestPlayerOverlapSide hand depth check then rectangle overlap with player, returns left/right and up/down direction bits
+0x00201d48 func obj_CollectOverlappingObjects hand walks object list, collects up to 15 same-depth same-side objects whose rectangles overlap this one
+0x00201f4a func obj_InitSpriteVariantByType hand picks one of two animation tables by parent type, resets state and sets first frame
+0x00201fe4 func obj_UpdateThreePhaseAnim hand state machine: idle loop, play frames until -1 marker with sound 5, then flicker, tail-calls draw
+0x0020214c func obj_BuildFlagsFromDirection hand calls direction helper and composes flag word into object field 0x28 from direction bits
+0x002021e6 func obj_InitEffectSprite hand clears state fields, sets tick 8 and sprite table, resets velocity flags
+0x0020222c func obj_UpdateHitReact hand on contact or hit flag plays sound 4 and spawns effect, hides if off-screen flag, tail-calls draw
+0x002023bc func obj_SpawnFiveDebris hand creates five child objects with indices 4..0 and links parent pointer
+0x0020246a func obj_InitDebrisFromTable hand initializes debris position and velocities from per-index table, drag as velocity shifted right 5
+0x00202508 func obj_UpdateDebrisPhysics hand applies drag to velocities, kills object on sign flip, moves, advances 3-frame anim, draws via sprite-queue helper
+0x0020259c func obj_SpawnFourSparks hand creates four child objects with indices 3..0 and links parent pointer (was obj_SpawnFourDebris)
+0x0020264a func obj_InitSparkFromTable hand initializes spark position from parent plus per-index table of 12-byte entries and delay
+0x002026c8 func obj_UpdateSparkAnim hand waits delay, advances 12-frame animation, kills object at end, draws via sprite-queue helper
+0x0020272c func vdp1_QueueObjectSprite hand appends a 32-byte sprite entry to the VDP1 command buffer with position relative to camera
+0x00202ae0 func player_UpdateMain hand reads input transitions, switch on state 0-13 runs state handler, collision helpers, ground checks, then post-state switch
+0x00202e68 func player_TryHandlerIfEnabled hand calls check helper with constant, if nonzero tail-calls follow-up handler
+0x00202e90 func player_CheckTileResponse hand tile check result 2 sets state 9, result 0x0f sets flag in object field 0x26
+0x00202eec func player_StartLandingState hand provisional: for states outside idle/hurt, on button flags enters state 11 and saves old state, sets velocity
+0x00202f78 func player_UpdateHorizontalSpeed hand accelerates velocity 0x40 per frame toward target from per-state speed tables
+0x00203086 func player_StateIdleCheck hand state 0 handler: clears speed, on anim end picks next state 1 by side of parent direction bits
+0x00203114 func player_StateWalkStart hand state 1 handler: on anim end and distance window enters state 3 and calls helper (was player_StateTurnStart)
+0x00203188 func player_StateTurnToggle hand state 2 handler: toggles facing on anim end, switches to state 4 or 5 and sets table
+0x00203210 func player_StateWalkEnd hand state 3 handler: on anim end moves to state 2 or 4 or 5 based on distance and side bits
+0x00203294 func player_StateCountdown hand state 5 handler: counts down field 0x30 per anim end, then enters state 4
+0x002032c8 func player_StateDefaultAnimEnd hand default state handler: on anim end and distance check returns to state 2
+0x0020330c func player_StateStartDefeat hand state 8 handler: clears flags and enters state 9 with timer constant (was player_EnterRecoverState)
+0x0020333e func player_StateDefeatedSpawn hand state 9 handler: stops motion, spawns two effect objects, enters state 10 and sets hidden flag
+0x00203464 func player_StateLandedToggle hand provisional: state 0x0b handler: on button flags toggles facing and enters state 12 with knockback velocities, else counts down
+0x00203508 func player_StateKnockback hand state 0x0c handler: applies knockback timer and offset, returns to saved state when done
+0x002035c6 func player_StateRespawnCheck hand provisional: state 0x0d handler: clears speed and flags, on distance condition enters state 1 with side
+0x0020364a func player_DrawShadowOffset hand temporarily sets state 14 and shifts Y offset, runs helper, restores saved fields
+0x0020369c func player_DrawShadowFlipped hand temporarily sets state 14 with flipped frame offset, calls shadow draw, restores saved fields
+0x0020374a func vdp1_QueueScaledShadowSprites hand scales sprite parts by depth factor and appends VDP1 command entries for each part
+0x00203a34 func player_StepCounterSpawnCompanion hand advances 4-step counter, triggers helper call when counter zero and flag 4 set (was player_StepBlinkCounter)
+0x002040d4 func obj_TryHandlerIfEnabled hand calls check helper with constant, if nonzero tail-calls follow-up handler
+0x002040fc func obj_CheckTileResponse hand tile check result 2 sets state 6, result 0x0f sets flag in object field 0x26
+0x002043bc func obj_UpdateChargeTarget hand provisional: on anim end compares distance to parent, picks bit index into field 0x38 or sets state 2
+0x002044ac func obj_StateHitRetry hand counts hits in field 1, up to three re-enters state 5 with velocity and spawns effect, then state 6
+0x002048e2 func companion_UpdateMain hand init once, handle parent link, state-based ground checks or main state update, sets global self pointer
+0x00204a10 func companion_Init hand initializes companion state and sprite table from parent mode bits, sets screen offset and calls follow update
+0x00204b58 func companion_UpdateStates hand input-driven state transition via tables, switch states 0-8 handlers, collision helpers and post-state tile checks
+0x00204ddc func companion_CheckParentGone hand returns 1 if parent object gone, otherwise propagates a flag from parent object
+0x00204e44 func companion_FollowParent hand copies parent position velocities and facing offset by mode bits into this object
+0x00204f84 func companion_TryHandlerIfEnabled hand calls check helper with depth-based constant, if nonzero tail-calls follow-up handler
+0x00204fc4 func companion_ReactToParentState hand if idle and parent in states 6-7 or 8-10 switches own state to 4 or 6
+0x00205050 func companion_CheckGroundAndWalls hand tile and collision helper results, on edge or hit sets state 4 and clears flags
+0x00205162 func companion_StateIdle hand state 0 handler: when parent in state 2 and field matches enters state 1 and calls helper
+0x002051dc func companion_StateStart hand state 1 handler: on anim end enters state 2, sets velocity 0x200 and clears parent bit
+0x00205240 func companion_StateFly hand state 2 handler: resets timer at last frame, on flag 4 enters state 4, clears parent bit
+0x002052d0 func companion_StateLand hand state 3 handler: enters state 4, sets timer 0x46, clears parent flag bit
+0x00205324 func companion_StateDefeatedSpawn hand state 4 handler: stops motion, spawns two effect objects, enters state 5 with hidden flag
+0x00205402 func companion_AdjustTimerByInput hand adds one of three constants to timer field 0x10 based on previous input bits
+0x00205476 func companion_StateFollowParentEnd hand state 6 handler: moves to state 7 when parent in state 9 or 10, else restores saved state
+0x002054d0 func companion_StateRestoreAfterKnock hand state 7 handler: on anim end restores saved state when velocities zero, saves input flags
+0x0020552a func companion_StateWaitParent hand state 8 handler: clears speed and flags, when parent in state 1 returns to state 0

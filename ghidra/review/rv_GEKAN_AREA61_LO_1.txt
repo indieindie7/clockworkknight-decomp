@@ -1,0 +1,107 @@
+GEKAN_AREA61_LO 0x00200000 cam_UpdateScrollFollowA CONFIRM cam_UpdateScrollFollowA follows target with clamp to bounds
+GEKAN_AREA61_LO 0x00200242 cam_UpdateScrollFollowB CONFIRM cam_UpdateScrollFollowB same follow and clamp family
+GEKAN_AREA61_LO 0x00200476 cam_UpdateScrollFollowC CONFIRM cam_UpdateScrollFollowC same follow and clamp family
+GEKAN_AREA61_LO 0x00200d2c fx_InitAttachedChild CONFIRM fx_InitAttachedChild child placed from parent record
+GEKAN_AREA61_LO 0x00200de0 fx_UpdateAttachedChild CONFIRM fx_UpdateAttachedChild follows parent state
+GEKAN_AREA61_LO 0x00200fa8 enemy_InitJumper UNSURE enemy_InitJumper random velocities and effect spawn, role unclear
+GEKAN_AREA61_LO 0x00201046 enemy_UpdateJumper UNSURE enemy_UpdateJumper no clear jump evidence
+GEKAN_AREA61_LO 0x00201304 obj_InitClearFlags CONFIRM obj_InitClearFlags only clears flags
+GEKAN_AREA61_LO 0x00201338 trigger_UpdateSimple CONFIRM trigger_UpdateSimple simple trigger sets parent state
+GEKAN_AREA61_LO 0x00201444 enemy_InitJumper_2 RENAME enemy_InitBobbing pairs with sine bobbing update
+GEKAN_AREA61_LO 0x002014ee enemy_UpdateBobbing CONFIRM enemy_UpdateBobbing sine table y offset
+GEKAN_AREA61_LO 0x00201672 child_InitFollowHitbox CONFIRM child_InitFollowHitbox position from parent hitbox
+GEKAN_AREA61_LO 0x002016cc child_UpdateFollowHitbox CONFIRM child_UpdateFollowHitbox resyncs to parent hitbox
+GEKAN_AREA61_LO 0x002018c0 item_InitSpawner CONFIRM item_InitSpawner item setup by param
+GEKAN_AREA61_LO 0x00201a8c trigger_UpdateSoundSpawn CONFIRM trigger_UpdateSoundSpawn range trigger plays sound and spawns
+GEKAN_AREA61_LO 0x00201da2 boss_UpdateJumpPhysics RENAME obj_UpdateFallDropSpawn proximity, gravity fall, spawn by param; not a boss
+GEKAN_AREA61_LO 0x0020238c child_InitHitboxAttached CONFIRM child_InitHitboxAttached child at parent hitbox
+GEKAN_AREA61_LO 0x00202422 child_UpdateParentTied CONFIRM child_UpdateParentTied tied to parent states
+GEKAN_AREA61_LO 0x002025c0 child_InitPositionTable CONFIRM child_InitPositionTable offset table by param
+GEKAN_AREA61_LO 0x002026a2 obj_InitCopyParentPos CONFIRM obj_InitCopyParentPos copies parent position
+GEKAN_AREA61_LO 0x00202742 obj_DispatchState CONFIRM obj_DispatchState dispatches state handlers
+GEKAN_AREA61_LO 0x002027a8 obj_State0SpawnTwo CONFIRM obj_State0SpawnTwo spawns two objects
+GEKAN_AREA61_LO 0x002027e8 obj_State1Fall CONFIRM obj_State1Fall falls then next state
+GEKAN_AREA61_LO 0x002028d6 obj_InitCopyParentFlagsA CONFIRM obj_InitCopyParentFlagsA copies parent flags
+GEKAN_AREA61_LO 0x0020297e obj_InitCopyParentFlagsB CONFIRM obj_InitCopyParentFlagsB copies parent flags and sprite tables
+GEKAN_AREA61_LO 0x00202a0c obj_SpawnWithParent CONFIRM obj_SpawnWithParent allocates object and stores parent
+GEKAN_AREA61_LO 0x00202a6e obj_SpawnFromDescriptor CONFIRM obj_SpawnFromDescriptor allocates from descriptor
+GEKAN_AREA61_LO 0x00202ba2 vdp1_BuildSpriteCommand CONFIRM vdp1_BuildSpriteCommand writes 0x20-byte sprite command
+GEKAN_AREA61_LO 0x00202df8 obj_InitGravity CONFIRM obj_InitGravity sets gravity accel
+GEKAN_AREA61_LO 0x00202e96 obj_UpdateGravityJump RENAME obj_UpdatePushableFall player pushes it, then it falls and bounces
+GEKAN_AREA61_LO 0x00203108 obj_Init_00203108 RENAME obj_InitBlink pairs with blink update
+GEKAN_AREA61_LO 0x002031ec obj_UpdateBlink CONFIRM obj_UpdateBlink toggles visibility
+GEKAN_AREA61_LO 0x00203320 obj_InitClearParams RENAME obj_InitTwoChildSlots clears and sets up two child slots
+GEKAN_AREA61_LO 0x002033f4 obj_UpdateTwoChildSlots CONFIRM obj_UpdateTwoChildSlots manages two child slots
+GEKAN_AREA61_LO 0x00203470 obj_StateIdleCounter CONFIRM obj_StateIdleCounter counter then next state
+GEKAN_AREA61_LO 0x002034d2 obj_StateAnimSpawnProjectile CONFIRM obj_StateAnimSpawnProjectile spawns projectile at anim frame
+GEKAN_AREA61_LO 0x0020377c obj_Init_0020377c RENAME obj_InitFacingFromParam facing taken from param bit
+GEKAN_AREA61_LO 0x00203850 level_LoadRecordToGlobals CONFIRM level_LoadRecordToGlobals copies record into globals
+GEKAN_AREA61_LO 0x00203a80 child_InitFollowA CONFIRM child_InitFollowA copies parent facing
+GEKAN_AREA61_LO 0x00203ab8 child_UpdateFollowA CONFIRM child_UpdateFollowA watches parent state
+GEKAN_AREA61_LO 0x00203b48 child_InitFollowB CONFIRM child_InitFollowB facing and y from parent
+GEKAN_AREA61_LO 0x00203b94 child_UpdateFollowB CONFIRM child_UpdateFollowB follows parent y
+GEKAN_AREA61_LO 0x00203cc2 child_InitFollowC CONFIRM child_InitFollowC copies parent facing
+GEKAN_AREA61_LO 0x00203cf2 child_UpdateFollowC CONFIRM child_UpdateFollowC sets parent state on condition
+GEKAN_AREA61_LO 0x00203dc2 obj_InitSpawnThree CONFIRM obj_InitSpawnThree spawns three objects
+GEKAN_AREA61_LO 0x00203f12 obj_Update_00203f12 RENAME obj_UpdateProximityAnimOut waits for player in range then plays anim out
+GEKAN_AREA61_LO 0x00203ff0 child_UpdateFollowD CONFIRM child_UpdateFollowD follows parent y
+GEKAN_AREA61_LO 0x00204046 child_UpdateFollowE CONFIRM child_UpdateFollowE follows parent states
+GEKAN_AREA61_LO 0x002040ee child_InitFollowD CONFIRM child_InitFollowD copies parent facing
+GEKAN_AREA61_LO 0x0020411e obj_Dispatch_0020411e RENAME level_DispatchLoadRecordTrigger init then load record on trigger
+GEKAN_AREA61_LO 0x0020416a obj_Init_0020416a RENAME level_InitLoadRecordTrigger init for record trigger
+GEKAN_AREA61_LO 0x002041a2 level_LoadRecordToGlobals_2 RENAME level_LoadRecordOnTrigger loads record on trigger; drops suffix
+GEKAN_AREA61_LO 0x00204338 trigger_UpdateSetFlag CONFIRM trigger_UpdateSetFlag sets flag from param on fire
+GEKAN_AREA61_LO 0x00204430 item_InitThrown UNSURE item_InitThrown places by parent facing, no throw evidence
+GEKAN_AREA61_LO 0x00204854 player_UpdateStateMachine CONFIRM player_UpdateStateMachine input-table state change, switch 0-0x10, hits, draw
+GEKAN_AREA61_LO 0x00204c4e player_State10 CONFIRM player_State10 state 0x10 handler
+GEKAN_AREA61_LO 0x00204c92 player_StateE CONFIRM player_StateE state 0xe handler
+GEKAN_AREA61_LO 0x00204d08 player_StateF CONFIRM player_StateF state 0xf handler
+GEKAN_AREA61_LO 0x00204dbc player_State0 CONFIRM player_State0 state 0 handler
+GEKAN_AREA61_LO 0x00204ee6 player_State5 CONFIRM player_State5 launch from table, bounce to state 0xc
+GEKAN_AREA61_LO 0x00205240 player_State4 CONFIRM player_State4 hurt knockback, life decrement leads to state 0xb
+GEKAN_AREA61_LO 0x0020537e player_State6 CONFIRM player_State6 airborne fall
+GEKAN_AREA61_LO 0x00205418 player_StateB CONFIRM player_StateB state 0xb handler
+GEKAN_AREA61_LO 0x0020545c player_State2 CONFIRM player_State2 attack with hitbox overlap setting hit flags
+GEKAN_AREA61_LO 0x002055b8 player_State1Transition RENAME player_SetStateOnAnimEnd used for states 1 and 3, sets state on anim-done flag
+GEKAN_AREA61_LO 0x002055d4 player_StateC CONFIRM player_StateC state 0xc handler
+GEKAN_AREA61_LO 0x002056ae player_States7to10 CONFIRM player_States7to10 hurt chain states 7-10
+GEKAN_AREA61_LO 0x00205a00 boss_SubStateHandler RENAME player_StateD only called from player machine case 0xd
+GEKAN_AREA61_LO 0x00205b62 actor_HitReaction CONFIRM actor_HitReaction shared hit reaction
+GEKAN_AREA61_LO 0x00205ce4 actor_ApplyGravity CONFIRM actor_ApplyGravity shared gravity
+GEKAN_AREA61_LO 0x00205d34 actor_ResetVelocity CONFIRM actor_ResetVelocity shared velocity reset
+GEKAN_AREA61_LO 0x00205d78 actor_SpawnHelper CONFIRM actor_SpawnHelper shared spawn helper
+GEKAN_AREA61_LO 0x00205dca vdp1_BuildSpriteShadowCommands CONFIRM vdp1_BuildSpriteShadowCommands sprite and shadow commands
+GEKAN_AREA61_LO 0x00206268 npc_UpdateStateDispatch CONFIRM npc_UpdateStateDispatch init, run, exit
+GEKAN_AREA61_LO 0x002062e2 npc2_UpdateStateDispatch CONFIRM npc2_UpdateStateDispatch init and run variant
+GEKAN_AREA61_LO 0x0020633e npc3_UpdateStateDispatch CONFIRM npc3_UpdateStateDispatch init and handler variant
+GEKAN_AREA61_LO 0x002063a0 npc_InitFromParams CONFIRM npc_InitFromParams init from param data
+GEKAN_AREA61_LO 0x00206510 npc2_InitFromParams CONFIRM npc2_InitFromParams init from param data
+GEKAN_AREA61_LO 0x0020661c npc3_InitFromParams CONFIRM npc3_InitFromParams init small object
+GEKAN_AREA61_LO 0x00206718 npc_UpdateMain CONFIRM npc_UpdateMain input table to state, switch 0-0x10
+GEKAN_AREA61_LO 0x00206b06 npc2_UpdateMain CONFIRM npc2_UpdateMain states 0-2 with tile check
+GEKAN_AREA61_LO 0x00206b86 npc3_UpdateMain CONFIRM npc3_UpdateMain states 0-2 with collisions
+GEKAN_AREA61_LO 0x00206cd0 npc2_State0Rise CONFIRM npc2_State0Rise rises along table
+GEKAN_AREA61_LO 0x00206d4a npc2_State1Hold CONFIRM npc2_State1Hold hold then descend
+GEKAN_AREA61_LO 0x00206dbc npc2_State2Descend CONFIRM npc2_State2Descend descends and sets done flag
+GEKAN_AREA61_LO 0x00206e0e npc2_SpawnShot CONFIRM npc2_SpawnShot spawns projectile object
+GEKAN_AREA61_LO 0x00206f28 npc2_CheckTileCollision CONFIRM npc2_CheckTileCollision tile and player overlap
+GEKAN_AREA61_LO 0x0020705c vdp1_BuildTwoPartCommands CONFIRM vdp1_BuildTwoPartCommands two scaled commands
+GEKAN_AREA61_LO 0x0020733e npc3_State1 CONFIRM npc3_State1 picks next state, spawns effect
+GEKAN_AREA61_LO 0x00207410 npc3_State2Countdown CONFIRM npc3_State2Countdown counter sets done flag
+GEKAN_AREA61_LO 0x0020743e npc3_State0Init CONFIRM npc3_State0Init x velocity by facing
+GEKAN_AREA61_LO 0x00207494 npc_State0Idle CONFIRM npc_State0Idle idle timer
+GEKAN_AREA61_LO 0x0020755e npc_CheckPlayerDistance CONFIRM npc_CheckPlayerDistance state by player distance
+GEKAN_AREA61_LO 0x0020763e boss_UpdateWalkState CONFIRM boss_UpdateWalkState walk speed and tile collide
+GEKAN_AREA61_LO 0x00207770 boss_IdleWaitTimer RENAME boss_StateSpawnShot spawns shot once, waits, returns to state 0
+GEKAN_AREA61_LO 0x002077f8 boss_EnterHitReaction CONFIRM boss_EnterHitReaction mirrors player_State5
+GEKAN_AREA61_LO 0x00207ab4 boss_EnterKnockbackState CONFIRM boss_EnterKnockbackState knockback velocity from hit flags
+GEKAN_AREA61_LO 0x00207de2 boss_UpdatePhaseStateMachine RENAME boss_UpdateHurtStates states 9-0xc mirror player_States7to10
+GEKAN_AREA61_LO 0x0020838e boss_BuildSpriteCommands CONFIRM boss_BuildSpriteCommands builds VDP1 commands
+GEKAN_AREA61_LO 0x00208ae4 boss_DrawAndUpdateShadow RENAME boss_UpdateAndDrawDispatch per-frame dispatch over states 0-0x15, tile checks, then draw
+GEKAN_AREA61_LO 0x00209cce boss_UpdateAiSubstateMachine CONFIRM boss_UpdateAiSubstateMachine hurt chain substates 0xa/0xb like player 9/10
+GEKAN_AREA61_LO 0x0020a2ce boss_UpdateJumpArc CONFIRM boss_UpdateJumpArc jump arc update
+GEKAN_AREA61_LO 0x0020a658 boss_SpawnProjectileCommand RENAME boss_HitOverlappingObjects walks object list, box overlap sets hit flags and push, spawns nothing
+GEKAN_AREA61_LO 0x0020a846 boss_DrawSpriteCommand CONFIRM boss_DrawSpriteCommand draws sprite parts
+GEKAN_AREA61_LO 0x0020aaca boss_DrawSpriteCommandSecondary CONFIRM boss_DrawSpriteCommandSecondary second command builder
+GEKAN_AREA61_LO 0x0020ca20 boss_SubstateSpawnDebris CONFIRM boss_SubstateSpawnDebris spawns debris
+GEKAN_AREA61_LO 0x0020cde0 obj_PushOverlappingObjects CONFIRM obj_PushOverlappingObjects pushes overlapping objects

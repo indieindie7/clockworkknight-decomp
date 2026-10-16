@@ -1,0 +1,136 @@
+0x00200000 func boss8_RunMainStateMachine hand per-frame boss object update: switches on phase byte, inits, runs sub-phase handlers, sets animation pointer and calls anim step
+0x002001bc func boss8_InitFight hand loads B8SPRCG.BIN sprite data, copies VDP data blocks, spawns child parts, resets fight globals and camera
+0x00200478 func boss8_UpdateAttackPhase hand dispatches on attack type byte (0..8) to attack handlers then runs animation step
+0x0020059e func boss8_UpdateIntroWait hand counts frames in work counter, then advances boss state to 1 and clears sub-step
+0x002005cc func boss8_ChooseAttack hand sub-step 0 reset, step 1 picks next attack state 2/4/5/6 from phase and attack-pattern index
+0x00200698 func boss8_UpdateProjectileAttack hand sets up and fires projectile spawns at positions depending on boss x, attack states 4-6, then waits and finishes
+0x00200bb8 func boss8_UpdateHurtFlash hand plays hurt animation steps, sets flash flag at set frame numbers, advances to state 3 afterwards
+0x00200cde func boss8_UpdateStunned hand stunned state timer: sound on frame 0x20, counts and moves to state 7 after delay
+0x00200d96 func boss8_UpdateDefeated hand defeat sequence: sounds, flag set, sets sub-object state 0x13 or 0x51 depending on stage, spawns debris
+0x00200ed0 func boss8_UpdateDeathWait hand death wait steps: reset frame, wait until frame 0x1d, then hold frame 0x1f
+0x00200f20 func boss8_UpdateIntroEntrance hand entrance: sets boss y, spawns child at threshold, on state 2 initialises hand slots and starts fight phase
+0x002010b2 func boss8_InitPartA hand part init: calls base init then sets sprite size and animation table pointer
+0x002010e4 func boss8_UpdatePartA hand body part update: resets frame by state, steps animation tables, handles damage/flash, states 4-6 call hit check
+0x002011f4 func boss8_UpdateBodyHitSteps hand sub-step timing for body part with sound effects and flag bits 2/4 when frame reaches table limit
+0x002012d8 func boss8_InitPart_2 hand part init variant: base init, size, animation table pointer, frame 0
+0x002012fc func boss8_UpdatePart_2 hand child part follows parent position plus offset, animates, on low y spawns debris and sets flag bit 4
+0x002014d0 func boss8_InitPart_3 hand part init variant with start frame 7
+0x00201504 func boss8_UpdatePart_3 hand child part follows parent position with two sprites (flag 0/1), sets completion flag bit 8
+0x002016f4 func boss8_InitPart_4 hand part init variant with start frame 0xe
+0x00201718 func boss8_UpdatePart_4 hand child part follows parent offset, animates, sets completion flag bit 0x10 when low
+0x002018ec func boss8_InitPart_5 hand part init variant with start frame 0x15
+0x00201920 func boss8_UpdatePart_5 hand child part follows parent with two sprites, sets completion flag bit 0x20
+0x00201b10 func boss8_InitLimbA hand limb init: base init, size and animation table pointer
+0x00201b30 func boss8_UpdateLimbA hand limb update for states 2,3,7: animates, falls off, sets flag bit 0x40; state 8 explodes
+0x00201c84 func boss8_InitLimbB hand limb init: base init, size and animation table pointer
+0x00201ca4 func boss8_UpdateLimbB hand limb update like limb A, sets completion flag bit 0x80
+0x00201df8 func boss8_InitLimbC hand limb init with facing flag set
+0x00201e1c func boss8_UpdateLimbC hand limb update for states 2,3,7 and explode on state 8, sets completion flag bit
+0x00201f7c func boss8_InitLimbD hand limb init with facing flag set
+0x00201fa0 func boss8_UpdateLimbD hand limb update for states 2,3,7 and explode on state 8, sets completion flag bit
+0x00202160 func boss8_InitLimbE hand limb init: base init, size and animation table pointer
+0x00202180 func boss8_UpdateLimbE hand limb update: animates via table, on state 8 sets explosion and completion flag
+0x002022be func boss8_InitDebrisA hand debris init: calls boss8_ResetObject, sets facing flag, size, animation table
+0x00202308 func boss8_UpdateDebrisA hand debris update: animate via table, state 8 move with velocity then remove and set flag
+0x00202434 func boss8_InitDebrisB hand debris init: calls boss8_ResetObject, size, animation table
+0x00202474 func boss8_UpdateDebrisB hand debris update using animate and move helpers, state 8 removes and sets flag
+0x00202592 func boss8_InitDebrisC hand debris init: calls boss8_ResetObject, size, animation table
+0x002025d0 func boss8_UpdateDebrisC hand debris update using animate and move helpers, state 8 removes and sets flag
+0x002026ee func boss8_InitDebrisD hand debris init: calls boss8_ResetObject, facing flag, size, animation table
+0x00202730 func boss8_UpdateDebrisD hand debris update using animate and move helpers, state 8 removes and sets flag
+0x0020284e func boss8_InitDebrisE hand debris init: calls boss8_ResetObject, facing flag, size, animation table
+0x00202890 func boss8_UpdateDebrisE hand debris update using animate and move helpers, state 8 removes and sets flag
+0x00202970 func boss8_InitDebrisF hand debris init: calls boss8_ResetObject, size, animation table
+0x0020298e func boss8_UpdateDebrisF hand debris update states 2,3 move and animate, state 7 removes and sets flag bit 1
+0x00202ab2 func boss8_InitDebrisG hand debris init: calls boss8_ResetObject, facing flag, size, animation table
+0x00202ad4 func boss8_UpdateDebrisG hand debris update states 2,3 move and animate, state 7 removes and sets flag bit 2
+0x00202df6 func boss8_InitShadowSprite hand shadow sprite init: size, x from table by variant, mirrored flag, sprite pointer selection
+0x00202e88 func boss8_UpdateFallingObject hand integrates velocity and accel into position, builds sprite commands, removes when below floor
+0x00203190 func boss8_ResetObject hand zeroes object state fields, velocities, animation counters and slot data
+0x0020320e func boss8_StepAnimation hand advances animation frame counter and index by table frame length, wraps at table end unless paused
+0x0020325c func boss8_AnimateFollowParent hand sets animation pointer from table, positions object at parent plus offset, tail-calls update
+0x002032a4 func boss8_AnimateSetFrame hand sets animation pointer and current frame from table then tail-calls update
+0x002032c6 func boss8_ApplyVelocitySlotMove hand three-step velocity: load vel/accel from table, wait frames, then integrate into slot position fields
+0x0020337c func boss8_ApplyVelocityMove hand three-step velocity: load vel/accel from table, wait frames, then integrate into object position
+0x0020342a func boss8_SpawnObjectsFromTable hand loops spawn table entries creating objects, reset, copy state, place x/y, set size and flags
+0x002034bc func boss8_SpawnObjectsFromParamTable hand loops spawn param table (0x30 bytes each), sets type, flags, position, velocity, accel
+0x0020355a func boss8_BuildSpriteCommands hand builds VDP1 sprite command entries for each object part: rotated quad corners via sine table, texture, priority
+0x00203a6a func boss8_UpdateCamera hand camera follow update: saves previous values, dispatches by phase to camera tracking, smooths position
+0x00203b26 func boss8_CameraFollowSimple hand camera target offset from player position and boss, scaled by quarter plus constants
+0x00203b7a func boss8_CameraTrackPlayerA hand camera tracking limited by min/max bounds, per-phase state, uses clamp and rand-based shake
+0x00203e2e func boss8_CameraTrackPlayerB hand clamps camera x/y bounds, vertical offset depends on boss state, applies shake
+0x002040d8 func boss8_UpdateBackgroundScroll hand VDP2 scroll offsets from camera position per phase, parallax and sine-based wobble
+0x00204402 func boss8_InitScene hand loads B8SCRCG.BIN, copies scroll cell data to VDP2, sets scroll registers and defaults
+0x0020460c func boss8_InitVdp2Params hand sets VDP2 background scroll and zoom parameter defaults in the scene control struct
+0x00204678 func boss8_InitBossController hand init: base init, loads child object pointers, resets controller fields and attack state
+0x002047c8 func boss8_UpdateBossController hand boss controller switch on state 0-11: intro fade, setup, attack choice, defeat; stores hurt checks and flips facing
+0x00204d0e func boss8_PickAttackPattern hand picks next controller state from table indexed by life bits, using LCG random
+0x00204d9e func boss8_StartHandAttackA hand picks random attack variant using LCG and sets up two hand slot motion records, counts and state
+0x00204f58 func boss8_UpdateHandSlam hand ten-step slam sequence driving both hand objects via slot motion records, sound effects, sets state at end
+0x0020543a func boss8_UpdateHandSweep hand nine-step sweep sequence for both hands with timers from table, slot targets and sounds
+0x002058a2 func boss8_UpdateHandChase hand chase sequence: waits, chooses closer hand to player, random delay via LCG, then restores hands
+0x00205ce8 func boss_UpdateIntroPhaseSync hand 4-state phase machine on state byte +4, timers, sets entity state bytes 0xb/0xe/0xc on both players, calls helper
+0x00205e94 func boss_UpdateRoundResetState hand handles round/reset phases 0-2, reinitialises two-entity table (stride 0x1c), swaps entity states, draws via callback
+0x0020627c func boss_UpdateDefeatSequence hand phase machine cases 0-3, LCG random (mult DAT), spawns debris objects with random offsets, moves entity with accel
+0x0020671e func boss_InitEffectEntity hand sets position, state 1, anim fields, then tail-calls object state-setter with PTR table
+0x00206794 func boss_UpdateHelperSprite hand switch on state byte +8; follows parent, sine-table orbit motion using LCG, picks sprite frame, calls draw callback
+0x00206ad0 func boss_UpdateFallingDebris hand 4-phase physics for debris (velocity+accel on xyz), spawns child objects with random offsets, bounces
+0x00206dea func boss_InitHelperLeft hand init of helper object side 0, sets position, collision box fields +0x18..0x28, anim words, spawn table
+0x00206efa func boss_InitHelperRight hand same as left helper init but side 1, different position constants and tables
+0x00206f94 func boss_UpdateOrbitSegmentChain hand switch on state; positions chain segment relative to parent offsets by side, calls update helpers and recompute rel coords
+0x00207302 func boss_UpdateSegmentStateMachine hand 13-state machine on +5 with side byte, copies velocity params between tables stride 0x1c, tween compare logic
+0x00207846 func boss_UpdateSegmentFall hand initial velocities from table, applies gravity-like accel after 0x78 frames, spawns random debris child objects
+0x00207a84 func boss_UpdateFollowTarget3D hand 3-state tween of position toward target xyz with random speed, distance-squared clamp and axis arrival checks
+0x00207eb4 func boss_InitSegmentSideB hand provisional: init object from table position <<8, side flag, state, anim words, then tail-calls state setter
+0x00207fe8 func boss_InitSegmentSideA hand provisional: init object position <<8 from table, state 1, anim words, then tail-calls state setter
+0x00208050 func boss_UpdateSegmentAnimFrame hand for states 3-10 sets position from player table (y-0x70) and picks anim word by blink counter; state 0xb calls fall
+0x00208128 func boss_UpdateSegmentFallShort hand initial velocity from table, accel loop in phases 1-3, spawns random debris child with offsets from hitbox
+0x002083a2 func boss_InitChildFromParent hand calls base init, copies state fields, side flag and sprite pointer from parent object
+0x002083e4 func boss_UpdateHurtboxDamage hand follows parent position with offset table, tests hitboxes vs player, applies damage and hitstop via callbacks, flashes on hit (was boss_UpdateAttackHitCheck)
+0x002088b8 func boss_InitProjectileA hand sets flag, anim words, sprite pointer, anim table; flips anim word if side flag set
+0x0020890c func boss_UpdateProjectileMotion hand integrates velocity and accel on xyz, calls update helper, destroys object when y below floor threshold
+0x002089a4 func boss_InitProjectileRandomSide hand init anim words, LCG random side flag and random choice, tail-calls state setter for branches 1 or 3
+0x00208a54 func boss_CallIfConditionTrue hand calls a test function, if nonzero tail-calls action function with same argument
+0x00208b9a func boss_InitProjectileRandomSideB hand like projectile init with random side, tail-calls state setter only when random value is 0
+0x00208c38 func boss_CallIfConditionTrueB hand calls a test function, if nonzero tail-calls action function with same argument (was boss_CallIfConditionTrue_2)
+0x00208c6c func boss_TestPlayerOverlapSide hand builds two rects, calls rect-overlap test, returns bit flags for player left/right and above/below
+0x00208df0 func boss_FindOverlappingObject hand walks active object list, builds rect from sprite bounds, returns first overlapping object in same layer
+0x00208f6e func boss_SpawnTimerObject hand spawns object via allocator callback and stores a timer/value in its work area +8
+0x00208f94 func boss_AdvanceAnimFrameCounter hand steps frame counter and sequence index from anim table, sets or clears frame-done and end-of-anim flag bits
+0x00209038 func boss_ComputeAimAnglesToTarget hand distance via integer sqrt, atan callbacks, sine tables; stores aim vectors and angles in entity table stride 0x30
+0x00209250 func math_IntegerSqrt hand integer square root by stepped search with coarse then fine increments, returns floor root
+0x002092e0 func boss_TransformPointArrayByRotation hand rotates 24 and 16 point arrays by three Euler angles using sin/cos tables, adds origin, 14-bit fixed point
+0x0020973c func boss_SpawnProjectileObject hand allocates object plus 0x60 and 0x58 work areas, initialises position, velocity, flags and sprite pointers from param block (was boss_SpawnBodyPartObject)
+0x002099c6 func boss_UpdateDebrisBounce hand applies gravity on y, wall/floor clamp against arena bounds, stops and sets state 1 when settled, plays SFX periodically
+0x00209a64 func boss_SpawnShockwaveAtParentHeight hand copies height from parent work area, calls helper, decrements counter on failure, sets flag bit 0x10 (was boss_SetEntityHeightFromParent)
+0x00209a94 func boss_DrawProjectedSpriteStrip hand writes VDP1 command-table entries (0x20 bytes) for sprite parts with perspective scale, then calls secondary draw
+0x00209f44 func boss_SpawnShockwaveObject hand provisional: allocates object with work areas, init pos from parent, state 0x16 constants, side from player position
+0x0020a09c func boss_SpawnPlayerLockedObject hand provisional: allocates object, positions relative to player entity, state 0x11, anim word chosen by hp thresholds
+0x0020a25c func boss_UpdateMainStateMachine hand per-frame boss AI: transition table by flags, 21-state switch calling boss_* actions, then collision and tile check switch
+0x0020a7c4 func boss_CheckCeilingTile hand =GEKAN_AREA61_LO tile lookup above head, tile 2 sets state 0x14, tile 0xf sets flag
+0x0020a87c func boss_AdjustAnimOffsetByFlags hand adds one of two offsets to entity +0x10 depending on masked flag bits of +0x2a
+0x0020a8c2 func boss_DecideApproachOrTurnAround hand if player within x/y range same layer goes to state 0xe, else moves horizontally with tile check and picks state 0 or 3
+0x0020a97c func boss_UpdateWalkPatrol hand =GEKAN_AREA61_LO state 0 waits anim end then state 1 walk speed 0x66 by facing with jump velocity
+0x0020aa66 func boss_UpdateTurnSequence hand flips facing on flag, advances sub-state 0xe to 0xf/0x10 depending on player x, then to state 0x12
+0x0020aae8 func boss_StartJumpBackAfterTurn hand on flag sets state 0x13 and launch velocities depending on sub-state 0x12 or 0x13
+0x0020ab3c func boss_UpdateLandingRecover hand applies gravity, clamps at floor, on landing resets state to 0xf with horizontal speed by facing
+0x0020ac08 func boss_StartWalkTowardState hand =GEKAN_AREA61_LO on anim end state 0xf, substate 0, sets speed by facing
+0x0020ac48 func boss_CheckPlayerRangeReturn hand =GEKAN_AREA61_LO on anim end tests player offset window and layer, else state 0xf substate 5
+0x0020ad1e func boss_StartAttackJump hand =GEKAN_AREA61_LO state change sets substate 0x14 or 0x15 with different jump velocity by input flags
+0x0020af20 func boss_UpdateAttackMove hand =GEKAN_AREA61_LO sets horizontal speed by input flag, tile and player checks during attack
+0x0020b166 func boss_CheckFloorLanding hand =GEKAN_AREA61_LO tile lookup below feet, snaps landing when falling, returns tile
+0x0020b246 func boss_MoveHorizontalWithTileCheck hand =GEKAN_AREA61_LO moves x by velocity plus offset by facing, tile check and revert on block
+0x0020b322 func boss_UpdateHurtKnockback hand sub-state machine 10/11 with hit counter, hurt sprite frames, spawns effect, goes to state 0x14 or 0xc, recovery on landing
+0x0020b618 func boss_UpdateKnockedAirBounce hand on state change sets launch velocity by sub-state, bounces vertically on wall/floor flag, ends in state 10
+0x0020b762 func boss_EnterHopBackState hand =GEKAN_AREA61_LO plays sound 5, sets horizontal speed by input, hop velocity, substate 0xc
+0x0020b826 func boss_TurnOnFlagThenDecide hand on flag clears it, flips facing, tail-calls boss_DecideApproachOrTurnAround
+0x0020b854 func boss_ResetOnAnimFrame0xe hand when anim index is 0xe clears counter, and on flag flips facing and resets to state 0
+0x0020b88a func boss_TurnAndStartWalkAway hand on flag clears it, flips facing, sets state 0x10 and horizontal speed by facing
+0x0020b8d0 func boss_StartChargeApproach hand =GEKAN_AREA61_LO on anim end sets AI fields 0x24 0x28, state 0xf substate 5
+0x0020b8fa func boss_HitPlayerObject hand =GEKAN_AREA61_LO when flagged finds target object, sets its hit flags by relative x
+0x0020b9b2 func boss_UpdateSpinDashMove hand temporarily sets state 0x16, runs 7-step angle sequence rotating sprite, draws secondary sprite, restores fields (was boss_DrawDefeatedBossFlying)
+0x0020bcb4 func boss_ShiftForAttackSpawn hand =GEKAN_AREA61_LO saves state, sets state 0x16 and offsets position by facing for attack hitbox
+0x0020bd28 func boss_CheckAttackHitObjects hand loops active object list, tests x/y interval overlap with attack box, flags hit objects with hit direction and damage values
+0x0020bf02 func boss_DrawSpriteCommand hand =GEKAN_AREA61_LO appends VDP1 command entries for boss sprite from tables
+0x0020c186 func boss_DrawSpriteCommandSecondary hand =GEKAN_AREA61_LO second VDP1 command builder, similar to primary sprite draw
+0x0020c436 func boss_EnterSpawnedState hand =GEKAN_AREA61_LO state change calls hook, else zeroes velocity, spawns effects, swaps anim table, state 0x15

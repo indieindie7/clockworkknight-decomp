@@ -1,0 +1,21 @@
+FUKU_A 0x06003000 stub_06003000 UNSURE stub_06003000 tail jump to 0x06003034; caller shows a buffer-init call but target role unproven
+FUKU_A 0x06003192 vdp2_DrawIconTiles CONFIRM vdp2_DrawIconTiles copies 2 rows of 7 tile words into VDP2 map, used by pause icon blink
+FUKU_A 0x0600357c smpc_WaitAndSetCommand RENAME smpc_IssueIntbackCommand waits SF, sets SF, writes IREG/COMREG 0x10 (INTBACK) and returns status bit
+FUKU_A 0x06003664 sys_InitSubsystems CONFIRM sys_InitSubsystems boot init of sound, VDP, pad, heap, GFS, sound driver
+FUKU_A 0x06004626 player_ResetStateByMode UNSURE player_ResetStateByMode struct at 0x0604772c reset by mode 0/2; no callers, owner unproven
+FUKU_A 0x060049d6 stub_060049d6 RENAME boot_WaitVblankLoadProgram waits vblank then calls boot_LoadProgramByRegion with char arg, returns 0
+FUKU_A 0x060049f2 pad_GetButtonCode CONFIRM pad_GetButtonCode maps masked pad word to button code 10-13 or -1
+FUKU_A 0x06004a2c menu_SelectPadHandlerTable RENAME menu_SelectSoundTableByButton picks one of five tables by button code and passes it to snd_LoadDriverXsndTbtlBin
+FUKU_A 0x06009732 math_ShiftByCountSigned CONFIRM math_ShiftByCountSigned variable right shift of r0 by r1 (logical if positive, arithmetic if negative); callers use it for hex digit extraction
+FUKU_A 0x0600aaec gfs_OpenFileCloseOnError RENAME gfs_LoadNamedFileOrError name to id, error screen on failure, open, lock, close; no retry-with-zero logic
+FUKU_A 0x0600bac0 backup_WriteClockDataFile CONFIRM backup_WriteClockDataFile builds CLOCK_DATA save entry via backup RAM table and writes it
+FUKU_A 0x0600e52a gfs_HandleStartRead RENAME gfs_GetHandleBlockCount gets handle size then returns a division result; no read is started
+FUKU_A 0x0600f470 gfs_GetDirEntryOffset CONFIRM gfs_GetDirEntryOffset entry base plus offset or divided sector-scaled offset
+FUKU_A 0x0600f6bc cdc_CallAndReturn0 UNSURE cdc_CallAndReturn0 thin wrapper filling a status buffer then returning 0; real role of callee unclear
+FUKU_A 0x0600fba4 sh2_DisableIntRestoreSR RENAME sh2_DisableIntReturnOldMask sets SR mask to 0xf, calls setter, returns old mask; does not restore
+FUKU_A 0x060106a0 gfs_DispatchSlot2 CONFIRM gfs_DispatchSlot2 indirect call through transfer-mode table slot 2 indexed by field 0x1c
+FUKU_A 0x060119ec gfs_StreamSetCallback UNSURE gfs_StreamSetCallback stores param at +0x18 and queues CD command; callback role unproven, no callers
+FUKU_A 0x06011cd2 gfs_StreamOpenPipe RENAME gfs_StreamQueueSeekAndWait queues a seek task with stream fields then pumps until done, 1 on success
+FUKU_A 0x06012228 cdq_ConnectPipeToFilter UNSURE cdq_ConnectPipeToFilter two CDC calls (filter mode, op 0x43) then status cache; exact semantics unclear, no callers
+FUKU_A 0x060135e4 cdc_GetHirqClearConst CONFIRM cdc_GetHirqClearConst returns a constant mask
+FUKU_A 0x06013824 cdc_CallCmdPtr RENAME cdc_ClearCmdPacket all 45 callers pass a local 12-byte buffer then set byte 0 to the command code; it initialises the packet

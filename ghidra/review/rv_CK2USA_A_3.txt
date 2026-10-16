@@ -1,0 +1,93 @@
+CK2USA_A 0x06011346 gfs_FileSetPosition CONFIRM gfs_FileSetPosition stores target at +0x54, seeks via chunk read and records delta at +0x58; reset-counters caller fits
+CK2USA_A 0x0601137c gfs_FileGetInfo CONFIRM gfs_FileGetInfo copies optional fields to out pointers, returns attribute flags
+CK2USA_A 0x060115c0 gfs_FileSeekSelectFilter UNSURE gfs_FileSeekSelectFilter issues a fixed command {3,3}, returns 2 ok/8 fail; callers use 2 to mark handle ready, exact command unknown
+CK2USA_A 0x06011638 gfs_FileSeekToSector CONFIRM gfs_FileSeekToSector checks drive status, issues seek to start sector plus offset, maps errors
+CK2USA_A 0x060116d4 gfs_FileSectorOffset CONFIRM gfs_FileSectorOffset divides byte offset by sector size when set, used by seek and read plan
+CK2USA_A 0x0601171e cd_GetStatusCode CONFIRM cd_GetStatusCode maps CD status nibble to small state codes
+CK2USA_A 0x060117f0 gfs_SectorSizeFromAttr CONFIRM gfs_SectorSizeFromAttr maps attribute bits to a sector data size constant; used by handle init
+CK2USA_A 0x0601182e gfs_MapCdStatusToState CONFIRM gfs_MapCdStatusToState maps CD status 0..6 to transfer state out value
+CK2USA_A 0x060118b4 gfs_StreamPlanRead CONFIRM gfs_StreamPlanRead computes bytes to read and sets sector range or advances position, outputs state
+CK2USA_A 0x060119fc gfs_StreamOpen CONFIRM gfs_StreamOpen allocates pipe and file slots, queues setup commands, returns 1 on success; called by handle init
+CK2USA_A 0x06011b00 gfs_StreamReadChunk CONFIRM gfs_StreamReadChunk queues a read task, pumps, returns bytes read or 0
+CK2USA_A 0x06011bbc gfs_StreamSetCallback CONFIRM gfs_StreamSetCallback stores callback at +0x18 and notifies CD layer; no callers to refine
+CK2USA_A 0x06011bf8 gfs_StreamFlushCall CONFIRM gfs_StreamFlushCall queues flush task and pumps; StreamSeek uses it when seeking outside buffered range
+CK2USA_A 0x06011c10 gfs_StreamGetPosition CONFIRM gfs_StreamGetPosition returns sum of two position fields; used by seek, plan and read
+CK2USA_A 0x06011c2c gfs_StreamSeek CONFIRM gfs_StreamSeek seeks absolute or relative, skips or flushes buffered data, returns new position
+CK2USA_A 0x06011e90 gfs_StreamCloseCall RENAME gfs_StreamSeekCall forwards a seek block and lock id to the checked seek routine (cdc_SeekDisc); seek caller passes start sector block
+CK2USA_A 0x06011ea2 gfs_StreamOpenPipe CONFIRM gfs_StreamOpenPipe queues pipe-connect task with params, pumps, returns 1 on success else 0
+CK2USA_A 0x06011ede gfs_StreamAllocHandle RENAME gfs_StreamLockDrive calls cd_LockDrive and stores the lock id at +0x1c, returns 0 if negative
+CK2USA_A 0x06011f16 gfs_StreamFreeHandle RENAME gfs_StreamIsLockedByMe wraps cd_IsLockedBy on the lock id; callers treat 0 as not locked and bail out
+CK2USA_A 0x06011f22 gfs_StreamResetHandle RENAME gfs_StreamUnlockDrive wraps cd_UnlockDrive on the lock id; seek caller calls it after the locked command
+CK2USA_A 0x06011f38 cdc_InitDrive CONFIRM cdc_InitDrive resets queue state, checks status, aborts file, sets sector length, waits HIRQ flags with retry, verifies TOC
+CK2USA_A 0x0601218e cd_AllocFileSlot CONFIRM cd_AllocFileSlot scans 0x18 flags, marks one used, returns index or error; used by stream open
+CK2USA_A 0x060121c8 cd_FreeFileSlot CONFIRM cd_FreeFileSlot validates index and in-use flag, clears it
+CK2USA_A 0x060121f6 cd_AllocPipeSlot CONFIRM cd_AllocPipeSlot scans 0x18 flags in the base table, marks one used; used by stream open
+CK2USA_A 0x06012224 cd_ReleasePipeSlot CONFIRM cd_ReleasePipeSlot queues task, waits via pump with timeout, clears the slot flag
+CK2USA_A 0x060122ac cdc_ReadHirqMasked RENAME cdc_GetStartAddrMasked calls cdc_SetStatusByteCmd3 twice (second call keyed by first result, as init does for TOC entry) and masks; boot check adds offset and uses it as start sector, not HIRQ
+CK2USA_A 0x060122d2 cd_LockDrive CONFIRM cd_LockDrive sets lock flag, increments lock id counter, returns -5 if already locked
+CK2USA_A 0x06012310 cd_UnlockDrive CONFIRM cd_UnlockDrive clears lock flag when lock id matches, else error code
+CK2USA_A 0x06012336 cd_IsLockedBy CONFIRM cd_IsLockedBy true when locked and lock id equals param
+CK2USA_A 0x0601235c cdq_QueueSimpleCmd CONFIRM cdq_QueueSimpleCmd validates slot, appends 16-byte command entry, runs task-0 executor; stream open uses it
+CK2USA_A 0x060123f8 cdq_ConnectPipeToFilter UNSURE cdq_ConnectPipeToFilter calls two cdc helpers (one still FUN_), returns -10 on failure; no callers, behaviour partly unresolved
+CK2USA_A 0x0601243a cdq_QueueTask1 CONFIRM cdq_QueueTask1 checks slot and lock id, sets task-1 busy with slot, runs executor
+CK2USA_A 0x0601249a cdq_CheckStatusAndSetFlag RENAME cdq_PlayDiscChecked checks lock id and status then clears HIRQ and calls cdc_PlayDisc with the params, sets flag; seek caller passes a start sector block
+CK2USA_A 0x06012502 cdq_QueueTask2 CONFIRM cdq_QueueTask2 fills 5-param task-2 request if idle, runs executor, -1 when busy; read chunk uses it
+CK2USA_A 0x06012570 cdq_QueueTask3 CONFIRM cdq_QueueTask3 needs task 3 idle and no owner, records owner, runs executor
+CK2USA_A 0x060125c4 cdq_EndTask3 CONFIRM cdq_EndTask3 releases owner at +0x34 after end command, error when no owner
+CK2USA_A 0x0601260a cdq_QueueTask4 CONFIRM cdq_QueueTask4 needs task 4 idle and owner differs, fills slot and two params, runs executor
+CK2USA_A 0x06012664 cdq_IsTask4ActiveFor RENAME cdq_IsTask4DoneFor returns 0 while task 4 is busy for the slot, 1 otherwise; release-slot loop exits on 1
+CK2USA_A 0x06012684 cdc_GetStatusPacket CONFIRM cdc_GetStatusPacket fetches status packet with fallback command, reads flags, resets on state 10; widely used
+CK2USA_A 0x060126fe cdq_CheckLockAndStatus RENAME cdq_SeekDiscChecked checks lock id and status (-13/-14 on error) then calls cdc_SeekDisc with the param
+CK2USA_A 0x0601276c cdq_QueueTask5 CONFIRM cdq_QueueTask5 validates two slots, fills 4-param task-5 request if idle, runs executor
+CK2USA_A 0x060127fa cdq_ReleaseSlotCheck UNSURE cdq_ReleaseSlotCheck validates slot in use, calls an unresolved callback, no callers
+CK2USA_A 0x06012844 cdq_QueueTask7 CONFIRM cdq_QueueTask7 validates slot pair, fills task-7 request, mode 3 for constant id else 1; drive-ready wait caller uses it
+CK2USA_A 0x060128c8 cdq_QueueTask6 CONFIRM cdq_QueueTask6 validates three slot ids, appends 12-byte entry to task-6 queue, runs executor; stream open and read use it
+CK2USA_A 0x060129c0 cd_ReadSectorFrame RENAME cd_ReadFileInfoById reads directory if file id outside cached scope then fetches file info into caller buffer, flags last entry; handle init passes file id and info struct
+CK2USA_A 0x06012a8e cd_GetSessionInfo CONFIRM cd_GetSessionInfo calls the CDC command 0x50 info helper, returns one word or -10; matches Get Session Info
+CK2USA_A 0x06012ac0 cdq_PumpTasks CONFIRM cdq_PumpTasks polls HIRQ with timeout counter, runs each non-idle task 0..7, returns idle/busy/error/abort
+CK2USA_A 0x06012bb2 cdq_IsTaskIdle CONFIRM cdq_IsTaskIdle true when task n busy word is zero; pump loop skips idle tasks
+CK2USA_A 0x06012c2a cdq_RunTask CONFIRM cdq_RunTask dispatches to executor 0..7 by index
+CK2USA_A 0x06012c86 cdq_SetTimeout CONFIRM cdq_SetTimeout stores timeout counter at +0x3c; pump decrements it
+CK2USA_A 0x06012c8e cdq_PumpUntilIdle CONFIRM cdq_PumpUntilIdle sets large timeout, loops pump while busy, clears timeout
+CK2USA_A 0x06012cc0 cdq_ExecTask0 CONFIRM cdq_ExecTask0 runs queued filter-setup entries (mode, subheader, range) through three states and compacts queue
+CK2USA_A 0x06012e58 cdq_ExecTask1 CONFIRM cdq_ExecTask1 two-state executor: sets device connection with slot id, then waits for HIRQ 0x40 to go idle
+CK2USA_A 0x06012ec4 cdq_ExecTask2 CONFIRM cdq_ExecTask2 three-state executor: gets sector count, clips to request, calculates actual size, stores output doubled
+CK2USA_A 0x06013014 cdq_ExecTask3 CONFIRM cdq_ExecTask3 two-state executor: starts sector data get with three params, waits for completion
+CK2USA_A 0x060130a4 cdq_ExecTask4 CONFIRM cdq_ExecTask4 multi-state executor: resets selector, deletes sector data, waits HIRQ flags; numbered executor pattern
+CK2USA_A 0x060131cc cdq_ExecTask5 CONFIRM cdq_ExecTask5 five-state executor: gets/sets filter mode, moves sector data, waits HIRQ, restores mode
+CK2USA_A 0x060132fc cdq_ExecTask7 CONFIRM cdq_ExecTask7 checks range, reads directory if outside, waits, changes directory, stores count
+CK2USA_A 0x060134da cdq_ExecTask6 CONFIRM cdq_ExecTask6 loops queued 12-byte entries calling filter connection, compacts queue
+CK2USA_A 0x06013674 cdc_TestHirq CONFIRM cdc_TestHirq reads HIRQ and returns whether masked bits set
+CK2USA_A 0x060136a4 cdq_ResetQueueState CONFIRM cdq_ResetQueueState clears slot tables, lock fields and task busy words; called at init and on timeout
+CK2USA_A 0x0601371e cdq_CacheStatus CONFIRM cdq_CacheStatus reads status packet and caches first byte in queue state; called after each command
+CK2USA_A 0x06013758 cdc_WaitHirqAck CONFIRM cdc_WaitHirqAck polls HIRQ for masked bit then writes clear value; returns 0 or 1 on timeout
+CK2USA_A 0x060137b4 cdc_GetHirqClearConst UNSURE cdc_GetHirqClearConst returns a constant; no caller visibly uses it as a HIRQ mask so meaning unproven
+CK2USA_A 0x060137ba cdc_ReadHirq CONFIRM cdc_ReadHirq returns 16-bit value of HIRQ register; used by all HIRQ pollers
+CK2USA_A 0x060137c0 cdc_ClearHirqAndSet CONFIRM cdc_ClearHirqAndSet ORs register into shadow then writes param with bit 0 set
+CK2USA_A 0x060137d4 cdc_WriteHirq CONFIRM cdc_WriteHirq stores 16-bit value to HIRQ register
+CK2USA_A 0x060137e8 cdc_ResetHirqShadow CONFIRM cdc_ResetHirqShadow writes HIRQ constant and zeroes shadow word; called after init-system command
+CK2USA_A 0x060137fa cdc_OrHirqShadow CONFIRM cdc_OrHirqShadow ORs mask into HIRQ shadow word; called before init and abort commands
+CK2USA_A 0x06013824 cdc_ReadDataWords CONFIRM cdc_ReadDataWords waits, reads n words from data register, checks count; used by TOC and file-info readers
+CK2USA_A 0x0601388a cdc_ExecCmdWrapper CONFIRM cdc_ExecCmdWrapper forwards args to cdc_ExecCommand; only caller is cdc_ExecCmdStore
+CK2USA_A 0x060138c8 cdc_ExecCommand CONFIRM cdc_ExecCommand checks shadow flags, writes command regs, waits ack bit, reads response with error codes
+CK2USA_A 0x06013970 cdc_WaitHirqBit CONFIRM cdc_WaitHirqBit polls HIRQ for mask up to a limit, stores value, returns 0 or -3
+CK2USA_A 0x060139a2 cdc_WriteCR CONFIRM cdc_WriteCR writes four 16-bit command words to CR registers
+CK2USA_A 0x060139d0 cdc_ReadCR CONFIRM cdc_ReadCR reads four response words from CR registers; ReadStableCR retries it until two reads match
+CK2USA_A 0x060139f4 cdc_CallCmdPtr UNSURE cdc_CallCmdPtr tail-calls a register-held routine on a 12-byte local before the command id is set; real job of callee not proven
+CK2USA_A 0x06013a06 cdc_ExecCmdNoArgs UNSURE cdc_ExecCmdNoArgs tail-forwards to ExecCmdStore; callers pass 3 args and flag is unclear so name unproven
+CK2USA_A 0x06013a0a cdc_ExecCmdCopy CONFIRM cdc_ExecCmdCopy runs ExecCmdStore with local buffer and expand flag 1
+CK2USA_A 0x06013a1c cdc_ExecCmdStore CONFIRM cdc_ExecCmdStore executes command then stores status byte or expanded packet in global area
+CK2USA_A 0x06013a8c sh2_SetIntMaskCall CONFIRM sh2_SetIntMaskCall raises SR interrupt mask to max, calls routine, restores mask; used as critical-section wrapper
+CK2USA_A 0x06013ad0 cdc_ExpandStatusPacket CONFIRM cdc_ExpandStatusPacket spreads 5 status bytes into wider destination layout plus masked word
+CK2USA_A 0x06013af4 sh2_ConfigDmaOr CONFIRM sh2_ConfigDmaOr edits DMAOR bits by flag word (priority, master enable, clears flags)
+CK2USA_A 0x06013b3c sh2_ConfigDmacChannel CONFIRM sh2_ConfigDmacChannel programs per-channel SAR, DAR, TCR, CHCR and vector by flag mask
+CK2USA_A 0x06013c30 sh2_DmacEnableChannel CONFIRM sh2_DmacEnableChannel sets CHCR bit 0 of the channel
+CK2USA_A 0x06013c42 sh2_DmacDisableChannel CONFIRM sh2_DmacDisableChannel clears CHCR bit 0 of the channel
+CK2USA_A 0x06013c60 sh2_DmacGetDmaorFlags CONFIRM sh2_DmacGetDmaorFlags reads DMAOR and returns the two status flag bits separately
+CK2USA_A 0x06013c72 sh2_DmacGetTransferEnd CONFIRM sh2_DmacGetTransferEnd returns CHCR transfer-end bit for channel
+CK2USA_A 0x06013c80 scu_ConfigDmaLevel CONFIRM scu_ConfigDmaLevel writes read/write address, count, add and mode words at 0x20 stride per level by flag mask
+CK2USA_A 0x06013ce0 scu_InstallDmaEndHandler CONFIRM scu_InstallDmaEndHandler per level picks vector and handler, saves old ones, installs, enables
+CK2USA_A 0x06013db0 scu_GetDmaLevelFlag CONFIRM scu_GetDmaLevelFlag returns per-level byte flag from table set by the install routine
+CK2USA_A 0x06013f58 sh2_ClearCacheArray CONFIRM sh2_ClearCacheArray zeroes cache address array for all ways then sets mode bits and enables
+CK2USA_A 0x06014038 mem_ClearWords16 CONFIRM mem_ClearWords16 zero-fills uncached-mirrored range at 16-byte stride; used after DMA setup
+CK2USA_A 0x06014068 cdc_GetCmd50Info RENAME cdc_GetSessionInfo command 0x50 info reader, only real caller is cd_GetSessionInfo; returns three fields

@@ -1,0 +1,84 @@
+GEKAN_AREA71 0x00206b98 boss_DefeatedStateAClear CONFIRM boss_DefeatedStateAClear zeroes speed, spawns effect, sets state 0x13 and remove flag; called from boss state machine
+GEKAN_AREA71 0x00206c60 boss_DefeatedStateBCountdown CONFIRM boss_DefeatedStateBCountdown counts down timer then sets state 0x13 and remove flag
+GEKAN_AREA71 0x00206ccc boss_UpdateFallOffscreen CONFIRM boss_UpdateFallOffscreen gravity/bounce for falling states, flags removal below screen limit
+GEKAN_AREA71 0x00206eb2 npc2_UpdateStateDispatch CONFIRM npc2_UpdateStateDispatch init on first frame then UpdateMain or exit on flag 0x10
+GEKAN_AREA71 0x00206f0e npc3_UpdateStateDispatch CONFIRM npc3_UpdateStateDispatch task entry used by spawner; init then UpdateMain, exit on flag
+GEKAN_AREA71 0x002070e0 npc2_InitFromParams CONFIRM npc2_InitFromParams resets state, velocities, hitbox and sprite tables from spawn position
+GEKAN_AREA71 0x002071ec npc3_InitFromParams CONFIRM npc3_InitFromParams same init for small 0x14 hitbox object
+GEKAN_AREA71 0x002072e8 npc_UpdateMain CONFIRM npc_UpdateMain per-state switch 0-0x10, collision and hit handling, sprite build
+GEKAN_AREA71 0x00207756 npc3_UpdateMain CONFIRM npc3_UpdateMain runs states 0-2, moves by facing, collisions, draws
+GEKAN_AREA71 0x002078a0 npc2_State0Rise CONFIRM npc2_State0Rise accumulates height via table until apex then state 1
+GEKAN_AREA71 0x0020791a npc2_State1Bounce CONFIRM npc2_State1Bounce velocity table steps, decrements bounce count, then state 2
+GEKAN_AREA71 0x0020798c npc2_State2Descend CONFIRM npc2_State2Descend lowers height table until done then sets remove flag
+GEKAN_AREA71 0x002079de npc2_SpawnProjectile CONFIRM npc2_SpawnProjectile spawns npc3 task at facing offset, copies hitbox, plays sound
+GEKAN_AREA71 0x00207af8 npc2_CheckTileCollision CONFIRM npc2_CheckTileCollision tile lookup in front plus player overlap check, sets flag 0x20 on tile hit
+GEKAN_AREA71 0x00207c2c npc2_DrawReflection RENAME npc2_BuildScaledSpriteCommands queues two perspective-scaled sprite commands mirrored by facing; no evidence of reflection
+GEKAN_AREA71 0x00207f0e npc3_State1 RENAME npc3_State1FlyUntilHit moving state; switches to state 2 and spawns effect on tile or hit flags
+GEKAN_AREA71 0x00207fe0 npc3_State2Countdown CONFIRM npc3_State2Countdown zeroes speed, counts frames, sets remove flag when expired
+GEKAN_AREA71 0x0020800e npc3_State0Init CONFIRM npc3_State0Init calls aim helper, sets x speed by facing, goes to state 1
+GEKAN_AREA71 0x00208064 npc_State0Idle CONFIRM npc_State0Idle idle timer, walks toward player bounds, to state 5 on distance or edge
+GEKAN_AREA71 0x0020812e npc_CheckPlayerDistance CONFIRM npc_CheckPlayerDistance picks idle/walk/turn state from player x/y distance and layer, sets facing turn
+GEKAN_AREA71 0x0020820e boss_UpdateWalkState_20820e RENAME npc_State1Walk state 1 walk toward player by facing, tile collision to state 2; name has address suffix, used by npc_UpdateMain
+GEKAN_AREA71 0x00208340 boss_IdleWaitTimer RENAME npc_State3FireProjectile state 3 spawns projectile once via npc2_SpawnProjectile, on anim end resets timer and returns to state 0
+GEKAN_AREA71 0x002083c8 boss_EnterHitReaction CONFIRM boss_EnterHitReaction state 7 hit reaction: sets recoil velocity by hit flags, resets AI fields, goes to 0xc or 0x10
+GEKAN_AREA71 0x00208684 boss_EnterKnockbackState CONFIRM boss_EnterKnockbackState state 0xf entry: spawns effect, picks knockback velocity by hit flags, ends on anim flag
+GEKAN_AREA71 0x002089b2 boss_UpdatePhaseStateMachine RENAME npc_UpdateDamageStages states 9-0xc advance a hit counter against max, resets via effect, goes to defeat state 0x10 when counter reaches max
+GEKAN_AREA71 0x00208f5e boss_BuildSpriteCommands CONFIRM boss_BuildSpriteCommands builds VDP1 command entries from anim/sprite tables scaled by perspective, shadow call in states 6-7 and 0x10
+GEKAN_AREA71 0x002093bc boss_UpdateAndDrawTop RENAME boss_TaskUpdate task entry: init from spawn data on first frame, then state update, offscreen cull; draws via other helpers
+GEKAN_AREA71 0x002096b4 boss_DrawAndUpdateShadow RENAME boss_UpdateStatesAndCollide transitions via tables, switch of per-state handlers 0-0x14, then per-state movement and tile/ceiling collision; no shadow drawing
+GEKAN_AREA71 0x0020a89e boss_UpdateAiSubstateMachine RENAME boss_UpdateDamageStages states 0xa/0xb step a hit counter against max, spawn object in 0xb, defeat/spawn state 0x14 at max
+GEKAN_AREA71 0x0020ae9e boss_UpdateJumpArc CONFIRM boss_UpdateJumpArc state 0xf multi-phase tilt/jump arc moving x and y with temporary draw state, then player-near check
+GEKAN_AREA71 0x0020b228 boss_SpawnProjectileCommand RENAME boss_HitOverlappingObjects walks object list, tests box overlap, sets hit flags on other objects, returns hit; spawns nothing
+GEKAN_AREA71 0x0020b416 boss_DrawSpriteCommand CONFIRM boss_DrawSpriteCommand appends VDP1 command entries from anim and sprite tables, perspective scaled
+GEKAN_AREA71 0x0020b69a boss_DrawSpriteCommandSecondary CONFIRM boss_DrawSpriteCommandSecondary second VDP1 command builder, one scaled quad per part using param_2 size fields
+GEKAN_AREA71 0x0020bc88 boss_UpdateMainStateMachine CONFIRM boss_UpdateMainStateMachine picks next state from tables then switch on state 0-0xd calling handlers and collision
+GEKAN_AREA71 0x0020c154 boss_CheckWallAhead CONFIRM boss_CheckWallAhead tile lookup ahead of boss, type 2 sets state 0xd, type 0xf sets flag
+GEKAN_AREA71 0x0020c268 boss_UpdatePatrolMove CONFIRM boss_UpdatePatrolMove pattern timer loads speed from table, reverses at wall or range, starts attack when player near
+GEKAN_AREA71 0x0020c410 boss_CheckOutsideCameraRange RENAME boss_CheckInsideCameraRange returns 1 when object is inside camera rectangle plus margins, 0 when outside; caller treats 0 as inactive
+GEKAN_AREA71 0x0020c46e boss_UpdatePhaseLogic RENAME boss_UpdateJumpAttackSubstates scripted jump attack keyed on parent state 0x14-0x16 and substate byte 0x1b-0x35: turn, aim, arc, land
+GEKAN_AREA71 0x0020cd1a boss_UpdateHoverPatrol CONFIRM boss_UpdateHoverPatrol timer loads vertical speed from table, reverses on collision or range limits
+GEKAN_AREA71 0x0020cde8 boss_AimVelocityAtPlayer CONFIRM boss_AimVelocityAtPlayer angle from dx,dy via divide and table, sets x and y speeds with sign; used by charge
+GEKAN_AREA71 0x0020ced4 boss_StateRecoilLaunch CONFIRM boss_StateRecoilLaunch plays sound, launches upward by facing, bounces on ground then state 10
+GEKAN_AREA71 0x0020cf9c boss_StateStaggerCheck CONFIRM boss_StateStaggerCheck on entry low hit points go to state 0xd else knockback velocity and timers
+GEKAN_AREA71 0x0020d078 boss_StateFlipAndLand CONFIRM boss_StateFlipAndLand flips facing at frame 0xf/0, moves, lands into state 10 on ground contact
+GEKAN_AREA71 0x0020d126 boss_StateHitReaction CONFIRM boss_StateHitReaction steps reaction stages by damage counter, state 0xd when hit points exhausted
+GEKAN_AREA71 0x0020d3fa boss_StateDefeatedSpawnDrops UNSURE boss_StateDefeatedSpawnDrops spawns an object and enters state 0xd on flag 8 but state 6 is also reached by damage recovery, so Defeated is uncertain
+GEKAN_AREA71 0x0020d4d8 boss_StateChargeMove CONFIRM boss_StateChargeMove aims at player, timer phases 10/11/12, moves with tile test, returns to state 0 on landing
+GEKAN_AREA71 0x0020d7e8 boss_StateRecoilSelect CONFIRM boss_StateRecoilSelect picks recoil substate 0xd or 0xe by flags, sets velocity, checks tile hits then death state 0xd
+GEKAN_AREA71 0x0020da4c boss_StateDeathSequence CONFIRM boss_StateDeathSequence zeroes speeds, spawns effects, swaps sprite table, sets remove flag and state 0xe
+GEKAN_AREA71 0x0020db56 prop_UpdateTopLevel RENAME enemyA_TaskUpdate task wrapper calling enemyA_Init then enemyA_UpdateMain per frame, removal flag advances state; not a prop
+GEKAN_AREA71 0x0020dbda prop_UpdateWithOwnerLink RENAME enemyA_ShooterTaskUpdate child task spawned by enemyA_Init, stores owner at +0x50, inits variant then spawns shot on trigger
+GEKAN_AREA71 0x0020dc2e prop_InitFromSpawnRecord UNSURE prop_InitFromSpawnRecord no callers; resets fields, copies position from spawn record, size 0x14, sprite tables; owner unknown
+GEKAN_AREA71 0x0020dd30 enemyA_Init CONFIRM enemyA_Init resets AI fields, positions from spawn data, spawns child shooter task, sets sprite tables and hitbox
+GEKAN_AREA71 0x0020deda enemyA_InitVariant CONFIRM enemyA_InitVariant init for shooter child with type 5 start state, hitbox 0x20, sprite tables
+GEKAN_AREA71 0x0020e1b4 enemyA_SpawnShotOnTrigger CONFIRM enemyA_SpawnShotOnTrigger on trigger value 3 spawns projectile at parent offset table then draws
+GEKAN_AREA71 0x0020e4b4 enemyA_UpdateState1Walk RENAME enemyA_UpdateState1Chase state 1 is the chase set by enemyA_StartChase; goes to state 2 on hit flags or when far from player
+GEKAN_AREA71 0x0020e640 enemyA_StartChase CONFIRM enemyA_StartChase atan to player, velocity from sine table scaled, sets state 1
+GEKAN_AREA71 0x0020e6da enemyA_UpdateState2Sparkle CONFIRM enemyA_UpdateState2Sparkle spawns four effects around object, blinks until counter passes 6, sets remove flag
+GEKAN_AREA71 0x0020e7cc enemyA_UpdateState0Idle CONFIRM enemyA_UpdateState0Idle measures distance to player, delay then retreat or state 0xb
+GEKAN_AREA71 0x0020e8ca enemyA_UpdateState4Wait CONFIRM enemyA_UpdateState4Wait waits for anim end flag then state 3
+GEKAN_AREA71 0x0020e8fc enemyA_UpdateState1AnimEnd CONFIRM enemyA_UpdateState1AnimEnd on anim end picks state 3 or 5 by player side and facing
+GEKAN_AREA71 0x0020e954 enemyA_UpdateState6Turn CONFIRM enemyA_UpdateState6Turn on anim end picks state 3 or 5 by player side and facing
+GEKAN_AREA71 0x0020e99a enemyA_UpdateState5Flip CONFIRM enemyA_UpdateState5Flip on anim end flips facing byte then state 3
+GEKAN_AREA71 0x0020e9c8 enemyA_UpdateState3Attack CONFIRM enemyA_UpdateState3Attack spawns shot at trigger frame, decrements ammo, state 2 when empty
+GEKAN_AREA71 0x0020eb3e enemyA_InitSpawnedShot CONFIRM enemyA_InitSpawnedShot fills new child shot fields from parent template and position
+GEKAN_AREA71 0x0020ebf4 enemyA_UpdateState2Restart CONFIRM enemyA_UpdateState2Restart on anim end resets to state 0 and reseeds delay
+GEKAN_AREA71 0x0020ec5e enemyA_UpdateState10Done CONFIRM enemyA_UpdateState10Done on anim end sets state 2 and command byte
+GEKAN_AREA71 0x0020ec88 enemyA_UpdateHurtStates CONFIRM enemyA_UpdateHurtStates states 7-9 hurt reaction, hit counter vs HP, enters dying state 0xb
+GEKAN_AREA71 0x0020f000 enemyA_UpdateState11Dying CONFIRM enemyA_UpdateState11Dying launches with gravity, falls, sets remove flag below floor
+GEKAN_AREA71 0x0020f11e enemyA_DrawShadowSprite UNSURE enemyA_DrawShadowSprite builds one scaled sprite command from table; shadow role not proven
+GEKAN_AREA71 0x0020f636 enemyA_DrawSpritesScaled CONFIRM enemyA_DrawSpritesScaled loops animation parts emitting scaled sprite commands with flip
+GEKAN_AREA71 0x0020fb40 enemyA_DrawSpritesRotated CONFIRM enemyA_DrawSpritesRotated per-part sprites with offsets from sine table, used by dying state
+GEKAN_AREA71 0x0020ff2c enemyA_DrawSpritesParts CONFIRM enemyA_DrawSpritesParts loops animation parts emitting sprite commands
+GEKAN_AREA71 0x0021047c enemyB_UpdateMain CONFIRM enemyB_UpdateMain state machine with tile collision, knockback, pickup spawn, sprite queue
+GEKAN_AREA71 0x00210846 enemyB_UpdateThrown CONFIRM enemyB_UpdateThrown init then thrown debris with gravity and rotating quad
+GEKAN_AREA71 0x00210954 enemyB_SetKnockback CONFIRM enemyB_SetKnockback sets x and y velocity by hit direction flags
+GEKAN_AREA71 0x0021099e enemyB_SpawnPickupOnce CONFIRM enemyB_SpawnPickupOnce spawns pickup once per id via flag array
+GEKAN_AREA71 0x00210a00 obj_CollideTilesAndObjects CONFIRM obj_CollideTilesAndObjects tile test with position snap, falls back to object collision
+GEKAN_AREA71 0x00210bac obj_CheckGroundAhead CONFIRM obj_CheckGroundAhead scans tile columns for solid then hit objects and collisions
+GEKAN_AREA71 0x00210c8e obj_CollideWithObjects CONFIRM obj_CollideWithObjects box test vs object list, pushes out, returns direction bits
+GEKAN_AREA71 0x00210f34 obj_FindHitObject CONFIRM obj_FindHitObject finds overlapping object in rect, sets its hit flags and counter
+GEKAN_AREA71 0x00210fe2 obj_FindOverlapInRect CONFIRM obj_FindOverlapInRect searches object list for object overlapping rectangle
+GEKAN_AREA71 0x002110cc enemyB_QueueSprites CONFIRM enemyB_QueueSprites appends two sprite commands with facing flip
+GEKAN_AREA71 0x0021129c sprite_QueueRotatedQuad CONFIRM sprite_QueueRotatedQuad appends sprite command with rotated corners from sine table
+GEKAN_AREA71 0x00211ede obj_UpdateBouncingDebris CONFIRM obj_UpdateBouncingDebris gravity, tile bounce, animation, timeout 0x3c

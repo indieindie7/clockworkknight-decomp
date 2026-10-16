@@ -1,0 +1,88 @@
+GEKAN_AREA62 0x00207682 enemy_UpdateAIStateMachine CONFIRM enemy_UpdateAIStateMachine state table plus switch over states 0-12 with per-state handlers, physics and collision calls
+GEKAN_AREA62 0x00207a20 enemy_StateKnockedFlying RENAME enemy_StateFlyUntilWallHit sets fixed horizontal speed by facing; on contact flag sets remove flag and spawns effect; no hit-reaction logic
+GEKAN_AREA62 0x00207a68 enemy_StateWalkForward CONFIRM enemy_StateWalkForward speed by facing, gravity with floor clamp, goes to state 5 on contact
+GEKAN_AREA62 0x00207b0a enemy_StateHurtFlash RENAME enemy_StateDefeatedBurstFlicker clears speed, spawns four effect objects, flickers 6 ticks then sets remove flag (death state)
+GEKAN_AREA62 0x00207bca enemy_StateFallingMove CONFIRM enemy_StateFallingMove horizontal speed by facing, gravity clamp, stops horizontal on ground
+GEKAN_AREA62 0x00207c30 enemy_StateIdleFacePlayer CONFIRM enemy_StateIdleFacePlayer faces player by x compare, near goes to state 0xb
+GEKAN_AREA62 0x00207cb4 enemy_StateChasePlayer RENAME enemy_StateTrackPlayerToThrow does not move; far gives up to state 4, turns if facing away, countdown then state 2 throw
+GEKAN_AREA62 0x00207d4c enemy_StateAfterTurn CONFIRM enemy_StateAfterTurn on anim end returns to state 1 and resets counters
+GEKAN_AREA62 0x00207d78 enemy_StateThrowAttack CONFIRM enemy_StateThrowAttack spawns projectile at anim frame 5, counts throws
+GEKAN_AREA62 0x00207e5c enemy_StateTurnAround CONFIRM enemy_StateTurnAround flips facing at frame 4, returns to state 1
+GEKAN_AREA62 0x00207ea0 enemy_StateJumpArc CONFIRM enemy_StateJumpArc launch velocity from table, gravity, landing to state 0xc or 7
+GEKAN_AREA62 0x00208290 enemy_StateRecoilBounce CONFIRM enemy_StateRecoilBounce recoil velocity bounce, hit point decrement, state 10 on death
+GEKAN_AREA62 0x002083c8 enemy_StateAnimEndToIdle CONFIRM enemy_StateAnimEndToIdle anim end returns to state 0
+GEKAN_AREA62 0x002083f4 enemy_StateAfterHit CONFIRM enemy_StateAfterHit anim end returns to state 1 and resets counters
+GEKAN_AREA62 0x00208424 enemy_StateDamagedStages CONFIRM enemy_StateDamagedStages states 5-7 damage stages by hit points, defeat to 0xc
+GEKAN_AREA62 0x00208742 enemy_StateDefeatedFall CONFIRM enemy_StateDefeatedFall death entry setup then fall with gravity, kill flag off-screen
+GEKAN_AREA62 0x00208884 enemy_ApplyGravityUnlessAirState CONFIRM enemy_ApplyGravityUnlessAirState gravity with floor clamp unless states 8,5,9
+GEKAN_AREA62 0x002088ba enemy_ZeroVelocityUnlessActiveState CONFIRM enemy_ZeroVelocityUnlessActiveState zero vertical speed unless states 8,5,9,0xc
+GEKAN_AREA62 0x002088e8 enemy_ApplyGravityInState3 CONFIRM enemy_ApplyGravityInState3 gravity only in state 3
+GEKAN_AREA62 0x0020890e enemy_SpawnLandingEffects CONFIRM enemy_SpawnLandingEffects landing result spawns effect or enters defeat from state 9
+GEKAN_AREA62 0x002089e6 enemy_SpawnEffectInState9 CONFIRM enemy_SpawnEffectInState9 spawns effect only in state 9
+GEKAN_AREA62 0x00208d62 enemy_DrawBurstSprites CONFIRM enemy_DrawBurstSprites radial ring of sprite commands scaled by camera
+GEKAN_AREA62 0x00209226 npc2_UpdateStateDispatch CONFIRM npc2_UpdateStateDispatch init once then state machine, exits on flag 0x10
+GEKAN_AREA62 0x00209282 npc3_UpdateStateDispatch CONFIRM npc3_UpdateStateDispatch init once then handler; spawned as shot by npc2 spawner
+GEKAN_AREA62 0x00209454 npc2_InitFromParams CONFIRM npc2_InitFromParams init of state struct from spawn params
+GEKAN_AREA62 0x00209560 npc3_InitFromParams CONFIRM npc3_InitFromParams init small 0x14 hitbox object
+GEKAN_AREA62 0x0020965c npc_UpdateMain RENAME boss_UpdateMain main state machine whose handlers are boss_ states 0-0x10 with boss phase and defeat; no callers (pointer dispatch)
+GEKAN_AREA62 0x00209a4a npc2_UpdateStateMachine CONFIRM npc2_UpdateStateMachine states 0-2 rise/wobble/descend, tile check, draw
+GEKAN_AREA62 0x00209aca npc3_UpdateMain CONFIRM npc3_UpdateMain states 0-2, facing scroll, collisions, hitbox 0x10x0xc
+GEKAN_AREA62 0x00209c14 npc2_State0Rise CONFIRM npc2_State0Rise rises along table to apex then state 1
+GEKAN_AREA62 0x00209c8e npc2_State1Wobble CONFIRM npc2_State1Wobble table velocity added to angle, scale from table, countdown to state 2
+GEKAN_AREA62 0x00209d00 npc2_State2Descend CONFIRM npc2_State2Descend descends along table then sets remove flag
+GEKAN_AREA62 0x00209d52 npc2_SpawnShotAtPlayerSide RENAME boss_SpawnShotByFacing called only by boss shoot state; spawns npc3 shot at offset by caller facing and copies hitbox words; not player-side logic
+GEKAN_AREA62 0x00209e6c npc2_CheckTileCollision CONFIRM npc2_CheckTileCollision tile check ahead sets flag 0x20, player overlap flags
+GEKAN_AREA62 0x00209fa0 npc2_DrawShadowSprites UNSURE npc2_DrawShadowSprites draws two scaled sprite commands; nothing shows they are shadows
+GEKAN_AREA62 0x0020a282 npc3_State1 RENAME npc3_State1FlyUntilHit state 1 goes to state 2 and spawns effect on tile or player contact flags
+GEKAN_AREA62 0x0020a354 npc3_State2Countdown CONFIRM npc3_State2Countdown counter then remove flag
+GEKAN_AREA62 0x0020a382 npc3_State0Init CONFIRM npc3_State0Init calls aim helper, x speed by facing, to state 1
+GEKAN_AREA62 0x0020a3d8 npc_State0Idle RENAME boss_State0Idle state 0 of boss machine: timer, distance check, moves toward player, to state 5 at edge
+GEKAN_AREA62 0x0020a4a2 npc_CheckPlayerDistance RENAME boss_CheckPlayerDistance called by boss idle and walk states; picks state by player distance and layer
+GEKAN_AREA62 0x0020a582 boss_UpdateWalkState CONFIRM boss_UpdateWalkState walk speed by facing, state 2 on hit, range limits
+GEKAN_AREA62 0x0020a6b4 boss_IdleWaitTimer RENAME boss_StateFireShot state 3 spawns shot once via spawner, on anim end back to idle with timer
+GEKAN_AREA62 0x0020a73c boss_EnterHitReaction CONFIRM boss_EnterHitReaction state 7 hit-launch arc, hp decrement to 0xc or defeat 0x10
+GEKAN_AREA62 0x0020a9f8 boss_EnterKnockbackState CONFIRM boss_EnterKnockbackState state 0xf spawns effect, knockback velocity by hit flags
+GEKAN_AREA62 0x0020ad26 boss_UpdatePhaseStateMachine RENAME boss_UpdateDamageStages states 9-0xc step through damage stages by hit points, to 0xd or defeat 0x10
+GEKAN_AREA62 0x0020b2d2 boss_BuildSpriteCommands CONFIRM boss_BuildSpriteCommands builds sprite command entries from anim and sprite tables scaled by camera
+GEKAN_AREA62 0x0020ba28 boss_DrawAndUpdateShadow RENAME boss_UpdateExtendedStateMachine dispatches states 0-0x15 to boss handlers then physics and tile checks; not a shadow routine; no callers
+GEKAN_AREA62 0x0020cc12 boss_UpdateAiSubstateMachine RENAME boss_UpdateHitPointStages states 0xa/0xb count hit points down by stages, spawns object in 0xb, to 0xc or 0x14
+GEKAN_AREA62 0x0020d212 boss_UpdateJumpArc UNSURE boss_UpdateJumpArc steps angle and offset sequence, temporarily moves and draws a secondary sprite; role unclear
+GEKAN_AREA62 0x0020d59c boss_SpawnProjectileCommand RENAME boss_HitOverlappingObjects walks object list, tests box overlap, sets knock flags on hit objects, returns 1 on hit; no spawning
+GEKAN_AREA62 0x0020d78a boss_DrawSpriteCommand CONFIRM boss_DrawSpriteCommand appends two scaled VDP1 command entries for the sprite parts from tables
+GEKAN_AREA62 0x0020da0e boss_DrawSpriteCommandSecondary CONFIRM boss_DrawSpriteCommandSecondary same builder looped over part count with extra size offsets from second object
+GEKAN_AREA62 0x0020dffc boss_UpdateMainStateMachine CONFIRM boss_UpdateMainStateMachine picks next state from tables then dispatches states 0-0xd and per-state physics
+GEKAN_AREA62 0x0020e4c8 boss_CheckWallAhead CONFIRM boss_CheckWallAhead tile lookup ahead of boss, tile type 2 sets state 0xd, type 0xf sets flag
+GEKAN_AREA62 0x0020e5dc boss_UpdatePatrolMove CONFIRM boss_UpdatePatrolMove timer-driven speed table, reverses on wall or range, starts attack if player near
+GEKAN_AREA62 0x0020e784 boss_CheckOutsideCameraRange RENAME boss_IsInsideCameraRange returns 1 when inside camera box margins, 0 when outside
+GEKAN_AREA62 0x0020e7e2 boss_UpdatePhaseLogic RENAME boss_UpdateJumpAttackSubstates substate script (0x1b-0x35) for jump toward player: rise, arc, land, turn, back to idle
+GEKAN_AREA62 0x0020f08e boss_UpdateHoverPatrol CONFIRM boss_UpdateHoverPatrol timer-driven vertical speed table, reverses vertical speed on collision or range limits
+GEKAN_AREA62 0x0020f15c boss_AimVelocityAtPlayer CONFIRM boss_AimVelocityAtPlayer angle from dx,dy then x/y speeds from lookup tables with signs
+GEKAN_AREA62 0x0020f248 boss_StateRecoilLaunch CONFIRM boss_StateRecoilLaunch launches with upward velocity by facing, bounces on ground, then state 10
+GEKAN_AREA62 0x0020f310 boss_StateStaggerCheck CONFIRM boss_StateStaggerCheck on entry low hit points go to state 0xd else knock velocity, anim end to state 0xc
+GEKAN_AREA62 0x0020f3ec boss_StateFlipAndLand CONFIRM boss_StateFlipAndLand flips facing at frame edges, moves, lands into state 10
+GEKAN_AREA62 0x0020f49a boss_StateHitReaction CONFIRM boss_StateHitReaction advances reaction stages by hit counter, to state 0xd when hit points exhausted
+GEKAN_AREA62 0x0020f76e boss_StateDefeatedSpawnDrops CONFIRM boss_StateDefeatedSpawnDrops spawns object with push direction bits then state 0xd, anim end resets to state 5
+GEKAN_AREA62 0x0020f84c boss_StateChargeMove CONFIRM boss_StateChargeMove aims at player, timed phases 10/11/12, vertical move with tile test, resets to state 0
+GEKAN_AREA62 0x0020fb5c boss_StateRecoilSelect CONFIRM boss_StateRecoilSelect picks recoil sub-phase by flags, sets velocity, checks collisions, spawns effect then state 0xd
+GEKAN_AREA62 0x0020fdc0 boss_StateDeathSequence CONFIRM boss_StateDeathSequence zeroes speeds, spawns effects, swaps anim table, sets state 0xe with remove flag
+GEKAN_AREA62 0x0020ff60 obj_AllocateSpawn CONFIRM obj_AllocateSpawn allocates object slot plus 0x60 and 0x58 blocks, inits fields by type flags, null on failure
+GEKAN_AREA62 0x00210338 boss_UpdateMainStateMachineB CONFIRM boss_UpdateMainStateMachineB second boss state machine, transition tables then substate dispatch 5-0x15 plus collision
+GEKAN_AREA62 0x00211a6c boss_SubstateSpawnDebris CONFIRM boss_SubstateSpawnDebris timed loop spawns random-offset objects, then state 0x15
+GEKAN_AREA62 0x00211e2c obj_PushOverlappingObjects CONFIRM obj_PushOverlappingObjects walks object list, box test, sets push/hit flags on overlapped objects
+GEKAN_AREA62 0x00212384 obj_DrawSpritePartsCentered CONFIRM obj_DrawSpritePartsCentered emits scaled VDP1 commands for each frame part around camera centre
+GEKAN_AREA62 0x002126f4 obj_InitFromSpawnPointD CONFIRM obj_InitFromSpawnPointD inits object from spawn record position, gravity, tables, spawns trail child
+GEKAN_AREA62 0x002128d0 obj_UpdateBouncingProjectile CONFIRM obj_UpdateBouncingProjectile moves, bounces off walls and floor with halved speed, hits objects
+GEKAN_AREA62 0x00212b82 obj_RunMainLoopTrail CONFIRM obj_RunMainLoopTrail per-frame driver for trail follower: init, update, draw, or end if parent gone
+GEKAN_AREA62 0x00212bf4 obj_InitTrailFromParent CONFIRM obj_InitTrailFromParent places follower at parent position, copies flags, resets counters and tables
+GEKAN_AREA62 0x00212c78 obj_UpdateTrailFollow CONFIRM obj_UpdateTrailFollow mirrors parent facing and position, small state machine, spawns second follower
+GEKAN_AREA62 0x00212df6 obj_RunMainLoopTrail_2 RENAME obj_RunMainLoopTrailSecond per-frame driver of second follower, skips when parent state 2; drop numeric suffix
+GEKAN_AREA62 0x00212e7e obj_InitTrailFromParent_2 RENAME obj_InitTrailSecondFromParent inits second follower from parent, hitbox, tables, plays sound; drop numeric suffix
+GEKAN_AREA62 0x00212f00 obj_UpdateTrailFollowGrandparent CONFIRM obj_UpdateTrailFollowGrandparent follows grandparent position, steps animation, camera scroll, hits objects
+GEKAN_AREA62 0x0021301c obj_StepAnimationLoopA CONFIRM obj_StepAnimationLoopA advances frame by delay table, wraps, swaps to table B by global range
+GEKAN_AREA62 0x002130ac obj_StepAnimationLoopB CONFIRM obj_StepAnimationLoopB same stepping, swaps back to table A when global out of range
+GEKAN_AREA62 0x0021313c obj_SetCameraScrollFromObject CONFIRM obj_SetCameraScrollFromObject writes scaled 16.16 scroll values from object offset to camera, counts
+GEKAN_AREA62 0x002131dc obj_CollideHorizontalTiles CONFIRM obj_CollideHorizontalTiles tile checks left and right by half width, pushes out of walls and off overlapping objects
+GEKAN_AREA62 0x00213514 obj_CollideVerticalTiles CONFIRM obj_CollideVerticalTiles tile checks below and above across width, snaps to floor or ceiling, handles standing on objects
+GEKAN_AREA62 0x00213840 obj_CheckOverlapWithList RENAME obj_FlagOverlappingTypeOneObjects walks object list, box test, sets field to 1 on type-1 entries; returns 0x10 at list end
+GEKAN_AREA62 0x0021399c obj_DrawSprite CONFIRM obj_DrawSprite builds one VDP1 command from frame part with flip and optional rotation, culls off screen
+GEKAN_AREA62 0x0021483e obj_UpdateFallingDebris CONFIRM obj_UpdateFallingDebris moves with gravity, bounces off tiles at half speed, steps animation, ends after timer

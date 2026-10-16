@@ -1,0 +1,78 @@
+0x00200000 func boss_Update hand per-frame entry; runs boss_DispatchState on object data at +0x18
+0x0020002e func boss_Init hand initialises boss struct fields state, position, velocity, frame pointers
+0x00200250 func boss_DispatchState hand switch on state byte at +8 calling the per-state handlers
+0x00200468 func boss_ChooseNextState hand picks next state from random and distance, returns state id
+0x002005f4 func boss_StateIntro hand intro state, advances animation and sets next state
+0x00200720 func boss_StateIdleWait hand short idle wait state returning next state
+0x0020078c func boss_StateWalk hand walk state moving x by velocity toward player
+0x00200894 func boss_StateTurn hand provisional turn state flipping facing flag at +0xa
+0x00200996 func boss_StateStep hand small step state with animation tick
+0x00200a38 func boss_StateStepEnd hand provisional end of step state returning to chooser
+0x00200aa6 func boss_StateAimAtPlayer hand attack windup with counter and animation frames (was boss_StateAttackWindup)
+0x00200d00 func boss_StateTurnAround hand attack swing state checking frame counter (was boss_StateAttackSwing)
+0x00200df8 func boss_StateHopArc hand attack recovery state with velocity decay (was boss_StateAttackRecover)
+0x0020100e func boss_StateJumpStart hand provisional jump start sets vertical velocity and gravity
+0x0020115e func boss_StateRiseAndSweep hand airborne update applying gravity at +0x48 (was boss_StateJumpAir)
+0x002012b2 func boss_StateFallToFloor hand landing check against floor height returning flag (was boss_StateJumpLand)
+0x0020135a func boss_StateJumpLandRecover hand provisional landing recovery animation
+0x002014f4 func boss_StateCharge hand provisional charge state moving fast in facing direction
+0x00201658 func boss_StateGlideToAnchor hand charge end slowing down (was boss_StateChargeEnd)
+0x00201730 func boss_StateWaitAnimMark hand small helper advancing animation frame index (was boss_AnimStepFrame)
+0x00201764 func boss_StateHurtStart hand provisional hurt reaction start sets knockback velocity
+0x00201868 func boss_StateHurtRecover hand provisional hurt recovery advancing animation
+0x00201960 func boss_StateProjectileSpawn hand spawns projectile child object during attack
+0x00201b8c func boss_StateBounceArc hand waits after projectile spawn with counter (was boss_StateProjectileWait)
+0x00201dcc func boss_StateDefend hand provisional defensive state animation and timer
+0x00201ede func boss_StateSineSweep hand defend end with state reset (was boss_StateDefendEnd)
+0x002020e4 func boss_StateSpecialA hand provisional special attack state A animation
+0x00202292 func boss_StateSpecialB hand provisional special attack state B animation
+0x0020243a func boss_StateCircleSpecial hand large special attack state with sub-steps at +0x26 (was boss_StateSpecialC)
+0x0020297c func boss_StateDeath hand death sequence state with explosions, flags and sub-steps
+0x00202e4a func boss_StateFadeOut hand death fade out state, ends boss object
+0x00202f80 func boss_PickAttackState hand tiny helper returning attack state id
+0x00202fac func boss_TakeDamage hand damage handler reducing health, selects hurt or death state
+0x00203280 func boss_InitPartsA hand small helper storing previous state and new state (was boss_SetStateHelper)
+0x002032d8 func boss_PartUpdateFlagSpawns hand adds velocities to x y z fixed point position (was boss_ApplyVelocity)
+0x0020351c func boss_InitPartsB hand adds gravity to vertical velocity (was boss_ApplyGravity)
+0x00203564 func boss_PartUpdateOnPhase6 hand clamps y position to floor level (was boss_ClampToFloor)
+0x002036e6 func boss_InitPartsC hand sets facing flag toward player (was boss_FaceTarget)
+0x00203744 func boss_PartUpdateOnPhaseB hand tests player overlap with boss hitbox (was boss_CheckPlayerHit)
+0x002037e2 func boss_GetPartOffset hand spawns child object with params and callback pointer (was boss_SpawnChild)
+0x0020392c func part_InitSimple hand provisional child part init storing parent pointer
+0x00203958 func part_UpdateHitboxTabled hand child part update following parent with offset (was part_UpdateOrbit)
+0x00203c98 func part_InitFollow hand provisional child part init small
+0x00203cbc func part_UpdateHitboxFollow hand child part follows parent position (was part_UpdateFollow)
+0x00203ea0 func part_InitSpriteSet hand child part advance animation (was part_UpdateAnim)
+0x00203eea func part_UpdateWaitDraw hand child part check animation finished returns char (was part_CheckDone)
+0x00203f5a func part_StatePlaceAtParent hand child part wait state (was part_StateWait)
+0x00203ff0 func part_InitFlyAimed hand child part flying state with velocity (was part_StateFly)
+0x00204156 func part_UpdateFlyTimed hand child part hit reaction (was part_StateHit)
+0x0020421a func part_InitFlying hand child part expiry and removal (was part_StateExpire)
+0x00204290 func part_UpdateOrbitBob hand projectile part update returns char flag (was part_UpdateProjectile)
+0x002043fc func part_InitAtBossX hand projectile movement step (was part_UpdateProjectileMove)
+0x002044ba func part_UpdateSpawnTimed hand bounds check returning int (was part_CheckBounds)
+0x002045c4 func part_InitRandomNearParent hand bullet part init (was part_InitBullet)
+0x00204630 func part_UpdateSimpleDraw hand trivial helper returning constant (was part_StubReturnFlag)
+0x002046aa func part_InitRandomBodyOffset hand bullet part update returns int (was part_UpdateBullet)
+0x0020476e func part_UpdateAtStoredOffset hand child part small state setter (was part_SetStateSmall)
+0x0020480c func part_InitSpriteTables hand tiny child part init (was part_InitSmallA)
+0x00204830 func part_UpdateAimedAtParent hand tiny child part init (was part_InitSmallB)
+0x0020489c func part_InitFalling hand small child part init (was part_InitSmallC)
+0x002048e6 func part_UpdateFalling hand small child part update (was part_UpdateSmall)
+0x00204980 func stub_00204980 hand tiny wrapper function with single call
+0x00204998 func part_SpawnAtRotatedOffset hand spawns part with four parameters returns int (was part_SpawnWithParams)
+0x00204b6c func part_InitAtTableOffset hand large child part init (was part_InitLarge)
+0x00204bf2 func part_UpdateMain hand provisional large child part update with many sub-states
+0x002055d0 func part_InitAtParentPos hand effect part init (was part_InitEffect)
+0x00205604 func part_UpdateArcPiece hand effect part update returns ushort (was part_UpdateEffect)
+0x00205760 func part_InitFixedPosByParam hand sets part animation frame pointer (was part_SetFrame)
+0x002057dc func stub_002057dc hand tiny function setting a field
+0x0020583e func part_InitRing hand part init setting +0x34 +0x50 +0x54 +0x1a by parent index at +0x20
+0x002058a0 func part_UpdateRingOrbit hand orbit position from sine table around parent, then draw scaled via part_DrawScaled
+0x00205996 func part_InitRingB hand part init setting flags +0x28 and frame table pointer by parent index
+0x00205a10 func part_UpdateRingSpin hand spinning orbit update by parent index with angle step, then part_DrawScaled
+0x00205b20 func part_GetDistanceBucket hand bucket 0-4 from x distance to camera and facing
+0x00205b90 func math_RandomState hand LCG random update, returns 0 1 or 2
+0x00205bdc func part_DrawRotatedSprites hand builds VDP1 sprite commands with rotation, advances animation, returns -1 at end
+0x002060b2 func part_DrawScaledSprites hand builds VDP1 scaled or rotated quads with off-screen cull, advances animation
+0x002066c6 func part_DrawAimedSprites hand builds VDP1 quads aimed using parent boss frame data, advances animation

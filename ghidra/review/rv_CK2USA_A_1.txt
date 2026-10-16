@@ -1,0 +1,95 @@
+CK2USA_A 0x060030ec pad_UpdateAutoRepeatState UNSURE pad_UpdateAutoRepeatState toggles flag on pad bit 8 and counts frames; purpose of the counter not proven, no callers
+CK2USA_A 0x06003354 sys_SleepStandby RENAME sys_HaltOnError executes sleep as a trap; callers are heap corruption check, null list arg and CDC reset failure paths
+CK2USA_A 0x060034fe sound_ReadCommandStatus RENAME cdc_PollStatusNotify calls cdc_GetStatusChecked into 16-byte buffer, invokes a hook if status byte is 0x26; nothing sound related
+CK2USA_A 0x060039be obj_KillDeeperThan CONFIRM obj_KillDeeperThan walks object list and zeroes update pointer where depth byte at +0x13 exceeds argument
+CK2USA_A 0x06004632 vdp2_InitScrollRegsByMode CONFIRM vdp2_InitScrollRegsByMode mode 0/2 initialises scroll state struct fields and clears flag bits
+CK2USA_A 0x06004832 cmd_ClearTwoSlots CONFIRM cmd_ClearTwoSlots zeroes both slot structs reached via two-pointer table
+CK2USA_A 0x06004850 cmd_SetSlot CONFIRM cmd_SetSlot fills slot by index with id, param, pointer and active byte 1; caller passes slot 0, 0x7f, data pointer
+CK2USA_A 0x060049e2 sys_CallTwoHooks CONFIRM sys_CallTwoHooks calls two function pointers, second with the char arg, returns 0
+CK2USA_A 0x060049fe pad_MapButtonToCode CONFIRM pad_MapButtonToCode maps button bits to codes 10-13 or table lookup; caller uses result as direction code
+CK2USA_A 0x06004a9c menu_SelectHandlerByCode UNSURE menu_SelectHandlerByCode picks one of five pointers by pad code and passes to sound driver loader; exact role unclear
+CK2USA_A 0x06004c1c vdp1_BeginFrameCommands CONFIRM vdp1_BeginFrameCommands waits VDP1, writes system clip command, swaps command buffer, resets count
+CK2USA_A 0x06005142 pad_ParseSaturnPeripheral CONFIRM pad_ParseSaturnPeripheral decodes SMPC peripheral data for digital/3D/analog pads, returns type; caller pad_UpdateInput uses it
+CK2USA_A 0x06005a80 text_ResetBuffers RENAME vdp2_ResetRegisterShadow copies default 0x48-word table into the VDP2 register shadow at 0x0604738c then writes it to VDP2 registers; called from reset and video init
+CK2USA_A 0x06005b42 text_SyncBuffers RENAME vdp2_SyncRegisterShadow writes shadow at 0x0604738c to VDP2 registers (or a partial set when flag 0), called each vblank and after screen init
+CK2USA_A 0x06006682 vdp2_CommitRegisterCache CONFIRM vdp2_CommitRegisterCache if dirty copies cached register block to hardware; vblank caller passes cache
+CK2USA_A 0x06006818 vdp2_BuildRotationParams CONFIRM vdp2_BuildRotationParams sine table from two angles fills rotation matrix coefficients of a param block
+CK2USA_A 0x060069f4 vdp2_BuildRotationParamsB CONFIRM vdp2_BuildRotationParamsB one angle via sine table sets start coordinates and increments in rotation block
+CK2USA_A 0x06006af8 vdp2_FillRotationLineTable CONFIRM vdp2_FillRotationLineTable fills per-line table at 0x06047528 using helper chosen by mode byte at +0x79
+CK2USA_A 0x06006dc0 collide_PrepareMeshTest CONFIRM collide_PrepareMeshTest clears per-vertex flag buffer, transforms mesh then runs overlap helpers, returns 0 or -1
+CK2USA_A 0x0600752c collide_TransformMeshRelative CONFIRM collide_TransformMeshRelative offsets vertices by object pos with mirror flag, face-facing flags, projects flagged vertices by divide
+CK2USA_A 0x06007cac collide_TestObjectVsMesh RENAME collide_ComputeFaceFacingFlags takes object pair from globals, offsets short-vertex mesh by relative position (mirror flag), dot products per face write facing flag bytes; no hit result returned
+CK2USA_A 0x06007f68 collide_FaceBoundsCheck CONFIRM collide_FaceBoundsCheck min/max of 4 face vertices against screen limits, returns -1 if outside else writes z range
+CK2USA_A 0x06008264 collide_BuildFaceSprite CONFIRM collide_BuildFaceSprite clamps projected quad corners and queues VDP1 command with limit check
+CK2USA_A 0x06008770 collide_TestObjectVsMesh_2 RENAME collide_ComputeFaceFacingFlagsByteVerts same as facing-flag pass but byte vertices and per-face vertex-set offset (0xc00 stride)
+CK2USA_A 0x06008ed6 sprite_QueueCommand_2 RENAME sprite_QueueQuadCommand allocates 16-halfword VDP1 entry with limit check, fills from prebuilt quad block; suffix not allowed; caller is the face sprite builder
+CK2USA_A 0x060091e8 collide_FaceBoundsCheck_2 RENAME collide_FaceBoundsCheckFixedBuf same bounds test as the base version but reads vertices from fixed buffer 0x0604e030, no base arg
+CK2USA_A 0x06009376 collide_BuildFaceSprite_2 RENAME collide_BuildFaceSpriteFixedBuf builds clamped quad from fixed vertex buffer with depth tweak by flags then calls sprite_QueueQuadCommand
+CK2USA_A 0x06009cd8 sys_VblankUpdateTasks CONFIRM sys_VblankUpdateTasks commits VDP2 color/register caches, countdown flag, syncs registers and flushes queues
+CK2USA_A 0x06009e7c data_QueueAssetCopyFromEntry CONFIRM data_QueueAssetCopyFromEntry if entry pointer set pushes src/dst/size triple on copy queue
+CK2USA_A 0x0600a154 math_Atan2Table CONFIRM math_Atan2Table octant angle from ratio via divide and lookup table, no callers to refine
+CK2USA_A 0x0600a2ca snd_ClearCommandState CONFIRM snd_ClearCommandState zeroes two sound counters and the command pair table; called from game reset
+CK2USA_A 0x0600a328 snd_SendSoundRecordList CONFIRM snd_SendSoundRecordList queues sound commands and copies record data into sound RAM
+CK2USA_A 0x0600a46a snd_LoadDriverXsndTbtlBin CONFIRM snd_LoadDriverXsndTbtlBin sound reset commands, loads file by param into sound RAM, sets up driver; string XSNDTBTL_BIN referenced
+CK2USA_A 0x0600a674 snd_QueueCommandStop CONFIRM snd_QueueCommandStop calls snd_QueueCommand8 with command 6, zeros; used before loading sound data
+CK2USA_A 0x0600a6c4 snd_QueueCommandFromTable5 CONFIRM snd_QueueCommandFromTable5 copies 5-byte record by index plus command byte and pushes to ring; -1 if table null
+CK2USA_A 0x0600a714 snd_QueueCommandFromStageTable CONFIRM snd_QueueCommandFromStageTable record picked via stage and index tables, pushed to ring
+CK2USA_A 0x0600a762 snd_QueueCommandFromPtr CONFIRM snd_QueueCommandFromPtr indexes a pointer table, -1 if entry is 0xff, else pushes 5-byte record to ring
+CK2USA_A 0x0600a854 snd_RingPopCommandToDriver CONFIRM snd_RingPopCommandToDriver pops 16-byte ring record into driver mailbox when mailbox is free
+CK2USA_A 0x0600a8c0 gfs_InitOrSystemError CONFIRM gfs_InitOrSystemError calls gfs_Init, shows error screen with SYSTEM ERROR text on negative, then CDC init command
+CK2USA_A 0x0600a9f4 gfs_LoadFileVerifySize CONFIRM gfs_LoadFileVerifySize opens file, reads sectors, compares read size to expected, error screen on mismatch; many loaders call it
+CK2USA_A 0x0600aaa4 gfs_OpenFileByNameRetry RENAME gfs_LoadFileToAddress no retry: looks up name, reads whole file into destination arg, error screen on negative; callers load overlay BIN files then call them
+CK2USA_A 0x0600ab44 gfs_OpenFileCloseOnError UNSURE gfs_OpenFileCloseOnError opens, allocs handle, calls an unnamed helper then frees handle; helper unknown, no callers
+CK2USA_A 0x0600ac80 gfs_ChainNextSectorRead RENAME gfs_FinishLoadWaitAndFree computes sector count rounded up, waits transfer loop on global handle then tail-calls free; shared tail of loader
+CK2USA_A 0x0600ae70 cd_ResetControlBlockFields RENAME vdp2_InitScrollStateDefault same struct 0x0604738c as scroll init by mode, mode 0 defaults plus clears; caller is error screen setup, nothing CD related
+CK2USA_A 0x0600af04 smpc_RestartSlaveSh2 CONFIRM smpc_RestartSlaveSh2 SMPC command 3 then delay, hook call, command 2; slave off then on
+CK2USA_A 0x0600b1d8 dbg_MemoryViewerLoop CONFIRM dbg_MemoryViewerLoop pad scrolls address by rows/pages, draws grid of hex words with blinking cursor, exits on start bit; no callers
+CK2USA_A 0x0600b840 anim_InitObject CONFIRM anim_InitObject zeroes frame/timer/flags fields of fixed anim object, sets tables, flag at 0x06046044
+CK2USA_A 0x0600b890 anim_UpdateAndDraw CONFIRM anim_UpdateAndDraw advances frame via anim_AdvanceFrame then writes VDP1 command words from frame data
+CK2USA_A 0x0600ba58 anim_AdvanceFrame CONFIRM anim_AdvanceFrame steps frame timer and sequence index, wraps at count, sets finished flag bit 0
+CK2USA_A 0x0600bb18 bup_CheckSaveHeader RENAME bup_EnsureSaveFileExists backup RAM lookup of a named entry, creates it via the device vtable if missing; returns 0 ok, 1/2 on device status
+CK2USA_A 0x0600bd70 bup_WriteBlock CONFIRM bup_WriteBlock SMPC-locked backup RAM write through device vtable, clears param on failure and returns status
+CK2USA_A 0x0600beac bup_ReadBlock UNSURE bup_ReadBlock builds a 0x1c header with date fields then calls vtable slot +0x10 with the buffer; could be a write/create, not clearly a read
+CK2USA_A 0x0600c1ac bup_LoadClockDataDate CONFIRM bup_LoadClockDataDate validates header bytes, reads RTC via INTBACK, converts BCD year/month/day/time into save struct
+CK2USA_A 0x0600c3ca bup_CompareHeaderBytes CONFIRM bup_CompareHeaderBytes compares 8 bytes against fixed header, returns 1 on full match; sole caller is the date loader
+CK2USA_A 0x0600c43a smpc_IntbackRequest CONFIRM smpc_IntbackRequest SF wait, COMREG 0x10 INTBACK, copies OREG bytes to caller buffer
+CK2USA_A 0x0600c4f0 vdp2_LoadScreenSetByMode CONFIRM vdp2_LoadScreenSetByMode inits video then loads background set B for mode 1 or A for mode 2, sets shadow bit
+CK2USA_A 0x0600c528 vdp2_InitAndWaitVblank CONFIRM vdp2_InitAndWaitVblank inits video, sets shadow bit, loops until TVSTAT bit 3
+CK2USA_A 0x0600c56c video_InitHardwareRegs CONFIRM video_InitHardwareRegs SMPC command, VDP2 shadow clear, calls screen struct/title graphics/priority setup, stops sound
+CK2USA_A 0x0600c66c video_InitScreenStructA RENAME vdp2_InitRegisterShadowDefaults fills the VDP2 register shadow at 0x0604738c with default scroll/offset/flag values, sets priorities, then syncs shadow
+CK2USA_A 0x0600c722 vdp2_FillMapTableA CONFIRM vdp2_FillMapTableA copies 0x1d x 2 word table with added offset into map memory
+CK2USA_A 0x0600c73a vdp2_ClearMapTable CONFIRM vdp2_ClearMapTable writes one constant word over 2 rows of 0x1d entries
+CK2USA_A 0x0600c75e vdp2_LoadBackgroundSetA CONFIRM vdp2_LoadBackgroundSetA decompresses one block, copies palette halfwords, fills 0x2c x 0x1c map with offset; twin of set B
+CK2USA_A 0x0600c7f4 vdp2_LoadBackgroundSetB CONFIRM vdp2_LoadBackgroundSetB same shape as set A with different source tables
+CK2USA_A 0x0600c884 vdp2_LoadTitleGraphics CONFIRM vdp2_LoadTitleGraphics decompresses/copies several character and palette blocks into VDP2 RAM; also used by read-error screen
+CK2USA_A 0x0600c93c vdp2_LoadPaletteAndMapData CONFIRM vdp2_LoadPaletteAndMapData decompresses blocks and copies word runs into color RAM and map areas
+CK2USA_A 0x0600cb7c sys_InitSubsystemsZero CONFIRM sys_InitSubsystemsZero calls ten init/reset routines with zero args in sequence; no callers
+CK2USA_A 0x0600ce04 movie_ListStateMachine CONFIRM movie_ListStateMachine five-state sequencer: loads scene, waits on pad/timer, plays next movie index, ends past index 0xb
+CK2USA_A 0x0600d024 movie_SetupSceneByIndex CONFIRM movie_SetupSceneByIndex switch selects scene data pointer then clears and copies map/palette and decompresses graphics
+CK2USA_A 0x0600d120 video_InitScreenStructB RENAME vdp2_InitRegisterShadowDefaultsB same register-shadow default fill as the renamed A variant with different constants; called by movie image loader
+CK2USA_A 0x0600d27c movie_PlayAviByIndex CONFIRM movie_PlayAviByIndex index selects a movie file name and flags, then calls the loader (special cases for two indices)
+CK2USA_A 0x0600d368 boot_LoadProgramByRegion CONFIRM boot_LoadProgramByRegion selects a program file by mode code (region/stage check), loads it, copies a small stub, resets VDP regs and jumps into it
+CK2USA_A 0x0600d4a2 cheat_CheckSequenceStepA CONFIRM cheat_CheckSequenceStepA matches pad bits against table entry per step, advances counter, sets a global flag after 12 steps
+CK2USA_A 0x0600d544 cheat_CheckSequenceStepB CONFIRM cheat_CheckSequenceStepB same step matcher with a second table and a different flag
+CK2USA_A 0x0600d5a4 title_Init CONFIRM title_Init clears VDP2 control bits, sets priorities, decompresses title graphics, zeroes title state and sprite tables
+CK2USA_A 0x0600d65e title_Update CONFIRM title_Update steps animation and sprites, small state machine waiting for start button, 0x78-frame timer
+CK2USA_A 0x0600d794 title_PushSpriteCommand CONFIRM title_PushSpriteCommand appends a 0x20-byte VDP1 command with position and divided offsets for the corner points
+CK2USA_A 0x0600d92c title_StepAnimation CONFIRM title_StepAnimation counts down frame timer, advances sequence/frame indices from tables, then pushes VDP1 commands for title sprites
+CK2USA_A 0x0600db00 title_DrawSpriteGroup CONFIRM title_DrawSpriteGroup for two slots either spawns a sprite with random-derived fields or counts its life down; feeds sprite push in step routine
+CK2USA_A 0x0600dce0 math_Div1Chain32 CONFIRM math_Div1Chain32 unrolled 32 DIV1 steps signed division (r0 divisor, r1 dividend); called widely for divides
+CK2USA_A 0x0600e294 gfs_Init CONFIRM gfs_Init validates open-max 1..24 and work area alignment, inits work area, drive/volume checks, sets dir table, error code on bad args
+CK2USA_A 0x0600e380 gfs_OpenFileById UNSURE gfs_OpenFileById with nonzero buffer arg allocates handle, gets size, reads and frees; with zero arg returns a stored/current value; semantics of first arg unclear
+CK2USA_A 0x0600e41e gfs_SetDirTable CONFIRM gfs_SetDirTable stores or clears directory table fields in the GFS work area, copies table, finds first set flag, error 0
+CK2USA_A 0x0600e470 gfs_GetDirEntryName RENAME gfs_FindFileIndexByName calls name search over current dir table and returns entry index; callers pass a file name string and use result as index
+CK2USA_A 0x0600e4be gfs_GetDirEntryPtr CONFIRM gfs_GetDirEntryPtr range-checks index against table count and returns entry pointer plus 0xc, error otherwise
+CK2USA_A 0x0600e520 gfs_AllocHandle CONFIRM gfs_AllocHandle finds free handle slot, picks 12- or 24-byte entry by dir mode, opens handle on device, sets error on failure
+CK2USA_A 0x0600e5b0 gfs_FreeHandle CONFIRM gfs_FreeHandle releases handle resources and closes it if nonnull, sets error 0; used after every load
+CK2USA_A 0x0600e5cc gfs_SeekHandle CONFIRM gfs_SeekHandle whence 0 start 1 current 2 end, range-checks against file size, calls per-type seek hook
+CK2USA_A 0x0600e674 gfs_HandleGetPosition CONFIRM gfs_HandleGetPosition calls per-type position hook from table, error on null handle
+CK2USA_A 0x0600e6b2 gfs_IsEndOfFile CONFIRM gfs_IsEndOfFile returns 1 when position is at or past file size
+CK2USA_A 0x0600e6fa gfs_HandleStartRead UNSURE gfs_HandleStartRead gets size, returns 0 if empty else calls an unresolved function pointer; no callers, effect unclear
+CK2USA_A 0x0600e744 gfs_GetHandleFileSize CONFIRM gfs_GetHandleFileSize unpacks handle file info, returns size, zeroes it when flags 8 and 0x10 both set
+CK2USA_A 0x0600e7a8 gfs_GetFileInfo CONFIRM gfs_GetFileInfo unpacks handle file info, returns byte offset ((sector-1)*0x800+off) and flag word with low bits masked
+CK2USA_A 0x0600e812 gfs_ReadFromHandle CONFIRM gfs_ReadFromHandle allocates handle, seeks to offset, computes sector count, runs the transfer wait loop, frees handle
+CK2USA_A 0x0600e8bc gfs_TransferWaitLoop CONFIRM gfs_TransferWaitLoop starts transfer then polls handle and CD status until done, error on timeout
+CK2USA_A 0x0600e9ec gfs_StartTransferToBuffer CONFIRM gfs_StartTransferToBuffer clamps count to remaining bytes, sets up buffer/size, adds handle to active list, error if busy

@@ -1,0 +1,84 @@
+GEKAN_A 0x0602b87c gfs_StreamPlanRead CONFIRM gfs_StreamPlanRead computes bytes for this pass, sets read range or advances position, outputs state 1/2/4
+GEKAN_A 0x0602b9c4 gfs_StreamOpen CONFIRM gfs_StreamOpen allocs pipe and file slots, queues commands, returns 1 on success; called by file handle init
+GEKAN_A 0x0602bac8 gfs_StreamReadChunk CONFIRM gfs_StreamReadChunk queues read task, pumps, returns bytes read; used by SetPosition and PlanRead
+GEKAN_A 0x0602bb84 gfs_StreamSetCallback UNSURE gfs_StreamSetCallback stores value at +0x18 and calls two indirect fns; no callers, purpose not provable
+GEKAN_A 0x0602bbc0 gfs_StreamFlushCall CONFIRM gfs_StreamFlushCall queues a task on stream then pumps; used by StreamSeek when outside buffered window
+GEKAN_A 0x0602bbd8 gfs_StreamGetPosition CONFIRM gfs_StreamGetPosition returns sum of two position fields; used for current position everywhere
+GEKAN_A 0x0602bbf4 gfs_StreamSeek CONFIRM gfs_StreamSeek absolute/relative seek, flushes when outside window, returns new position
+GEKAN_A 0x0602be58 gfs_StreamCloseCall RENAME gfs_StreamSeekDisc wraps cdq_CheckLockAndStatus (which calls cdc_SeekDisc); FileSeekToSector passes sector struct between lock and unlock, not a close
+GEKAN_A 0x0602be6a gfs_StreamOpenPipe UNSURE gfs_StreamOpenPipe queues task1 and pumps, returns 1/0; only caller is unrelated so pipe claim unproven
+GEKAN_A 0x0602bea6 gfs_StreamAllocHandle RENAME gfs_StreamLockDrive calls cd_LockDrive, stores handle at +0x1c, 0 on negative; caller pairs it with unlock
+GEKAN_A 0x0602bede gfs_StreamFreeHandle RENAME gfs_StreamIsLocked calls cd_IsLockedBy on handle; caller FileSeekSelectFilter tests result as a boolean precondition
+GEKAN_A 0x0602beea gfs_StreamResetHandle RENAME gfs_StreamUnlockDrive calls cd_UnlockDrive on handle; caller releases after the locked command
+GEKAN_A 0x0602bf00 cdc_InitDrive CONFIRM cdc_InitDrive long CD block init: status, abort, sector length, HIRQ waits with retry, TOC data track check, error codes
+GEKAN_A 0x0602c156 cd_AllocFileSlot CONFIRM cd_AllocFileSlot finds free of 0x18 flags, marks used, returns index or -3
+GEKAN_A 0x0602c190 cd_FreeFileSlot CONFIRM cd_FreeFileSlot checks range and in-use, clears flag, error codes
+GEKAN_A 0x0602c1be cd_AllocPipeSlot CONFIRM cd_AllocPipeSlot finds free of 0x18 flags, marks used, returns index or -4
+GEKAN_A 0x0602c1ec cd_ReleasePipeSlot CONFIRM cd_ReleasePipeSlot validates, queues task, waits for completion, clears flag
+GEKAN_A 0x0602c274 cdc_ReadHirqMasked RENAME cdc_ReadTrackInfoMasked calls cdc_SetStatusByteCmd3 twice (as InitDrive does for TOC/data track check), returns masked word; no HIRQ read
+GEKAN_A 0x0602c29a cd_LockDrive CONFIRM cd_LockDrive sets lock flag, bumps lock counter, returns counter or -5 if already locked
+GEKAN_A 0x0602c2d8 cd_UnlockDrive CONFIRM cd_UnlockDrive clears lock flag if id matches, error otherwise
+GEKAN_A 0x0602c2fe cd_IsLockedBy CONFIRM cd_IsLockedBy true when locked and id equals param
+GEKAN_A 0x0602c324 cdq_QueueSimpleCmd CONFIRM cdq_QueueSimpleCmd validates slot, appends 16-byte entry to command queue, runs task0 executor
+GEKAN_A 0x0602c3c0 cdq_ConnectPipeToFilter UNSURE cdq_ConnectPipeToFilter calls cdc_GetFilterMode and one unnamed fn; no callers, filter/pipe link unproven
+GEKAN_A 0x0602c402 cdq_QueueTask1 CONFIRM cdq_QueueTask1 checks slot and lock id, sets task1 busy, runs task1 executor
+GEKAN_A 0x0602c462 cdq_CheckStatusAndSetFlag RENAME cdq_CheckStatusAndPlay checks lock id and status, clears HIRQ, calls cdc_PlayDisc with param, sets flag
+GEKAN_A 0x0602c4ca cdq_QueueTask2 CONFIRM cdq_QueueTask2 fills task2 request if idle, marks busy, runs executor; used for read/seek
+GEKAN_A 0x0602c538 cdq_QueueTask3 CONFIRM cdq_QueueTask3 if task3 idle and unowned records owner, fills 3 params, runs executor
+GEKAN_A 0x0602c58c cdq_EndTask3 CONFIRM cdq_EndTask3 releases owner at +0x34 after end callback, error if no owner
+GEKAN_A 0x0602c5d2 cdq_QueueTask4 CONFIRM cdq_QueueTask4 if task4 idle and not owner, fills slot and 2 params, runs executor
+GEKAN_A 0x0602c62c cdq_IsTask4ActiveFor RENAME cdq_IsTask4IdleFor returns 0 when task4 busy with slot id, 1 otherwise; ReleasePipeSlot proceeds when result is 1, so name was inverted
+GEKAN_A 0x0602c64c cdc_GetStatusPacket CONFIRM cdc_GetStatusPacket fetches status packet with fallback, returns HIRQ flags; used by many status checks
+GEKAN_A 0x0602c6c6 cdq_CheckLockAndStatus RENAME cdq_CheckStatusAndSeek checks lock id and status then calls cdc_SeekDisc with param; callers pass sector struct to seek
+GEKAN_A 0x0602c734 cdq_QueueTask5 CONFIRM cdq_QueueTask5 validates two slot ids, fills 4 params if idle, runs task5 executor
+GEKAN_A 0x0602c7c2 cdq_ReleaseSlotCheck UNSURE cdq_ReleaseSlotCheck validates slot, calls indirect fn, finish handler; no callers and callee unresolved
+GEKAN_A 0x0602c80c cdq_QueueTask7 CONFIRM cdq_QueueTask7 validates slot, fills task7 request, mode 3 or 1, runs executor; used by drive-ready wait
+GEKAN_A 0x0602c890 cdq_QueueTask6 CONFIRM cdq_QueueTask6 validates 3 slot ids, appends 12-byte entry (max 0x18), runs task6 executor
+GEKAN_A 0x0602c988 cd_ReadSectorFrame RENAME cd_ReadFileEntryAtSector reads dir/file info for sector via cdc_ReadDirectory and cdc_GetFileInfo into caller struct, flags last entry; used to init file handle
+GEKAN_A 0x0602ca56 cd_GetSessionInfo CONFIRM cd_GetSessionInfo calls cdc_GetCmd50Info (CD block cmd 0x50), returns a word; caller maps status
+GEKAN_A 0x0602ca88 cdq_PumpTasks CONFIRM cdq_PumpTasks polls HIRQ, timeout, runs pending tasks 0..7, returns idle/busy/error/abort
+GEKAN_A 0x0602cb7a cdq_IsTaskIdle CONFIRM cdq_IsTaskIdle true when task n (0-7) busy word is zero; PumpTasks skips idle tasks
+GEKAN_A 0x0602cbf2 cdq_RunTask CONFIRM cdq_RunTask dispatches to cdq_ExecTask0..7 by index
+GEKAN_A 0x0602cc4e cdq_SetTimeout CONFIRM cdq_SetTimeout stores timeout counter at +0x3c; PumpTasks decrements it
+GEKAN_A 0x0602cc56 cdq_PumpUntilIdle CONFIRM cdq_PumpUntilIdle sets timeout, loops PumpTasks while busy, clears timeout
+GEKAN_A 0x0602cc88 cdq_ExecTask0 CONFIRM cdq_ExecTask0 runs queued filter commands (mode, subheader, range) state machine and compacts queue
+GEKAN_A 0x0602ce20 cdq_ExecTask1 CONFIRM cdq_ExecTask1 two-state executor: cdc_SetDeviceConnection with slot id, waits HIRQ 0x40, idle
+GEKAN_A 0x0602ce8c cdq_ExecTask2 CONFIRM cdq_ExecTask2 three-state: sector count, clip to request, actual size transfer, outputs doubled word count
+GEKAN_A 0x0602cfdc cdq_ExecTask3 CONFIRM cdq_ExecTask3 two-step: cdc_GetSectorData with 3 queued params then wait for completion
+GEKAN_A 0x0602d06c cdq_ExecTask4 CONFIRM cdq_ExecTask4 multi-state: reset selector or delete sector data, waits HIRQ flags, returns busy bool
+GEKAN_A 0x0602d194 cdq_ExecTask5 CONFIRM cdq_ExecTask5 multi-state: filter mode reads, MoveSectorData with 4 params, waits HIRQ, finishes at 0x40
+GEKAN_A 0x0602d2c4 cdq_ExecTask7 CONFIRM cdq_ExecTask7 checks file-system scope for sector, reads directory if outside, waits, ChangeDirectory, outputs count; used by drive-ready wait
+GEKAN_A 0x0602d4a2 cdq_ExecTask6 CONFIRM cdq_ExecTask6 iterates 12-byte entries calling cdc_SetFilterConnection with source/dest flags, compacts queue
+GEKAN_A 0x0602d63c cdc_TestHirq CONFIRM cdc_TestHirq reads HIRQ and returns whether any mask bit set; used widely
+GEKAN_A 0x0602d66c cdq_ResetQueueState CONFIRM cdq_ResetQueueState clears slot tables, lock fields, task busy words and counters; called by InitDrive and PumpTasks abort
+GEKAN_A 0x0602d6e6 cdq_CacheStatus CONFIRM cdq_CacheStatus fetches 16-byte status packet and caches first byte in queue state +0x40; called at end of task execs
+GEKAN_A 0x0602d720 cdc_WaitHirqAck CONFIRM cdc_WaitHirqAck polls HIRQ up to N times for masked bit then clears it; returns 0 ok 1 timeout; used after SeekDisc and in transfer wait
+GEKAN_A 0x0602d77c cdc_GetHirqClearConst UNSURE cdc_GetHirqClearConst returns a literal constant; caller usage shown does not confirm it is a HIRQ mask
+GEKAN_A 0x0602d782 cdc_ReadHirq CONFIRM cdc_ReadHirq returns 16-bit value read from the HIRQ register; used by status and wait helpers
+GEKAN_A 0x0602d788 cdc_ClearHirqAndSet CONFIRM cdc_ClearHirqAndSet folds HIRQ into shadow flags then writes mask|1 back; callers use it before play/seek commands and to ack
+GEKAN_A 0x0602d79c cdc_WriteHirq CONFIRM cdc_WriteHirq stores 16-bit value into HIRQ register; used by wait/exec helpers
+GEKAN_A 0x0602d7b0 cdc_ResetHirqShadow CONFIRM cdc_ResetHirqShadow writes constant to HIRQ and zeroes shadow word; caller InitSystemCmd4 after reset command
+GEKAN_A 0x0602d7c2 cdc_OrHirqShadow CONFIRM cdc_OrHirqShadow ORs a mask into the HIRQ shadow word; used before InitSystemCmd4 and AbortFile commands
+GEKAN_A 0x0602d7ec cdc_ReadDataWords CONFIRM cdc_ReadDataWords waits, reads N words from data port, checks count from cmd6 result (-7 mismatch); used by TOC and file-info reads
+GEKAN_A 0x0602d852 cdc_ExecCmdWrapper CONFIRM cdc_ExecCmdWrapper thin forwarder to cdc_ExecCommand; only caller is cdc_ExecCmdStore
+GEKAN_A 0x0602d890 cdc_ExecCommand CONFIRM cdc_ExecCommand checks shadow HIRQ mask, writes command registers, waits CMOK, reads reply, error codes -1/-2/-5/-6
+GEKAN_A 0x0602d938 cdc_WaitHirqBit CONFIRM cdc_WaitHirqBit polls HIRQ for mask up to a limit, stores value, returns 0 or -3
+GEKAN_A 0x0602d96a cdc_WriteCR CONFIRM cdc_WriteCR writes four 16-bit words to command registers CR1-4 (stride 2); only caller cdc_ExecCommand
+GEKAN_A 0x0602d998 cdc_ReadCR CONFIRM cdc_ReadCR reads four 16-bit reply words from CR1-4; used by ExecCommand and ReadStableCR
+GEKAN_A 0x0602d9bc cdc_CallCmdPtr UNSURE cdc_CallCmdPtr tail-calls an indirect helper; every command builder calls it first with its 12-byte buffer but effect is not visible
+GEKAN_A 0x0602d9ce cdc_ExecCmdNoArgs RENAME cdc_ExecCmdReply size-4 thunk to ExecCmdStore; callers pass their own reply buffer and read reply words from it (data-returning commands), so NoArgs is misleading
+GEKAN_A 0x0602d9d2 cdc_ExecCmdCopy CONFIRM cdc_ExecCmdCopy runs ExecCmdStore with local 12-byte reply buffer and flag 1; used by fire-and-forget commands
+GEKAN_A 0x0602d9e4 cdc_ExecCmdStore CONFIRM cdc_ExecCmdStore runs the exec wrapper and on success stores status byte or expanded packet into global status area
+GEKAN_A 0x0602da54 sh2_SetIntMaskCall CONFIRM sh2_SetIntMaskCall raises SR interrupt mask to 15 around an indirect call, returns restored mask bits; used for status reads
+GEKAN_A 0x0602da98 cdc_ExpandStatusPacket CONFIRM cdc_ExpandStatusPacket spreads 5 status bytes into destination layout plus masked word at +8; used by status getters
+GEKAN_A 0x0602dabc sh2_ConfigDmaOr CONFIRM sh2_ConfigDmaOr edits DMAOR priority, master enable and clears AE/NMIF flags by flag word; used by scu_SetupDmaTransfer
+GEKAN_A 0x0602db04 sh2_ConfigDmacChannel CONFIRM sh2_ConfigDmacChannel programs SAR/DAR/TCR/CHCR of a DMAC channel (ch*0x10 stride) per flag mask plus optional vector; used by scu_SetupDmaTransfer
+GEKAN_A 0x0602dbf8 sh2_DmacEnableChannel CONFIRM sh2_DmacEnableChannel sets CHCR bit0 (DE) of the channel; called after config in scu_SetupDmaTransfer
+GEKAN_A 0x0602dc0a sh2_DmacDisableChannel CONFIRM sh2_DmacDisableChannel clears CHCR bit0 (DE) of the channel; called first in scu_SetupDmaTransfer
+GEKAN_A 0x0602dc28 sh2_DmacGetDmaorFlags CONFIRM sh2_DmacGetDmaorFlags returns DMAOR AE and NMIF bits into a two-word out struct
+GEKAN_A 0x0602dc3a sh2_DmacGetTransferEnd CONFIRM sh2_DmacGetTransferEnd returns CHCR bit1 (TE) for the channel
+GEKAN_A 0x0602dc48 scu_ConfigDmaLevel CONFIRM scu_ConfigDmaLevel writes SCU DMA level registers (stride 0x20) from a config struct; used by queued range request
+GEKAN_A 0x0602dca8 scu_InstallDmaEndHandler CONFIRM scu_InstallDmaEndHandler maps level 0-2 to vectors 0x4b/0x4a/0x49, saves old vector, installs handler, enables, clears status
+GEKAN_A 0x0602dd78 scu_GetDmaLevelFlag CONFIRM scu_GetDmaLevelFlag reads per-level byte flag (set at install) under raised interrupt mask into out param
+GEKAN_A 0x0602e000 mem_ClearWords16 RENAME sh2_PurgeCacheRange writes zero every 16 bytes (cache-line stride) at address masked into cache-purge mirror, called after DMA and transfers to drop stale lines; not a data clear
+GEKAN_A 0x0602e030 cdc_GetCmd50Info RENAME cdc_GetSessionInfo command 0x50 returns three reply fields; only caller is cd_GetSessionInfo which returns the first

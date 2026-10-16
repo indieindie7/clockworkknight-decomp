@@ -1,0 +1,109 @@
+GEKAN_AREA6B 0x00200000 boss6b_UpdateMain CONFIRM boss6b_UpdateMain body and callers match name
+GEKAN_AREA6B 0x0020010c boss6b_Init CONFIRM boss6b_Init body and callers match name
+GEKAN_AREA6B 0x00200450 boss6b_UpdateIntro CONFIRM boss6b_UpdateIntro body and callers match name
+GEKAN_AREA6B 0x00200620 boss6b_UpdateFightAI CONFIRM boss6b_UpdateFightAI body and callers match name
+GEKAN_AREA6B 0x00201138 boss6b_UpdateFightPhase2 CONFIRM boss6b_UpdateFightPhase2 body and callers match name
+GEKAN_AREA6B 0x002019f6 boss6b_UpdateFightPhase3 CONFIRM boss6b_UpdateFightPhase3 body and callers match name
+GEKAN_AREA6B 0x00202864 boss6b_AnimStepDown CONFIRM boss6b_AnimStepDown body and callers match name
+GEKAN_AREA6B 0x00202900 boss6b_AnimStepUp32 CONFIRM boss6b_AnimStepUp32 body and callers match name
+GEKAN_AREA6B 0x00202a4c boss6b_AnimLoop32 CONFIRM boss6b_AnimLoop32 body and callers match name
+GEKAN_AREA6B 0x00202ae4 boss6b_AnimStepUp16 CONFIRM boss6b_AnimStepUp16 body and callers match name
+GEKAN_AREA6B 0x00202b88 boss6b_AnimAttackSpawn CONFIRM boss6b_AnimAttackSpawn body and callers match name
+GEKAN_AREA6B 0x00202d08 boss6b_AnimStepUp30 CONFIRM boss6b_AnimStepUp30 body and callers match name
+GEKAN_AREA6B 0x00202da8 boss6b_AnimStepDown32 CONFIRM boss6b_AnimStepDown32 body and callers match name
+GEKAN_AREA6B 0x00202e44 boss6b_AnimPingPongSound CONFIRM boss6b_AnimPingPongSound body and callers match name
+GEKAN_AREA6B 0x00202f66 boss6b_AnimPingPong CONFIRM boss6b_AnimPingPong body and callers match name
+GEKAN_AREA6B 0x00203034 boss6b_AnimStepUp15Advance CONFIRM boss6b_AnimStepUp15Advance body and callers match name
+GEKAN_AREA6B 0x002030cc boss6b_AnimStepUp8 CONFIRM boss6b_AnimStepUp8 body and callers match name
+GEKAN_AREA6B 0x00203168 boss6b_AnimStepDownAdvance CONFIRM boss6b_AnimStepDownAdvance body and callers match name
+GEKAN_AREA6B 0x00203204 boss6b_AnimHoldUp16 CONFIRM boss6b_AnimHoldUp16 body and callers match name
+GEKAN_AREA6B 0x002032b8 boss6b_AnimHoldUp16FastDown CONFIRM boss6b_AnimHoldUp16FastDown body and callers match name
+GEKAN_AREA6B 0x00203390 boss6b_AnimHoldUp16_2 RENAME boss6b_AnimHoldUp16B numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x00203440 boss6b_AnimHoldUp16_3 RENAME boss6b_AnimHoldUp16C numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x002034f0 boss6b_AnimStepUp16Advance CONFIRM boss6b_AnimStepUp16Advance body and callers match name
+GEKAN_AREA6B 0x0020358c boss6b_AnimPingPongRepeat CONFIRM boss6b_AnimPingPongRepeat body and callers match name
+GEKAN_AREA6B 0x0020367c boss6b_AnimStepDownAdvance_2 RENAME boss6b_AnimStepDownAdvanceB numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x00203718 boss6b_AnimConditionalStep CONFIRM boss6b_AnimConditionalStep body and callers match name
+GEKAN_AREA6B 0x002037b0 boss6b_AnimLoop16 CONFIRM boss6b_AnimLoop16 body and callers match name
+GEKAN_AREA6B 0x00203848 boss6b_AnimStepUp32Advance CONFIRM boss6b_AnimStepUp32Advance body and callers match name
+GEKAN_AREA6B 0x002038c4 boss6b_AnimPingPongReturnDone CONFIRM boss6b_AnimPingPongReturnDone body and callers match name
+GEKAN_AREA6B 0x00203974 boss6b_AnimStepUp16Advance_2 RENAME boss6b_AnimStepUp16AdvanceB numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x002039f4 boss6b_AnimLoop32_2 RENAME boss6b_AnimLoop32B numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x00203a68 boss6b_AnimLoop32_3 RENAME boss6b_AnimLoop32C numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x00203adc boss6b_AnimLoop32_4 RENAME boss6b_AnimLoop32D numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x00203b50 boss6b_AnimCountUp CONFIRM boss6b_AnimCountUp body and callers match name
+GEKAN_AREA6B 0x00203bbc boss6b_AnimCountUp_2 RENAME boss6b_AnimCountUpB numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x00203c18 boss6b_AnimStepUp16Reset CONFIRM boss6b_AnimStepUp16Reset body and callers match name
+GEKAN_AREA6B 0x00203d14 boss6b_AnimPingPongSound7e CONFIRM boss6b_AnimPingPongSound7e body and callers match name
+GEKAN_AREA6B 0x00203dec boss6b_AnimStepDownAdvance_3 RENAME boss6b_AnimStepDownAdvanceC numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x00203e64 boss6b_AnimLoop32_5 RENAME boss6b_AnimLoop32E numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x00203efc boss6b_AnimCountUp_3 RENAME boss6b_AnimCountUpC numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x00203f8c boss6b_AnimCountDownAdvance CONFIRM boss6b_AnimCountDownAdvance body and callers match name
+GEKAN_AREA6B 0x00204080 boss6b_AnimPingPongSoundPair CONFIRM boss6b_AnimPingPongSoundPair body and callers match name
+GEKAN_AREA6B 0x00204164 boss6b_AnimPlaySoundOnce CONFIRM boss6b_AnimPlaySoundOnce body and callers match name
+GEKAN_AREA6B 0x00204220 boss6b_AnimPlaySoundOnce_2 RENAME boss6b_AnimPlaySoundOnceB numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x002042e0 boss6b_AnimSoundAtFrames CONFIRM boss6b_AnimSoundAtFrames body and callers match name
+GEKAN_AREA6B 0x0020434a boss6b_SetSpriteFrames CONFIRM boss6b_SetSpriteFrames body and callers match name
+GEKAN_AREA6B 0x002043b0 boss6b_SetSpriteFrames_2 RENAME boss6b_SetSpriteFramesB numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x002043f8 boss6b_MoveToTablePosition CONFIRM boss6b_MoveToTablePosition body and callers match name
+GEKAN_AREA6B 0x002044d8 boss6b_TrackPlayerX CONFIRM boss6b_TrackPlayerX body and callers match name
+GEKAN_AREA6B 0x0020468c boss_ActionMashBreakFree CONFIRM boss_ActionMashBreakFree body and callers match name
+GEKAN_AREA6B 0x0020488e boss_ActionHoldDirBreakFree CONFIRM boss_ActionHoldDirBreakFree body and callers match name
+GEKAN_AREA6B 0x00204ab2 boss_ActionLeapAtPlayer CONFIRM boss_ActionLeapAtPlayer body and callers match name
+GEKAN_AREA6B 0x00204cf4 boss_ActionJumpArcLand CONFIRM boss_ActionJumpArcLand body and callers match name
+GEKAN_AREA6B 0x00204ee4 boss_ActionDropToFloor CONFIRM boss_ActionDropToFloor body and callers match name
+GEKAN_AREA6B 0x00204fa6 boss_ActionHoverSweep CONFIRM boss_ActionHoverSweep body and callers match name
+GEKAN_AREA6B 0x0020521a boss_ActionSwoopAcrossArena CONFIRM boss_ActionSwoopAcrossArena body and callers match name
+GEKAN_AREA6B 0x00205394 boss_ActionDashAcross CONFIRM boss_ActionDashAcross body and callers match name
+GEKAN_AREA6B 0x002054b4 boss_MoveToWaypoint CONFIRM boss_MoveToWaypoint body and callers match name
+GEKAN_AREA6B 0x00205584 boss_ApplyVelocityGravity CONFIRM boss_ApplyVelocityGravity body and callers match name
+GEKAN_AREA6B 0x002055d4 boss_ActionJumpForwardDir CONFIRM boss_ActionJumpForwardDir body and callers match name
+GEKAN_AREA6B 0x00205776 boss_ActionJumpForwardDir_2 RENAME boss_ActionJumpForwardDirB numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x00205916 boss_IntroSequence CONFIRM boss_IntroSequence body and callers match name
+GEKAN_AREA6B 0x00205e58 boss_AnimateParts CONFIRM boss_AnimateParts body and callers match name
+GEKAN_AREA6B 0x00205efc boss_BounceInArena CONFIRM boss_BounceInArena body and callers match name
+GEKAN_AREA6B 0x00205fd0 boss_ConvergeToHome CONFIRM boss_ConvergeToHome body and callers match name
+GEKAN_AREA6B 0x00206272 boss_InitPartFromParent CONFIRM boss_InitPartFromParent body and callers match name
+GEKAN_AREA6B 0x002062b0 boss_UpdatePartHurtboxA CONFIRM boss_UpdatePartHurtboxA body and callers match name
+GEKAN_AREA6B 0x0020658c boss_UpdatePartHurtboxB CONFIRM boss_UpdatePartHurtboxB body and callers match name
+GEKAN_AREA6B 0x002067c0 boss_UpdatePartHurtboxC CONFIRM boss_UpdatePartHurtboxC body and callers match name
+GEKAN_AREA6B 0x00206a02 boss_InitPartAnim CONFIRM boss_InitPartAnim body and callers match name
+GEKAN_AREA6B 0x00206a3e boss_UpdatePartFollowParentA CONFIRM boss_UpdatePartFollowParentA body and callers match name
+GEKAN_AREA6B 0x00206de6 boss_UpdatePartFollowParentB CONFIRM boss_UpdatePartFollowParentB body and callers match name
+GEKAN_AREA6B 0x00207166 boss_UpdatePartFollowParentC CONFIRM boss_UpdatePartFollowParentC body and callers match name
+GEKAN_AREA6B 0x002073b4 boss_InitChildFromParent CONFIRM boss_InitChildFromParent body and callers match name
+GEKAN_AREA6B 0x002073ea boss_UpdateShadowFollow CONFIRM boss_UpdateShadowFollow body and callers match name
+GEKAN_AREA6B 0x002074d2 projectile_InitSimple CONFIRM projectile_InitSimple body and callers match name
+GEKAN_AREA6B 0x00207528 boss_UpdateOrbitingPart CONFIRM boss_UpdateOrbitingPart body and callers match name
+GEKAN_AREA6B 0x00207686 effect_InitAtOrigin CONFIRM effect_InitAtOrigin body and callers match name
+GEKAN_AREA6B 0x00207758 effect_InitAtOrigin_2 RENAME effect_InitAtOriginB numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x002077d0 effect_InitSprite CONFIRM effect_InitSprite body and callers match name
+GEKAN_AREA6B 0x002077f4 boss_UpdateHomingProjectile CONFIRM boss_UpdateHomingProjectile body and callers match name
+GEKAN_AREA6B 0x00207b9e projectile_MoveBounceX CONFIRM projectile_MoveBounceX body and callers match name
+GEKAN_AREA6B 0x00207c18 projectile_MoveBounceX_2 RENAME projectile_MoveBounceXB numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x00207cb0 projectile_InitSideSpawn CONFIRM projectile_InitSideSpawn body and callers match name
+GEKAN_AREA6B 0x00207d40 projectile_UpdateBounceFlicker CONFIRM projectile_UpdateBounceFlicker body and callers match name
+GEKAN_AREA6B 0x00207dda projectile_InitAtTablePos CONFIRM projectile_InitAtTablePos body and callers match name
+GEKAN_AREA6B 0x00207e48 particle_UpdateFalling CONFIRM particle_UpdateFalling body and callers match name
+GEKAN_AREA6B 0x00207f2c particle_InitRandomBurst CONFIRM particle_InitRandomBurst body and callers match name
+GEKAN_AREA6B 0x00208038 effect_InitAboveParent CONFIRM effect_InitAboveParent body and callers match name
+GEKAN_AREA6B 0x002080d6 effect_InitAtPartOffset CONFIRM effect_InitAtPartOffset body and callers match name
+GEKAN_AREA6B 0x0020819c projectile_InitFromTable CONFIRM projectile_InitFromTable body and callers match name
+GEKAN_AREA6B 0x00208264 projectile_UpdateBounceDespawn CONFIRM projectile_UpdateBounceDespawn body and callers match name
+GEKAN_AREA6B 0x00208290 boss_CheckPlayerSideHit CONFIRM boss_CheckPlayerSideHit body and callers match name
+GEKAN_AREA6B 0x0020838c camera_UpdateByMode CONFIRM camera_UpdateByMode body and callers match name
+GEKAN_AREA6B 0x00208444 camera_FollowMidpoint CONFIRM camera_FollowMidpoint body and callers match name
+GEKAN_AREA6B 0x002085e0 camera_FollowMidpoint_2 RENAME camera_FollowMidpointB numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x0020879c camera_FollowMidpointXY CONFIRM camera_FollowMidpointXY body and callers match name
+GEKAN_AREA6B 0x00208986 camera_FollowPlayerOnly CONFIRM camera_FollowPlayerOnly body and callers match name
+GEKAN_AREA6B 0x00208ae8 camera_FollowSingleActor CONFIRM camera_FollowSingleActor body and callers match name
+GEKAN_AREA6B 0x00208f28 obj_TestBoxHitPlayer CONFIRM obj_TestBoxHitPlayer body and callers match name
+GEKAN_AREA6B 0x0020908a obj_TestBoxHitPlayer_2 RENAME obj_TestBoxHitPlayerB numeric-suffix sibling of near-identical helper; distinct suffix-free name
+GEKAN_AREA6B 0x00209270 debris_InitFromSpawn CONFIRM debris_InitFromSpawn body and callers match name
+GEKAN_AREA6B 0x0020930e debris_UpdateDispatch CONFIRM debris_UpdateDispatch body and callers match name
+GEKAN_AREA6B 0x0020957e debris_UpdateState0Fall CONFIRM debris_UpdateState0Fall body and callers match name
+GEKAN_AREA6B 0x00209698 debris_UpdateState1Slide CONFIRM debris_UpdateState1Slide body and callers match name
+GEKAN_AREA6B 0x00209744 debris_UpdateState2Hit CONFIRM debris_UpdateState2Hit body and callers match name
+GEKAN_AREA6B 0x0020981c debris_UpdateState4Break CONFIRM debris_UpdateState4Break body and callers match name
+GEKAN_AREA6B 0x00209b02 debris_UpdateTumble CONFIRM debris_UpdateTumble body and callers match name
+GEKAN_AREA6B 0x0020a43c obj_FindOverlappingObject CONFIRM obj_FindOverlappingObject body and callers match name

@@ -1,0 +1,86 @@
+GEKAN_A 0x060290da gfs_ClearFirstWord RENAME gfs_MarkHandleFree zeroes the in-use word of a handle; only caller is the close routine
+GEKAN_A 0x060290e2 gfs_ReleaseHandleResources CONFIRM gfs_ReleaseHandleResources clears lock owner, calls driver close, resets fields; used by free and abort
+GEKAN_A 0x0602915e gfs_SetError CONFIRM gfs_SetError stores error code and invokes callback; return value used by all callers
+GEKAN_A 0x0602919c gfs_FindHandleInActiveList CONFIRM gfs_FindHandleInActiveList linear search of active list returns index or -1
+GEKAN_A 0x060291d0 gfs_AddHandleToActiveList CONFIRM gfs_AddHandleToActiveList appends if not present; called when transfer starts
+GEKAN_A 0x06029208 gfs_RemoveHandleFromActiveList CONFIRM gfs_RemoveHandleFromActiveList removes and shifts list; called on abort/finish/close
+GEKAN_A 0x0602925c gfs_OpenHandleOnDevice CONFIRM gfs_OpenHandleOnDevice inits transfer and file-handle subobjects, clears state, returns handle or 0
+GEKAN_A 0x060292b0 gfs_ReadBootSectorCheck RENAME gfs_ReadPrimaryDescSector reads one sector via a temp handle and compares 6-byte header to a constant; caller parses it as the volume descriptor
+GEKAN_A 0x06029394 gfs_ReadVolumeDescriptor CONFIRM gfs_ReadVolumeDescriptor reads descriptor sector, extracts start and size into info struct; used by gfs_OpenVolume
+GEKAN_A 0x0602944e gfs_OpenVolume CONFIRM gfs_OpenVolume reads descriptor, opens handle, reads directory entries then frees handle; called from gfs_Init with disc info
+GEKAN_A 0x060294c4 gfs_StepHandleDriver CONFIRM gfs_StepHandleDriver runs driver step for handle, tracks owner, maps status; used by poll
+GEKAN_A 0x06029564 gfs_StepHandleTransfer CONFIRM gfs_StepHandleTransfer steps transfer, updates owner, returns 1 or 6; used by poll
+GEKAN_A 0x06029608 gfs_GetDirEntryOffset UNSURE gfs_GetDirEntryOffset zero callers; computes base plus param or sector multiple; not enough evidence
+GEKAN_A 0x0602966a gfs_ResetHandleCounters CONFIRM gfs_ResetHandleCounters resets position/count fields before transfer; callers are transfer starters
+GEKAN_A 0x060296a2 gfs_UnpackFileInfo CONFIRM gfs_UnpackFileInfo copies optional output fields from a file-info struct; used by GetFileInfo and HandleStartRead
+GEKAN_A 0x060296fa gfs_CloseHandle CONFIRM gfs_CloseHandle removes from active list, clears used word, calls driver close; called by gfs_FreeHandle
+GEKAN_A 0x06029734 gfs_GetHandleField58 UNSURE gfs_GetHandleField58 trivial getter; only use is a ==1 test on error mapping, meaning unclear
+GEKAN_A 0x06029740 gfs_IsHandleFinished CONFIRM gfs_IsHandleFinished returns 1 when state is 4 and idle or flag; used by poll to end transfer
+GEKAN_A 0x0602978c gfs_MapDriverStatusToError CONFIRM gfs_MapDriverStatusToError maps driver status 3,5-9 to negative error codes and stores them
+GEKAN_A 0x06029818 cdc_GetStatusCmd0 CONFIRM cdc_GetStatusCmd0 sends command 0 (get status) and expands the packet into output; used by status packet readers
+GEKAN_A 0x06029854 cdc_CallAndReturn0 UNSURE cdc_CallAndReturn0 wrapper fills a status buffer via a callee and returns 0; callee meaning unclear
+GEKAN_A 0x06029862 cdc_GetStatusChecked CONFIRM cdc_GetStatusChecked reads stable CR status, expands it, returns -8 on bad status; used by status readers
+GEKAN_A 0x060298ba cdc_ReadStableCR CONFIRM cdc_ReadStableCR rereads CR regs until two reads match, up to 100 tries, else -3
+GEKAN_A 0x06029948 cdc_GetHardwareInfo CONFIRM cdc_GetHardwareInfo command 1 (hardware info) copies five result bytes out; zero callers
+GEKAN_A 0x06029998 cdc_GetTocCmd2 CONFIRM cdc_GetTocCmd2 command 2 then reads word count of TOC data into buffer via cdc_ReadDataWords; called by cdc_InitDrive
+GEKAN_A 0x060299f0 cdc_SetStatusByteCmd3 RENAME cdc_GetSessionInfo command 3 with session byte, returns word; ReadHirqMasked calls it twice (session 0 then returned session) to get a start position
+GEKAN_A 0x06029a44 cdc_InitSystemCmd4 CONFIRM cdc_InitSystemCmd4 command 4 init packet with 4 args; used by gfs init and drive init
+GEKAN_A 0x06029af0 cdc_OpenTrayCmd5 CONFIRM cdc_OpenTrayCmd5 builds and executes command 5 (open tray); zero callers
+GEKAN_A 0x06029b10 cdc_WaitHirqCheck CONFIRM cdc_WaitHirqCheck waits on flag bit, maps 0x80 to -4, ends transfer on failure; used by data readers
+GEKAN_A 0x06029b70 cdc_GetCmd6Result RENAME cdc_EndDataTransfer command 6 returns transferred word count (compared to requested count by cdc_ReadDataWords); also called on failure paths
+GEKAN_A 0x06029d3c sh2_DisableIntRestoreSR UNSURE sh2_DisableIntRestoreSR sets SR mask to 15, calls a callee with a constant and 0, clears a flag; purpose of callee unclear
+GEKAN_A 0x06029d8c sh2_QueueRangeCheckedRequest RENAME scu_DmaCopyRangeChecked masks ints, range-checks addresses, configures SCU DMA level; else memmove fallback; vdp1_FlushCommandBuffer uses it to copy command table to VDP1 RAM
+GEKAN_A 0x06029f90 gfs_ReadDirectoryEntries CONFIRM gfs_ReadDirectoryEntries optionally starts transfer then loads directory via 12 or 24 byte record loader; used by OpenVolume and SetDirTable
+GEKAN_A 0x0602a000 gfs_FindDirEntryByName CONFIRM gfs_FindDirEntryByName scans 24-byte records comparing 12-char name, returns index or -1; used by GetDirEntryName
+GEKAN_A 0x0602a05c gfs_Index12Ptr CONFIRM gfs_Index12Ptr returns base plus index*12; used for directory table addressing
+GEKAN_A 0x0602a070 gfs_Index24Ptr CONFIRM gfs_Index24Ptr returns base plus index*24; used for directory table addressing
+GEKAN_A 0x0602a082 gfs_GetEntry12Flags CONFIRM gfs_GetEntry12Flags returns flag byte of 12-byte entry; used for last-entry scan
+GEKAN_A 0x0602a096 gfs_GetEntry24Flags CONFIRM gfs_GetEntry24Flags returns flag byte of 24-byte entry; used for last-entry scan
+GEKAN_A 0x0602a0ac cd_WaitDriveReady CONFIRM cd_WaitDriveReady polls drive with retries mapping errors; called from gfs_Init when no volume given
+GEKAN_A 0x0602a134 gfs_LoadDirShort CONFIRM gfs_LoadDirShort parses records into 12-byte entries, flags last, returns count
+GEKAN_A 0x0602a1a2 gfs_LoadDirLong CONFIRM gfs_LoadDirLong parses records into 24-byte entries with 12-char name copy, flags last, returns count
+GEKAN_A 0x0602a248 gfs_DirIterInit CONFIRM gfs_DirIterInit sets iterator handle, buffer, position -1, counter, length; used by both dir loaders
+GEKAN_A 0x0602a270 gfs_IterRead CONFIRM gfs_IterRead buffered read of N bytes refilling sector buffer; base of all IterRead helpers
+GEKAN_A 0x0602a344 gfs_IterReadU8 CONFIRM gfs_IterReadU8 reads one byte via gfs_IterRead and stores error; used for record length bytes
+GEKAN_A 0x0602a360 gfs_IterReadS16 CONFIRM gfs_IterReadS16 reads 2 bytes via gfs_IterRead, stores error, returns short
+GEKAN_A 0x0602a380 gfs_IterReadS16Both CONFIRM gfs_IterReadS16Both reads both-endian 16-bit pair, returns second; used for volume sequence field in record parse
+GEKAN_A 0x0602a3c4 gfs_IterReadU32Both CONFIRM gfs_IterReadU32Both reads both-endian 32-bit pair, returns second; used for extent and size in record parse
+GEKAN_A 0x0602a408 gfs_IterReadU32 CONFIRM gfs_IterReadU32 reads 4 bytes via gfs_IterRead, stores error
+GEKAN_A 0x0602a424 gfs_IterNextRecordLen CONFIRM gfs_IterNextRecordLen reads record length byte, refills next sector on zero padding; first step of record parse
+GEKAN_A 0x0602a49c gfs_ParseDirRecord CONFIRM gfs_ParseDirRecord reads extent, size, flags and 8.3 style name dropping version suffix; used by both dir loaders
+GEKAN_A 0x0602a7c2 gfs_CopyDirRecordCompact CONFIRM gfs_CopyDirRecordCompact copies extent, size, flags into compact entry; used by both loaders
+GEKAN_A 0x0602a7fe gfs_DispatchStart RENAME gfs_DispatchGetPending slot-0 call returns a value tested for zero in IsHandleFinished and reported as status count in GetHandleStatus
+GEKAN_A 0x0602a818 gfs_DispatchSlot1 RENAME gfs_DispatchAllocBuffer slot-1 call takes handle and chunk size, result stored as the transfer buffer pointer in gfs_TransferAllocBuffer
+GEKAN_A 0x0602a838 gfs_DispatchSlot2 UNSURE gfs_DispatchSlot2 slot-2 call gates chunk copy (nonzero to proceed); exact job unclear
+GEKAN_A 0x0602a860 gfs_DispatchSlot3 RENAME gfs_DispatchReleaseBuffer slot-3 call on the held buffer then buffer count added to consumed total and pointer cleared in all step callers
+GEKAN_A 0x0602a888 gfs_TransferInit CONFIRM gfs_TransferInit zeroes descriptor, sets unit 1 and mode 3; called when opening handle
+GEKAN_A 0x0602a8be gfs_TransferSetMode CONFIRM gfs_TransferSetMode stores mode, clears position fields, returns old mode; used by handle param setter
+GEKAN_A 0x0602a8ca gfs_TransferSetUnit CONFIRM gfs_TransferSetUnit stores unit multiplier; only caller is init
+GEKAN_A 0x0602a8ce gfs_TransferSetSize CONFIRM gfs_TransferSetSize sets requested size, resets progress, rounds counter up to multiple of 4; called by transfer start
+GEKAN_A 0x0602a926 gfs_TransferSetFlag CONFIRM gfs_TransferSetFlag sets flag +0x30 to 1; callers arm it when starting a transfer
+GEKAN_A 0x0602a932 gfs_TransferRunAll RENAME gfs_TransferRunToEnd loops step until idle/done/error, flushes held buffer and slot, forces state 6; used on handle release with -1
+GEKAN_A 0x0602a9c8 gfs_TransferStepN CONFIRM gfs_TransferStepN runs the step function once or twice per call depending on mode field and state; stops on error 7
+GEKAN_A 0x0602aa4a gfs_TransferStepSimple RENAME gfs_TransferStepNoDest used by handle step only when no destination is attached: alloc buffer, release it, advance consumed count
+GEKAN_A 0x0602aabe gfs_TransferStep CONFIRM gfs_TransferStep six-state machine: alloc, acquire dest slot, start copy, copy chunk, check done, release; called by run loop and step-N
+GEKAN_A 0x0602abbc gfs_TransferAllocBuffer CONFIRM gfs_TransferAllocBuffer chunk size is min of block size and bytes left, buffer from slot-1 call, resets copied offset
+GEKAN_A 0x0602ac34 gfs_TransferAcquireDest CONFIRM gfs_TransferAcquireDest sizes request from destination free space and remaining, acquires slot stored at +0x10
+GEKAN_A 0x0602ad3c scu_SetupDmaTransfer RENAME sh2_SetupDmacTransfer uses SH-2 on-chip DMAC enable/config helpers not SCU; add direction from sign of strides; no direct callers
+GEKAN_A 0x0602aec4 mem_CopyStrided32 CONFIRM mem_CopyStrided32 copies words with separate dest and source strides then tail bytes; a mode copy handler
+GEKAN_A 0x0602af10 gfs_TransferCopyDispatch RENAME gfs_TransferStartCopy picks start handler by mode and address range from handler table; mode 4 returns 1 immediately; stage 3 of step
+GEKAN_A 0x0602af62 gfs_TransferCopyChunk CONFIRM gfs_TransferCopyChunk mode 4 calls user callback; else slot-2 gate then handler copy and advance copied offset
+GEKAN_A 0x0602b044 gfs_TransferCheckDone CONFIRM gfs_TransferCheckDone mode 4 tests sign of field; else handler table done-check slot; stage 4 of step
+GEKAN_A 0x0602b0bc mem_CopyTailBytes CONFIRM mem_CopyTailBytes copies 1-3 leftover bytes from a word to byte dest; only caller is strided copy
+GEKAN_A 0x0602b104 gfs_TransferRemaining CONFIRM gfs_TransferRemaining returns count times unit minus consumed; used to size chunks and pick step path
+GEKAN_A 0x0602b116 gfs_AcquireRequestSlot CONFIRM gfs_AcquireRequestSlot takes the single global slot if free, fills address, count, length, marks busy
+GEKAN_A 0x0602b144 gfs_ReleaseRequestSlot CONFIRM gfs_ReleaseRequestSlot adds slot length to consumed counter, clears busy flag
+GEKAN_A 0x0602b160 gfs_BufferInit RENAME gfs_TransferSetDest stores destination pointer, size and unit 1 into the transfer descriptor and zeroes progress; called when starting a transfer
+GEKAN_A 0x0602b178 cd_ClearFlagCmdRetry RENAME cd_InitDriveSetFlag clears global bit0, calls drive init, sets bit on success, maps error codes; only caller is gfs_Init
+GEKAN_A 0x0602b21c gfs_FileHandleInit CONFIRM gfs_FileHandleInit fills handle from directory entry (extent, size, attrs), sector count, sector size, opens stream; called from open handle
+GEKAN_A 0x0602b30e gfs_FileSetPosition CONFIRM gfs_FileSetPosition stores position, reads chunk via stream, stores offset delta; called from counter reset
+GEKAN_A 0x0602b344 gfs_FileGetInfo CONFIRM gfs_FileGetInfo copies optional handle fields to out pointers, returns attribute flags; used by stream functions
+GEKAN_A 0x0602b588 gfs_FileSeekSelectFilter RENAME gfs_PendingHandleTryStart frees stream handle then issues a fixed request; returns 2 ok or 8 fail; poll code sets handle active on 2
+GEKAN_A 0x0602b600 gfs_FileSeekToSector CONFIRM gfs_FileSeekToSector checks drive status, allocs stream handle, seeks to start sector plus converted offset, maps errors; reached from lock handle
+GEKAN_A 0x0602b69c gfs_FileSectorOffset CONFIRM gfs_FileSectorOffset converts byte offset to sector offset by mode byte, else passes through; used by seek and read planning
+GEKAN_A 0x0602b6e6 cd_GetStatusCode CONFIRM cd_GetStatusCode reads status packet and maps low nibble to small state codes 0-6, 3 on hardware flag; used by boot check and seek
+GEKAN_A 0x0602b7b8 gfs_SectorSizeFromAttr CONFIRM gfs_SectorSizeFromAttr maps attribute bits 0x40/0x10/0x08 to sector data size or 0; used by handle init
+GEKAN_A 0x0602b7f6 gfs_MapCdStatusToState CONFIRM gfs_MapCdStatusToState maps status code 0-6 to output state 1,3,5,6,8,9, returns 1 for 0-2; no direct callers

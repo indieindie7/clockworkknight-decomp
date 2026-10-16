@@ -1,0 +1,86 @@
+GEKAN_A 0x060030bc pad_UpdateAutoRepeatState UNSURE pad_UpdateAutoRepeatState no callers; toggles mode flags on pad bits and counts frames, maybe a debug or step mode
+GEKAN_A 0x0600356c sound_ReadCommandStatus RENAME cdc_PollStatusAndHandle calls cdc_GetStatusChecked and a handler when status is 0x26
+GEKAN_A 0x06006282 menu_DrawSelectedEntry UNSURE menu_DrawSelectedEntry queues a sound and loads files or calls table entries; no clear drawing
+GEKAN_A 0x060063b4 vdp1_InitSpriteDisplayState CONFIRM vdp1_InitSpriteDisplayState sets up VDP1 display state
+GEKAN_A 0x06006b38 obj_ClampVelocityByRange UNSURE obj_ClampVelocityByRange clamps position field +0x2c not velocity; no callers
+GEKAN_A 0x06009114 data_DecompressToBuffer CONFIRM data_DecompressToBuffer byte-pair decompressor
+GEKAN_A 0x0600a972 fx_UpdateSparkTrail UNSURE fx_UpdateSparkTrail role not clear from body and callers
+GEKAN_A 0x0600b648 pad_ParseSaturnPeripheral CONFIRM pad_ParseSaturnPeripheral parses peripheral data
+GEKAN_A 0x0600c028 text_ResetBuffers RENAME vdp2_ResetRegisterDefaults resets the VDP2 register block, not text buffers
+GEKAN_A 0x0600c0d0 text_SyncBuffers RENAME vdp2_SyncRegisterShadow syncs the VDP2 register shadow copy
+GEKAN_A 0x0600cd2c vdp2_CommitRegisterCache CONFIRM vdp2_CommitRegisterCache writes cached VDP2 registers
+GEKAN_A 0x0600e8f4 camera_UpdateScrollTarget CONFIRM camera_UpdateScrollTarget follows target for scroll
+GEKAN_A 0x0600ec48 area_UploadMapGraphics CONFIRM area_UploadMapGraphics uploads map graphics
+GEKAN_A 0x0600ed20 map_ScanObjectsNearView CONFIRM map_ScanObjectsNearView scans object rows near the view
+GEKAN_A 0x0600ef00 map_ActivateRowObjects UNSURE map_ActivateRowObjects projects objects rather than activating them
+GEKAN_A 0x0600f0ec math_Atan2Table CONFIRM math_Atan2Table table-based arctangent
+GEKAN_A 0x0600f190 collide_PrepareMeshTest RENAME mesh_PrepareAndDrawFaces 3D mesh rendering, not collision
+GEKAN_A 0x0600f93c collide_TransformMeshRelative RENAME mesh_TransformCullAndDraw vertex transform, backface cull, draw
+GEKAN_A 0x0600fcbc collide_ProjectMeshFlat RENAME mesh_ProjectAndDrawFlat perspective projection and draw of flat mesh
+GEKAN_A 0x0600fe68 obj_CallThenSetGlobal RENAME area_DecompressAssetSetFlag decompresses an asset then sets a global flag
+GEKAN_A 0x0600ff1e tile_ProbeRunVertical CONFIRM tile_ProbeRunVertical probes tile map column
+GEKAN_A 0x060100c8 tile_ProbeRunHorizontal CONFIRM tile_ProbeRunHorizontal probes tile map row
+GEKAN_A 0x06010270 tile_ReadRunVertical CONFIRM tile_ReadRunVertical reads tile column run
+GEKAN_A 0x06010436 tile_ReadRunHorizontal CONFIRM tile_ReadRunHorizontal reads tile row run
+GEKAN_A 0x0601063c collide_TestObjectVsMesh RENAME mesh_DrawObjectFaces draws object mesh faces to VDP1
+GEKAN_A 0x06010c5c collide_FaceBoundsCheck RENAME mesh_CullFaceGetDepthRange face bounds and depth range against screen limit
+GEKAN_A 0x06010f40 collide_BuildFaceSprite RENAME mesh_BuildFaceSprite builds VDP1 sprite command for a face
+GEKAN_A 0x06011ec8 sprite_QueueCommand_2 RENAME sprite_QueueCommandFromParts fills a VDP1 command from a part list with count limit; no numeric suffix
+GEKAN_A 0x060120c8 collide_FaceBoundsCheck_2 RENAME mesh_CullFaceGetDepthRangeAlt variant of the face bounds and depth check
+GEKAN_A 0x06012242 collide_BuildFaceSprite_2 RENAME mesh_BuildFaceSpriteFlagged variant face sprite builder with extra mode flags
+GEKAN_A 0x060123cc collide_DrawVisibleFaces RENAME mesh_DrawVisibleFaces draws visible mesh faces
+GEKAN_A 0x06012508 state_ClearCounters UNSURE state_ClearCounters only zeroes two fields of a global struct
+GEKAN_A 0x06012c10 enemy_UpdateWalkerState CONFIRM enemy_UpdateWalkerState state machine with frame counter and mesh pointer from frame table
+GEKAN_A 0x060139e0 chain_ActivateSegments CONFIRM chain_ActivateSegments walks chain and starts idle segments with staggered delay
+GEKAN_A 0x06013a18 chain_ReleaseSegments CONFIRM chain_ReleaseSegments sets active segments to state 5 and spawns missing ones
+GEKAN_A 0x06013a7a chain_SpawnSegments CONFIRM chain_SpawnSegments allocates linked segment objects with table positions
+GEKAN_A 0x06013bb4 obj_InitSpriteDefaults CONFIRM obj_InitSpriteDefaults sets sprite attribute fields
+GEKAN_A 0x06013bd8 chain_UpdateSegment CONFIRM chain_UpdateSegment segment state machine with animation and sprite draw
+GEKAN_A 0x06013ed4 sprite_DrawSmallEffect CONFIRM sprite_DrawSmallEffect queues 8x8 VDP1 command at object position
+GEKAN_A 0x06013f72 effect_SpawnDebris CONFIRM effect_SpawnDebris spawns four child objects at position
+GEKAN_A 0x06014250 effect_SpawnPuff CONFIRM effect_SpawnPuff spawns one child offset from a table
+GEKAN_A 0x06014728 hud_RefreshTimerDisplay CONFIRM hud_RefreshTimerDisplay blinks timer then queues text
+GEKAN_A 0x06014758 hud_BlinkTimer CONFIRM hud_BlinkTimer blinks timer digits and sends sound commands 7 and 0x14 when time is low
+GEKAN_A 0x060147f0 hud_AddTimerValue CONFIRM hud_AddTimerValue adds to timer with cap, stops alarm, reformats display
+GEKAN_A 0x06014900 sound_StopTimerAlarm CONFIRM sound_StopTimerAlarm clears alarm flag and sends sound command 7
+GEKAN_A 0x06014a58 hud_WriteClampedValue CONFIRM hud_WriteClampedValue clamps a value and queues a 3-digit decimal text write
+GEKAN_A 0x06014a80 hud_BuildDigitTiles CONFIRM hud_BuildDigitTiles builds two-row digit tile index arrays with blank leading zeros
+GEKAN_A 0x06014ba0 hud_UpdatePanelSlide CONFIRM hud_UpdatePanelSlide slide in/out state machine offset 0 to 0x28 step 4
+GEKAN_A 0x06014c54 math_Atan2Octants CONFIRM math_Atan2Octants quadrant and octant atan2 using divide and table
+GEKAN_A 0x06014d84 math_ArcSinTable CONFIRM math_ArcSinTable ratio to angle via table
+GEKAN_A 0x06014dfc math_ArcCosTable CONFIRM math_ArcCosTable ratio to angle via table
+GEKAN_A 0x06014e86 hud_AddScore CONFIRM hud_AddScore adds to score global and checks limit; called from pickups
+GEKAN_A 0x06014ec4 hud_CheckScoreLimit CONFIRM hud_CheckScoreLimit clamps score and awards extra life at thresholds with sound 0x17
+GEKAN_A 0x0601507c map_SpawnObjectsInView CONFIRM map_SpawnObjectsInView converts camera bounds to 64x64 cell range and spawns per cell
+GEKAN_A 0x060153a2 map_SpawnObjectsInCell CONFIRM map_SpawnObjectsInCell allocates objects for cell entries inside bounds, marks spawned
+GEKAN_A 0x06015614 obj_IsOutsideView CONFIRM obj_IsOutsideView compares object position to camera bounds; used by 16 updaters
+GEKAN_A 0x060156cc obj_FreeSimple CONFIRM obj_FreeSimple clears the object active field
+GEKAN_A 0x060156ea obj_FreeClearSpawnFlag CONFIRM obj_FreeClearSpawnFlag clears spawned-flag byte by map id and the active field
+GEKAN_A 0x0601579a obj_AttachNodeList CONFIRM obj_AttachNodeList takes a linked node list from a pool and clears each node
+GEKAN_A 0x0601580c sprite_DrawPartList CONFIRM sprite_DrawPartList emits one VDP1 command per part with offsets and scaling
+GEKAN_A 0x0601604c enemy_Update_A UNSURE enemy_Update_A generic init/update/death object state function; no caller info to tell the enemy type
+GEKAN_A 0x06016108 enemy_Update_B UNSURE enemy_Update_B same state function plus frame table animation; enemy type unknown
+GEKAN_A 0x060161c8 enemy_AnimateFrameTable CONFIRM enemy_AnimateFrameTable cycles three table positions with a frame counter
+GEKAN_A 0x06016250 enemy_Update_C UNSURE enemy_Update_C adds a rotation each frame; enemy type unknown
+GEKAN_A 0x0601631c enemy_Update_D UNSURE enemy_Update_D generic init/update/death state function; enemy type unknown
+GEKAN_A 0x060163da enemy_Update_E UNSURE enemy_Update_E generic state function without view test; enemy type unknown
+GEKAN_A 0x06016480 enemy_Update_F UNSURE enemy_Update_F generic init/update/death state function; enemy type unknown
+GEKAN_A 0x0601653c enemy_Update_G UNSURE enemy_Update_G generic state function using obj_StartThrown and frame table; enemy type unknown
+GEKAN_A 0x060165fc enemy_Update_H UNSURE enemy_Update_H generic state function with extra helper call; enemy type unknown
+GEKAN_A 0x06016808 enemy_Update_I UNSURE enemy_Update_I generic init/update/death state function; enemy type unknown
+GEKAN_A 0x060168c2 enemy_UpdateWithGravity CONFIRM enemy_UpdateWithGravity moves with collision, falls with gravity in state 3, frees when outside view
+GEKAN_A 0x06016a5a enemy_UpdateWithGravity_2 RENAME enemy_UpdateWithGravityAnimated same machine as the gravity updater plus enemy_AnimateFrameTable; no numeric suffix
+GEKAN_A 0x06016bfa obj_ThrownFlightStateA UNSURE obj_ThrownFlightStateA same move/collide/fall machine with added rotation; thrown role unproven, no callers
+GEKAN_A 0x06016db8 obj_ThrownFlightStateB UNSURE obj_ThrownFlightStateB same move/collide/fall machine; thrown role unproven, no callers
+GEKAN_A 0x06016f54 obj_ThrownFlightStateC UNSURE obj_ThrownFlightStateC same move/collide/fall machine with anim table death state; thrown role unproven, no callers
+GEKAN_A 0x06017278 obj_ThrownFlightStateD UNSURE obj_ThrownFlightStateD same machine with extra helper call; thrown role unproven, no callers
+GEKAN_A 0x0601740c obj_ThrownFlightStateE UNSURE obj_ThrownFlightStateE same machine with anim table death state; thrown role unproven, no callers
+GEKAN_A 0x06017c4c obj_InitThrownState RENAME obj_InitPartSpriteState sets sprite table, flags and counters; only caller is a two-part object init, nothing thrown
+GEKAN_A 0x06017e00 obj_StartThrown RENAME obj_InitTwoPartSprite attaches two nodes then sets part sprite data; used by an enemy init state
+GEKAN_A 0x0601ae4c map_SpawnCellColumnsA CONFIRM map_SpawnCellColumnsA spawns object lists for two cells of a row
+GEKAN_A 0x0601ae86 map_SpawnCellColumnsB CONFIRM map_SpawnCellColumnsB same for the other axis ordering
+GEKAN_A 0x0601af76 map_SpawnCellThreeA CONFIRM map_SpawnCellThreeA spawns object lists for three adjacent cells
+GEKAN_A 0x0601b118 map_SpawnCellThreeB CONFIRM map_SpawnCellThreeB same for the other axis ordering
+GEKAN_A 0x0601c6c8 obj_PushOutOfObjectsB CONFIRM obj_PushOutOfObjectsB rect overlap test over object list and pushes the object out
+GEKAN_A 0x0601fe1e obj_ThrownProjectileUpdate RENAME obj_ProjectileUpdate spawned child with gravity, tile query and trail spawn; thrown by player not shown
+GEKAN_A 0x060201b8 obj_InitProjectileA CONFIRM obj_InitProjectileA initializes projectile fields from parent and constants

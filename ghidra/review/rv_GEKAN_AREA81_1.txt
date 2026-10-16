@@ -1,0 +1,95 @@
+GEKAN_AREA81 0x00200000 cam_UpdateFollowPlayerClamped CONFIRM cam_UpdateFollowPlayerClamped accelerated follow of player pos, clamps scroll to bounds and two zones
+GEKAN_AREA81 0x00200242 cam_UpdateFollowPlayerClamped_2 RENAME cam_UpdateFollowPlayerMinMax same follow logic, only plain min/max clamp, no zone checks
+GEKAN_AREA81 0x0020044c cam_UpdateFollowPlayerClamped_3 RENAME cam_UpdateFollowPlayerLockedY X follow clamped, Y forced to fixed value
+GEKAN_AREA81 0x00200760 scene_InitMode2Boss CONFIRM scene_InitMode2Boss calls boss_SetupObjectByMode(2), sets scroll/callbacks, stores player pos
+GEKAN_AREA81 0x0020082c scene_InitMode3Boss CONFIRM scene_InitMode3Boss calls boss_SetupObjectByMode(3), sets scroll params and fields
+GEKAN_AREA81 0x00200928 scene_InitMode3Boss_2 RENAME scene_InitMode3BossAlt same as mode 3 init with different constants
+GEKAN_AREA81 0x00200a24 scene_InitSimpleScroll CONFIRM scene_InitSimpleScroll sets scroll params, stores player pos, no boss setup
+GEKAN_AREA81 0x00200a9c scene_UpdateScrollShakeEffect CONFIRM scene_UpdateScrollShakeEffect scroll offset accumulation with palette cycling and countdown, no callers to refine
+GEKAN_AREA81 0x00200da0 scene_UpdateScrollOffsets CONFIRM scene_UpdateScrollOffsets same as shake effect minus countdown, accumulates offsets and cycles colors
+GEKAN_AREA81 0x00201218 boss_SetupObjectByMode CONFIRM boss_SetupObjectByMode mode 2 or 3 object field init, called by the boss scene inits
+GEKAN_AREA81 0x00201394 enemy_InitStandingSprite CONFIRM enemy_InitStandingSprite sets sprite table ptrs and picks anim by facing flags
+GEKAN_AREA81 0x00201484 enemy_UpdateFacingAnim CONFIRM enemy_UpdateFacingAnim steps anim in state 0, sets facing from X vs limit
+GEKAN_AREA81 0x002014fc enemy_StepLoopAnimFrame CONFIRM enemy_StepLoopAnimFrame every 8 ticks steps frame index fwd or back, loads frame ptr
+GEKAN_AREA81 0x002015ea enemy_InitFollowerSprite CONFIRM enemy_InitFollowerSprite sprite init copying facing flags from parent object
+GEKAN_AREA81 0x002016ec enemy_CopyParentPosition CONFIRM enemy_CopyParentPosition copies X/Y and facing from parent
+GEKAN_AREA81 0x00201724 enemy_DispatchByFacing CONFIRM enemy_DispatchByFacing picks one of two handlers by facing flag
+GEKAN_AREA81 0x002017e0 enemy_InitSpriteAndJump CONFIRM enemy_InitSpriteAndJump sprite table init then tail-calls anim setter
+GEKAN_AREA81 0x0020185e enemy_UpdateOpenCloseAnim CONFIRM enemy_UpdateOpenCloseAnim forward then reverse frame play with sound at a frame
+GEKAN_AREA81 0x002019d2 enemy_InitMinimal CONFIRM enemy_InitMinimal tiny init setting two halfword fields
+GEKAN_AREA81 0x002019e2 enemy_UpdateAttachedToParentOffset CONFIRM enemy_UpdateAttachedToParentOffset position = parent pos + frame-table offset, collision after frame 0x17
+GEKAN_AREA81 0x00201bc8 enemy_InitSpriteLowerZAnim CONFIRM enemy_InitSpriteLowerZAnim lowers Z, sprite tables, then anim setter with 4
+GEKAN_AREA81 0x00201c66 enemy_UpdateRotationFromTable CONFIRM enemy_UpdateRotationFromTable angle from facing index plus table entry, masked
+GEKAN_AREA81 0x00201d4c enemy_InitSpriteLowerZ CONFIRM enemy_InitSpriteLowerZ lowers Z and sets sprite tables, no anim
+GEKAN_AREA81 0x00201df0 enemy_UpdateAngleFromTable CONFIRM enemy_UpdateAngleFromTable angle set from per-owner table, masked
+GEKAN_AREA81 0x00201e72 enemy_UpdatePositionBetweenParentPoints CONFIRM enemy_UpdatePositionBetweenParentPoints midpoint of two parent frame points plus parent pos
+GEKAN_AREA81 0x00201f00 enemy_UpdateRotatedPartPosition CONFIRM enemy_UpdateRotatedPartPosition midpoint rotated by parent angle via sin/cos table
+GEKAN_AREA81 0x0020204e model_ProjectAndDrawFaces CONFIRM model_ProjectAndDrawFaces rotates verts, backface test, per-face bounds test and VDP1 emit
+GEKAN_AREA81 0x002023ca model_FaceBoundsVisibleTest CONFIRM model_FaceBoundsVisibleTest face min/max screen bounds, rejects off-screen, returns depth range
+GEKAN_AREA81 0x002025a6 model_EmitFaceVdp1Command CONFIRM model_EmitFaceVdp1Command builds VDP1 command from face verts and texture, count limit check
+GEKAN_AREA81 0x00202920 enemy_InitDoorOrSwitch CONFIRM enemy_InitDoorOrSwitch sprite init, restores opened state from global flag array, hit-driven state machine
+GEKAN_AREA81 0x00202a40 enemy_UpdateStateSwitch CONFIRM enemy_UpdateStateSwitch dispatches ten state handlers then clears hit bit
+GEKAN_AREA81 0x00202ae0 enemy_State0WaitHit CONFIRM enemy_State0WaitHit on hit flag counts hits, below 5 state 1 else state 4
+GEKAN_AREA81 0x00202b16 enemy_State1AnimForward CONFIRM enemy_State1AnimForward steps anim forward, after 3 steps enters state 2
+GEKAN_AREA81 0x00202b6c enemy_State2HoldOrRehit CONFIRM enemy_State2HoldOrRehit waits 30 frames then state 3, re-hit goes state 1 or 4
+GEKAN_AREA81 0x00202bce enemy_State3AnimBackward CONFIRM enemy_State3AnimBackward steps anim back, state 0 at frame 0
+GEKAN_AREA81 0x00202c20 enemy_State4AnimToEnd CONFIRM enemy_State4AnimToEnd plays to last frame, sets global flags and sound, state 5
+GEKAN_AREA81 0x00202cb2 enemy_State5WaitHit CONFIRM enemy_State5WaitHit hit counter below 5 state 6 else state 9
+GEKAN_AREA81 0x00202cf6 enemy_State6AnimBackward CONFIRM enemy_State6AnimBackward steps back, after 3 steps state 7
+GEKAN_AREA81 0x00202d4c enemy_State7HoldOrRehit CONFIRM enemy_State7HoldOrRehit waits 30 frames then state 8, re-hit goes 6 or 9
+GEKAN_AREA81 0x00202dae enemy_State8AnimForward CONFIRM enemy_State8AnimForward steps forward to last-but-one frame then state 5
+GEKAN_AREA81 0x00202e02 enemy_State9AnimReset CONFIRM enemy_State9AnimReset steps back to 0, clears global flags, sound, state 0
+GEKAN_AREA81 0x00202ed4 enemy_InitFollowParentXY CONFIRM enemy_InitFollowParentXY copies X,Y from parent, clears flags
+GEKAN_AREA81 0x00202f38 enemy_InitFollowParentOffset CONFIRM enemy_InitFollowParentOffset parent X,Y plus constant offsets
+GEKAN_AREA81 0x00202f5c enemy_ForwardHitToParent CONFIRM enemy_ForwardHitToParent sets hit bit on parent when own flag mask matches
+GEKAN_AREA81 0x00203004 enemy_InitSpriteTables CONFIRM enemy_InitSpriteTables sprite table pointers only
+GEKAN_AREA81 0x0020307a enemy_UpdatePlayAnimForwardBack CONFIRM enemy_UpdatePlayAnimForwardBack plays frames to end marker then back to 0
+GEKAN_AREA81 0x002031ac enemy_InitSpriteTablesTimer CONFIRM enemy_InitSpriteTablesTimer sprite tables plus timer zero
+GEKAN_AREA81 0x00203226 enemy_UpdateTimerSpawn CONFIRM enemy_UpdateTimerSpawn every 60 frames calls spawn helper
+GEKAN_AREA81 0x002032cc projectile_InitFalling CONFIRM projectile_InitFalling sets gravity and zero velocity, copies spawn data
+GEKAN_AREA81 0x0020336e projectile_UpdateFallBounce CONFIRM projectile_UpdateFallBounce multi-state fall with gravity and landing, bumps parent counter
+GEKAN_AREA81 0x0020363c obj_Init_0020377c RENAME obj_InitSpriteTablesLowZFlag address-suffixed name; sprite tables, low-Z flag, facing flag, anim setter when global is 5
+GEKAN_AREA81 0x00203710 enemy_UpdateAnimThenLoadHitbox CONFIRM enemy_UpdateAnimThenLoadHitbox animates, then loads attack param block into globals at end
+GEKAN_AREA81 0x00203940 child_InitFollowA CONFIRM child_InitFollowA copies parent facing, low-Z flag
+GEKAN_AREA81 0x00203978 child_UpdateFollowA CONFIRM child_UpdateFollowA mirrors parent state 1, forwards hit to parent frame counter
+GEKAN_AREA81 0x00203a08 child_InitFollowB CONFIRM child_InitFollowB copies parent facing and Y from parent frame table
+GEKAN_AREA81 0x00203a54 child_UpdateFollowB CONFIRM child_UpdateFollowB Y tracks parent frame table, reacts to parent states 1-5
+GEKAN_AREA81 0x00203b82 child_InitFollowC CONFIRM child_InitFollowC copies parent facing, low-Z flag
+GEKAN_AREA81 0x00203bb2 child_UpdateFollowC CONFIRM child_UpdateFollowC when callback fires and global matches, sets parent state 4 and own state 1
+GEKAN_AREA81 0x00203c82 obj_InitSpawnThree CONFIRM obj_InitSpawnThree three spawn calls then player proximity box test
+GEKAN_AREA81 0x00203dd2 obj_Update_00203f12 RENAME obj_UpdateRangeCheckPlayBack address-suffixed; state 0 tests global X vs range, state 1 plays frames back to 0, then state 2
+GEKAN_AREA81 0x00203eb0 child_UpdateFollowD CONFIRM child_UpdateFollowD Y from parent frame table, clears flag when parent state 2
+GEKAN_AREA81 0x00203f06 child_UpdateFollowE CONFIRM child_UpdateFollowE follows parent states 1 and 2 with Y from frame table
+GEKAN_AREA81 0x00203fae child_InitFollowD CONFIRM child_InitFollowD copies parent facing, low-Z flag
+GEKAN_AREA81 0x00203fde obj_Dispatch_0020411e RENAME obj_UpdateInitOnceThenHitbox address-suffixed; runs init once, then tail-calls callback or loads hitbox on trigger
+GEKAN_AREA81 0x0020402a obj_Init_0020416a RENAME obj_InitFrameTablePtr address-suffixed; sets frame table pointer, flag 1, low-Z flag
+GEKAN_AREA81 0x00204062 enemy_UpdateLoadHitboxOnTrigger CONFIRM enemy_UpdateLoadHitboxOnTrigger on callback loads attack param block into globals, state 1
+GEKAN_AREA81 0x002041f8 trigger_UpdateSetFlag CONFIRM trigger_UpdateSetFlag when callback fires and global matches sets global 1 or 2 and flag
+GEKAN_AREA81 0x002042f0 item_InitThrown UNSURE item_InitThrown spawn offset by parent facing with velocity; could be projectile not item, no callers
+GEKAN_AREA81 0x00204714 player_UpdateStateMachine CONFIRM player_UpdateStateMachine table-driven state select then switch over states 0-0x10, collision, gravity, sprite build
+GEKAN_AREA81 0x00204b0e enemy_CycleHitCounter CONFIRM enemy_CycleHitCounter if flag 0x80 set, counter at +0x24 increments and wraps past 14
+GEKAN_AREA81 0x00204b52 player_StateE CONFIRM player_StateE state 0xe handler: distance check to player then switches to state 0xf with launch velocity
+GEKAN_AREA81 0x00204bc8 player_StateF CONFIRM player_StateF state 0xf handler: knockback arc with gravity, returns to state 3 on landing
+GEKAN_AREA81 0x00204c7c player_State0 CONFIRM player_State0 state 0 handler: idle patrol with player proximity check, switches to state 1
+GEKAN_AREA81 0x00204da6 player_State5 CONFIRM player_State5 state 5 handler: launch arc on entry, then gravity, bounces to state 0xc or 10
+GEKAN_AREA81 0x00205100 player_State4 CONFIRM player_State4 state 4 handler: hop arc with bounce counter, ends in state 10 or 0xb
+GEKAN_AREA81 0x0020523e player_State6 CONFIRM player_State6 state 6 handler: facing-based drift and gravity, zero X on ground
+GEKAN_AREA81 0x002052d8 player_StateB CONFIRM player_StateB state 0xb handler: on anim end returns to state 3, calls hit reaction on flag match
+GEKAN_AREA81 0x0020531c enemy_CheckPlayerHitboxOverlap CONFIRM enemy_CheckPlayerHitboxOverlap hitbox from table by frame and facing, overlap test vs player, sets player hit flags
+GEKAN_AREA81 0x00205478 player_State1Transition CONFIRM player_State1Transition on anim-end flag clears it and sets state to argument (states 1 and 3)
+GEKAN_AREA81 0x00205494 player_StateC CONFIRM player_StateC state 0xc handler: first frame resets to state 0 with effect spawn, else picks anim from flags
+GEKAN_AREA81 0x0020556e player_States7to10 CONFIRM player_States7to10 handler for states 7-10: hop and landing sequence with hit counter, hands to state 0xd
+GEKAN_AREA81 0x002058c0 boss_SubStateHandler CONFIRM boss_SubStateHandler state 0xd sub-states 4,5,6: stop, reset, then arc toward player
+GEKAN_AREA81 0x00205a22 actor_HitReaction CONFIRM actor_HitReaction when hit code 2: bounce launch effect or switch state 5 to 0xc with scatter velocity
+GEKAN_AREA81 0x00205ba4 actor_ApplyGravity CONFIRM actor_ApplyGravity applies gravity to Z velocity unless in states 5,6,7,0xc-0xf
+GEKAN_AREA81 0x00205bf4 actor_ResetVelocity CONFIRM actor_ResetVelocity zeroes Z velocity and accel unless in excluded states
+GEKAN_AREA81 0x00205c38 actor_SpawnHelper CONFIRM actor_SpawnHelper in states 5 and 0xc spawns an effect at actor position
+GEKAN_AREA81 0x00205c8a vdp1_BuildSpriteShadowCommands CONFIRM vdp1_BuildSpriteShadowCommands writes 16-short VDP1 command entries with zoom from camera depth, plus shadow calls
+GEKAN_AREA81 0x00206128 boss_UpdateTopLevel CONFIRM boss_UpdateTopLevel three-phase init then dispatch by owner type; called from enemyA_UpdateAI
+GEKAN_AREA81 0x00206220 boss_InitFromSpawnData CONFIRM boss_InitFromSpawnData sets facing, initial state by owner type 0/1/2, position, sprite tables from spawn record
+GEKAN_AREA81 0x002063f0 boss_UpdateStateMachine CONFIRM boss_UpdateStateMachine state remap by flag tables, 19-state switch of boss handlers, then per-state collision
+GEKAN_AREA81 0x00206868 boss_DecideApproachOrIdle CONFIRM boss_DecideApproachOrIdle near player picks state 10 facing player, else chase state 0 or idle state 1
+GEKAN_AREA81 0x00206954 boss_UpdateWalkState CONFIRM boss_UpdateWalkState walks by facing speed, reverses on wall or flag into state 2, recovery counter
+GEKAN_AREA81 0x002069e2 boss_UpdateBehaviorSelectTurn CONFIRM boss_UpdateBehaviorSelectTurn state 0xc: flips facing on flag, picks sub-mode by player side, enters jump state 0xd
+GEKAN_AREA81 0x00206a98 boss_UpdateJumpLaunch CONFIRM boss_UpdateJumpLaunch state 0xd: on flag sets state 0xe and launches with X velocity by sub-mode
+GEKAN_AREA81 0x00206b14 boss_UpdateJumpAirbornLanding CONFIRM boss_UpdateJumpAirbornLanding state 0xe: holds frame while airborne, on landing zeroes speed and enters state 0xb

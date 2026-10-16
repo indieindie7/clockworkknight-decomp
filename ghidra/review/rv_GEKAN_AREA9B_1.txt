@@ -1,0 +1,59 @@
+GEKAN_AREA9B 0x002005f4 boss_StateIntro CONFIRM boss_StateIntro first-time entrance sequence (set start pos, move, then sound and hop state), state 0 of dispatcher
+GEKAN_AREA9B 0x00200720 boss_StateIdleWait CONFIRM boss_StateIdleWait only cycles idle anim frames 0..0x1b, no movement
+GEKAN_AREA9B 0x0020078c boss_StateWalk CONFIRM boss_StateWalk adds x velocity (sign from facing) while animating, footstep sound on two frames
+GEKAN_AREA9B 0x00200894 boss_StateTurn UNSURE boss_StateTurn near copy of walk (x velocity, anim loop) but does not flip facing; role unclear
+GEKAN_AREA9B 0x00200996 boss_StateStep CONFIRM boss_StateStep sound, x step with anim counting down to 0 then back to idle
+GEKAN_AREA9B 0x00200a38 boss_StateStepEnd UNSURE boss_StateStepEnd pure anim 0..0x31 then forces state 6; no velocity, role unclear
+GEKAN_AREA9B 0x00200aa6 boss_StateAttackWindup RENAME boss_StateAimAtPlayer computes angle to player via helper and rotates an aim value toward it, sound, waits, then idle
+GEKAN_AREA9B 0x00200d00 boss_StateAttackSwing RENAME boss_StateTurnAround anim, sound, wait, then XORs the facing flag at +0xa and returns to idle; no hit logic
+GEKAN_AREA9B 0x00200df8 boss_StateAttackRecover RENAME boss_StateHopArc ballistic hop (x vel toward side, y vel 0x5a0 with gravity), sound on launch and landing; entered after intro/hurt
+GEKAN_AREA9B 0x0020100e boss_StateJumpStart UNSURE boss_StateJumpStart anim and sounds only, no velocity set (comment wrong), back to idle; role unclear
+GEKAN_AREA9B 0x0020115e boss_StateJumpAir RENAME boss_StateRiseAndSweep spawns effect table, raises y to a limit then moves x to a bound, then state 0xb; no gravity
+GEKAN_AREA9B 0x002012b2 boss_StateJumpLand RENAME boss_StateFallToFloor y velocity decreases by gravity step until floor y, sets facing by x, then state 0xc
+GEKAN_AREA9B 0x0020135a boss_StateJumpLandRecover UNSURE boss_StateJumpLandRecover moves x, reverses at bounds, hops with gravity, ends near player x going to state 0xd; unclear
+GEKAN_AREA9B 0x002014f4 boss_StateCharge UNSURE boss_StateCharge raises y for fixed frames (0x78 ticks) with flag set, no x motion; not a horizontal charge
+GEKAN_AREA9B 0x00201658 boss_StateChargeEnd RENAME boss_StateGlideToAnchor computes velocity from table offset position over 64 ticks, moves linearly, then state 0xf
+GEKAN_AREA9B 0x00201730 boss_AnimStepFrame RENAME boss_StateWaitAnimMark dispatcher state 0xf, waits until +0xb reaches 9 then enters state 0x10
+GEKAN_AREA9B 0x00201764 boss_StateHurtStart UNSURE boss_StateHurtStart two sounds, timer, y drop, then jumps to state 8; no knockback velocity, hurt role unproven
+GEKAN_AREA9B 0x00201868 boss_StateHurtRecover UNSURE boss_StateHurtRecover spawns effect table at own position, then slides x to bound and goes to state 0x12; role unclear
+GEKAN_AREA9B 0x00201960 boss_StateProjectileSpawn CONFIRM boss_StateProjectileSpawn sweeps x and sets spawn flag every 4 ticks (consumed by part spawners), flips facing
+GEKAN_AREA9B 0x00201b8c boss_StateProjectileWait RENAME boss_StateBounceArc gravity arc inside bounds with bounce sound, then picks next attack state; no projectile wait
+GEKAN_AREA9B 0x00201dcc boss_StateDefend UNSURE boss_StateDefend waits then moves x/y while setting spawn flag every 4 ticks until bound; no defensive evidence
+GEKAN_AREA9B 0x00201ede boss_StateDefendEnd RENAME boss_StateSineSweep rises then oscillates y from a sine table while moving x until bound, then state 0x12
+GEKAN_AREA9B 0x002020e4 boss_StateSpecialA UNSURE boss_StateSpecialA moves y and x past player x, sets two spawn flags, then state 0x17; purpose unclear
+GEKAN_AREA9B 0x00202292 boss_StateSpecialB UNSURE boss_StateSpecialB waits, raises y, moves x, bursts spawn flag over 10 ticks, then state 0x12; purpose unclear
+GEKAN_AREA9B 0x0020243a boss_StateSpecialC RENAME boss_StateCircleSpecial 10 sub-steps incl. circular motion from sine table, repeated sound 0xbc and spawn flags
+GEKAN_AREA9B 0x00203280 boss_SetStateHelper RENAME boss_InitPartsA no state change; zeroes anim counters, sets box fields and registers 6 parts via a callback; no callers (table-called)
+GEKAN_AREA9B 0x002032d8 boss_ApplyVelocity RENAME boss_PartUpdateFlagSpawns places part at parent pos plus per-frame offset, copies facing, spawns extra parts when shared flags set
+GEKAN_AREA9B 0x0020351c boss_ApplyGravity RENAME boss_InitPartsB same shape as 0x203280 but 5 registered parts; no gravity involved
+GEKAN_AREA9B 0x00203564 boss_ClampToFloor RENAME boss_PartUpdateOnPhase6 places part at parent pos plus frame offset, spawns when flag nibble == 6; no floor clamp
+GEKAN_AREA9B 0x002036e6 boss_FaceTarget RENAME boss_InitPartsC same init shape with 4 registered parts; no facing logic
+GEKAN_AREA9B 0x00203744 boss_CheckPlayerHit RENAME boss_PartUpdateOnPhaseB places part at parent pos plus frame offset, spawns when flag nibble == 0xb; no hit test
+GEKAN_AREA9B 0x002037e2 boss_SpawnChild RENAME boss_GetPartOffset callers pass table and out buffer; returns 3-byte offset chosen by parent state and anim frame, no spawning
+GEKAN_AREA9B 0x0020392c part_InitSimple UNSURE part_InitSimple tiny init (frame ptr from parent table, copy facing, flag=1); no callers, same shape as InitFollow
+GEKAN_AREA9B 0x00203958 part_UpdateOrbit RENAME part_UpdateHitboxTabled places part at body-part offset averaged from two table frames, tests overlap in boss attack states and nudges player x; no orbit
+GEKAN_AREA9B 0x00203c98 part_InitFollow UNSURE part_InitFollow tiny init same as InitSimple but flag=0; no callers
+GEKAN_AREA9B 0x00203cbc part_UpdateFollow RENAME part_UpdateHitboxFollow follows parent body-part offset (averaged two frames), overlap test when boss state 0x18 step 8, nudges player x
+GEKAN_AREA9B 0x00203ea0 part_UpdateAnim RENAME part_InitSpriteSet sets sprite table pointers/offsets and registers 3 parts via callback; no frame advance
+GEKAN_AREA9B 0x00203eea part_CheckDone RENAME part_UpdateWaitDraw per-frame update: in state 0 runs part_StateWait and rotated-sprite draw, sets remove flag at +0x11 on result; not a done check
+GEKAN_AREA9B 0x00203f5a part_StateWait RENAME part_StatePlaceAtParent positions part at parent offset with facing sign and copies angle; no waiting
+GEKAN_AREA9B 0x00203ff0 part_StateFly RENAME part_InitFlyAimed one-shot setup: sprite tables, start pos from two body offsets, velocity from trig table by aim angle; called from aimed sprite draw
+GEKAN_AREA9B 0x00204156 part_StateHit RENAME part_UpdateFlyTimed moves by velocity, draws scaled sprite, sets remove flag after 10 or 15 ticks; no hit reaction
+GEKAN_AREA9B 0x0020421a part_StateExpire RENAME part_InitFlying setup of sprite tables, random-ish angle from callback and y velocity; no expiry logic
+GEKAN_AREA9B 0x00204290 part_UpdateProjectile RENAME part_UpdateOrbitBob sin/cos offsets around parent x/z with angle +0x12, bobs y, removes when boss state leaves 0x15..0x18
+GEKAN_AREA9B 0x002043fc part_UpdateProjectileMove RENAME part_InitAtBossX setup of sprite tables, x copied from parent with +/- offset chosen by param (0..3), sound call; no movement step
+GEKAN_AREA9B 0x002044ba part_CheckBounds RENAME part_UpdateSpawnTimed counts ticks, at tick 10 (or 6) spawns sub-part if boss state <8 and x in range, draws scaled sprite, sets remove flag when done
+GEKAN_AREA9B 0x002045c4 part_InitBullet RENAME part_InitRandomNearParent sprite tables, position = parent pos + random offset from LCG; no bullet logic
+GEKAN_AREA9B 0x00204630 part_StubReturnFlag RENAME part_UpdateSimpleDraw draws scaled sprite and sets remove flag at +0x11 when finished; not a constant stub
+GEKAN_AREA9B 0x002046aa part_UpdateBullet RENAME part_InitRandomBodyOffset random facing flip, picks random 3-byte body offset from parent table, stores it in owner; setup not update
+GEKAN_AREA9B 0x0020476e part_SetStateSmall RENAME part_UpdateAtStoredOffset places part at parent pos plus stored x/y offset each frame, draws, removes when finished
+GEKAN_AREA9B 0x0020480c part_InitSmallA RENAME part_InitSpriteTables only sets sprite table pointers and offsets
+GEKAN_AREA9B 0x00204830 part_InitSmallB RENAME part_UpdateAimedAtParent copies parent pos and facing then calls aimed-sprite draw; per-frame, not init
+GEKAN_AREA9B 0x0020489c part_InitSmallC RENAME part_InitFalling sprite tables, parent facing, upward y velocity with gravity step -0x10 and x/z velocities
+GEKAN_AREA9B 0x002048e6 part_UpdateSmall RENAME part_UpdateFalling applies gravity to y velocity, moves, bumps removal counter when y below limit, draws
+GEKAN_AREA9B 0x00204998 part_SpawnWithParams RENAME part_SpawnAtRotatedOffset rotates one of 3 offsets by aim angle (sin/cos table) around parent pos, calls spawn callback in parent anim frame windows
+GEKAN_AREA9B 0x00204b6c part_InitLarge RENAME part_InitAtTableOffset sets facing from parent and position = parent pos + table offset chosen by param
+GEKAN_AREA9B 0x00204bf2 part_UpdateMain UNSURE part_UpdateMain 6-state part (bounce with gravity, wait, orbit/sine motion, return to anchor, fall); body truncated, role unclear
+GEKAN_AREA9B 0x002055d0 part_InitEffect RENAME part_InitAtParentPos copies parent pos and facing, sets sprite table; generic
+GEKAN_AREA9B 0x00205604 part_UpdateEffect RENAME part_UpdateArcPiece x velocity from table by param, gravity arc with anim, removes when y falls below limit
+GEKAN_AREA9B 0x00205760 part_SetFrame RENAME part_InitFixedPosByParam sets sprite tables and one of four fixed positions by param, then calls callback; not a frame setter

@@ -1,0 +1,73 @@
+GEKAN_AREA5B 0x00200000 boss5b_ObjectUpdate CONFIRM boss5b_ObjectUpdate state dispatch init/intro/play/phase plus two timer decrements
+GEKAN_AREA5B 0x002000f4 boss5b_Init CONFIRM boss5b_Init loads gfx/palettes, clears vars, builds trail ring, spawns segment tasks
+GEKAN_AREA5B 0x00200488 boss5b_UpdateTitleAnim RENAME boss5b_IntroSequence runs right after Init, 0x78-frame timed or button skip then 0x80-frame second stage, then enters play state
+GEKAN_AREA5B 0x002005cc boss5b_JumpStub UNSURE boss5b_JumpStub thunk to FUN_00202b40 used as state 2 handler; target unnamed so role unproven
+GEKAN_AREA5B 0x00202c24 boss5b_PartUpdateA RENAME boss5b_IntroWaveAnim animation frame to 0x7e with line-scroll table amplitude ramp +/-5, sound 100; used by intro and state 2 thunk
+GEKAN_AREA5B 0x00202d44 boss5b_PartTrackAndAnimate CONFIRM trail update, steer, frame picked from facing angle bits then drawn
+GEKAN_AREA5B 0x0020330c boss5b_UpdateFadeCounter CONFIRM counter ramps 1..0x20 by direction flag and calls SetBgFadeMode
+GEKAN_AREA5B 0x002033d6 boss5b_BossPhaseState CONFIRM state byte 0-8 sequence of moves, orbit, countdown, sounds
+GEKAN_AREA5B 0x002036ac boss5b_PartFrameAdvance CONFIRM steps frame by 3 to 0x1f with sound at 3 and child spawn at 9, trail update
+GEKAN_AREA5B 0x00203a36 boss5b_UpdateTrail CONFIRM appends pos/anim to 16-entry ring when moved
+GEKAN_AREA5B 0x00203bd8 boss5b_SteerFacingToTrail CONFIRM atan of last two trail points, turns facing by 0x40
+GEKAN_AREA5B 0x00204028 boss5b_MoveToHomePos CONFIRM steps x/y/z toward home table entry, state+1 when all three arrive
+GEKAN_AREA5B 0x00204744 boss5b_MoveToHomePosWait CONFIRM same move, state advances only when mask bits set, then clears mask
+GEKAN_AREA5B 0x00204904 boss5b_MoveToHomePos_2 RENAME boss5b_MoveToHomePosStart same easing with other constants, used in phase 0 setup; drop numeric suffix
+GEKAN_AREA5B 0x002049da boss5b_OrbitAroundHome CONFIRM angle += speed, sin/cos offsets around home point with clamps
+GEKAN_AREA5B 0x00204ba0 boss5b_SegmentSwayLeft CONFIRM segment index +0xb: slide left idle, sine swing for 5-17
+GEKAN_AREA5B 0x00204c7a boss5b_SegmentSwayRight CONFIRM mirror of left version
+GEKAN_AREA5B 0x00204d66 boss5b_SegmentCirclePos CONFIRM places segments 5-17 on circle by sin/cos and parent radius
+GEKAN_AREA5B 0x00204e54 boss5b_SegmentArcLeft CONFIRM segments below 7 y down, 7-13 arc via sin table
+GEKAN_AREA5B 0x00204f0e boss5b_SegmentArcRight CONFIRM mirror, y up
+GEKAN_AREA5B 0x0020502a boss5b_SegmentInitFindFree CONFIRM resets fields, scans slot flags for one with bit 2 and not bit 1, claims it as segment index
+GEKAN_AREA5B 0x002050d0 boss5b_SegmentAnimTick CONFIRM applies trail position then steps frame 0..0xe each tick, draws
+GEKAN_AREA5B 0x00205138 boss5b_SegmentStateUpdate CONFIRM state 0x18-0x52 dispatch to sway/arc/formation helpers, flag 0x20 spawns five children
+GEKAN_AREA5B 0x002052fc boss5b_SegmentFallOrDie CONFIRM flag 8 applies y velocity with decel, clears task below floor, else animates
+GEKAN_AREA5B 0x00205488 boss5b_SegmentInitClaimSlot CONFIRM finds slot with flags&3==0, claims, random start frame
+GEKAN_AREA5B 0x00205560 boss5b_SegmentTrailAnimTick RENAME boss5b_SegmentAnimTickSlow same as SegmentAnimTick but steps frame every 2 ticks; calls ApplyTrailPosition not TrailRecord
+GEKAN_AREA5B 0x002055cc boss5b_SegmentStateUpdate_2 RENAME boss5b_SegmentStateUpdateSlowAnim same state switch but frame step every 2 ticks and sets +0x20 on spawn; drop numeric suffix
+GEKAN_AREA5B 0x00205792 boss5b_SegmentThrownUpdate CONFIRM x/y velocity plus gravity, sound 0x6c at landing, compares position with parent
+GEKAN_AREA5B 0x002059ba boss5b_SegmentSpawnLast CONFIRM claims last slot (count-1), sets flag 1, increments counter
+GEKAN_AREA5B 0x00205a54 boss5b_HeadBlinkUpdate CONFIRM applies trail position, rises to target, counts frames 0x3f to set flag 0x10, blink color table write
+GEKAN_AREA5B 0x00205b54 boss5b_MainBodyUpdate CONFIRM flag 8 fall, state switch to sway/arc/formation helpers, child spawns, frame animation
+GEKAN_AREA5B 0x00205fb4 boss5b_BodyFalling CONFIRM velocity to y/z, decel 0x80, clears task at floor and slot flag
+GEKAN_AREA5B 0x0020601a boss5b_PaletteCycleAnim CONFIRM three-mode table-driven color word cycle with 0x28 timer
+GEKAN_AREA5B 0x0020612e boss5b_ApplyTrailPosition CONFIRM follows next trail entry (segment-1 ring), special circle placement for chosen frame types, records own pos
+GEKAN_AREA5B 0x00206408 boss5b_ApplyTrailPositionSimple CONFIRM same follow with only type 2 special case
+GEKAN_AREA5B 0x002065c8 boss5b_PlaceOnCircleA CONFIRM home table plus sin/cos(trail angle)*radius on one of three axis pairs
+GEKAN_AREA5B 0x002066e8 boss5b_PlaceOnCircleB CONFIRM same with other home table 0x209b0c
+GEKAN_AREA5B 0x00206804 boss5b_FormationMoveTo CONFIRM eases x/y/z toward per-segment-range formation point with sin wave, ORs mask when all arrive
+GEKAN_AREA5B 0x00206b6c boss5b_FormationWobble CONFIRM per-range sine/random wobble on y/z, x slide within bounds, anim field updates
+GEKAN_AREA5B 0x00206faa boss5b_MoveToTrailSlot CONFIRM eases x/y/z toward trail ring entry of own segment, ORs mask when arrived
+GEKAN_AREA5B 0x0020714a boss5b_ChildInit CONFIRM resets fields, copies segment index and start frame from parent, loads frame script
+GEKAN_AREA5B 0x0020718e boss5b_PartHitReaction CONFIRM flag state machine on +0x28, hit decrements boss life counter, sound 0x68, spawns effect, hit boxes vs player
+GEKAN_AREA5B 0x00207504 boss5b_SetFlagReturnState CONFIRM sets bit 1 of +0x28 and returns state byte
+GEKAN_AREA5B 0x00207518 boss5b_ShadowUpdate UNSURE boss5b_ShadowUpdate copies parent state, runs init/run/end by state; sprite role (shadow vs hit proxy) not proven
+GEKAN_AREA5B 0x0020756c boss5b_ShadowInit UNSURE boss5b_ShadowInit zero position and spawns four children; role unproven
+GEKAN_AREA5B 0x002075b2 boss5b_RunScriptToEnd CONFIRM executes frame script entries until null then resets index and loop pointer
+GEKAN_AREA5B 0x00207630 boss5b_ShadowRun UNSURE boss5b_ShadowRun hit box vs player and y offsets from parent frame heights; role unproven
+GEKAN_AREA5B 0x002077fc boss5b_RunScriptToEnd_2 RENAME boss5b_RunScriptToEndAlt identical body to RunScriptToEnd with other helper constants; drop numeric suffix
+GEKAN_AREA5B 0x002078b6 boss5b_EffectInit CONFIRM reset, anim fields, spawns two children when flag bit 2 clear
+GEKAN_AREA5B 0x002078fc boss5b_EffectJumpFrame RENAME boss5b_EffectDrawFrame loads script ptr for current frame and tail-calls the frame draw routine
+GEKAN_AREA5B 0x0020793c boss5b_EffectStateUpdate CONFIRM state switch picks frame table from index, steps frame to 0x4f
+GEKAN_AREA5B 0x00207a64 boss5b_EffectJumpFrame_2 RENAME boss5b_EffectDrawFrameAlt same draw tail-call as EffectDrawFrame; drop numeric suffix
+GEKAN_AREA5B 0x00207c48 boss5b_EffectInitFrame CONFIRM reset, anim fields, start frame from parent field, load script
+GEKAN_AREA5B 0x00207ccc boss5b_SparkleInit CONFIRM random offset near parent via LCG, y minus camera, sound 0x6f
+GEKAN_AREA5B 0x00207dd0 boss5b_SparkleTask RENAME boss5b_ShadowTrackTask first tick runs ShadowTrackInit, then update helper and finish helper
+GEKAN_AREA5B 0x00207e08 boss5b_ShadowTrackInit CONFIRM copies parent position, sprite fields, screen y from camera +0x40
+GEKAN_AREA5B 0x00207e5c boss5b_CallIfNonzero CONFIRM calls helper, tail-calls second with arg if first nonzero
+GEKAN_AREA5B 0x00207eba boss5b_DebrisInit CONFIRM random offset inside parent frame box via LCG, y from camera, flag on rare roll
+GEKAN_AREA5B 0x00207fbc boss5b_DebrisTick CONFIRM helper nonzero then update, clears global when frame field zero
+GEKAN_AREA5B 0x002082d0 boss5b_TrailSlotsInit CONFIRM init four 6-byte table entries with index and 3 mask
+GEKAN_AREA5B 0x0020836c boss5b_ResetObjectFields CONFIRM zeroes frame, state, velocity, flag and child fields; called by 10 init routines
+GEKAN_AREA5B 0x002083c0 boss5b_CameraFollowUpdate CONFIRM camera task dispatches init/follow by state and writes camera x/y/z globals
+GEKAN_AREA5B 0x0020843c boss5b_CameraInit CONFIRM sets camera position constants and copies to previous slots
+GEKAN_AREA5B 0x00208478 boss5b_CameraFollowTarget CONFIRM camera eases toward midpoint of two objects on x with distance based speed clamps
+GEKAN_AREA5B 0x00208784 boss5b_CameraFollowTarget2D CONFIRM same with x and y spread, used for state 0x51
+GEKAN_AREA5B 0x002089b4 boss5b_BgInit CONFIRM resets bg regs, loads two pattern blocks, sets scroll and flag fields
+GEKAN_AREA5B 0x00208b3a boss5b_BgRegsReset CONFIRM writes constant defaults into bg register struct, clears flags
+GEKAN_AREA5B 0x00208bb8 boss5b_SetBgFadeMode CONFIRM arg 0, 1-0x20 or above selects flag and fade parameter set
+GEKAN_AREA5B 0x00208c54 boss5b_BuildLineScrollTable CONFIRM per-line x offsets from sine and camera, clamped, sets update flag
+GEKAN_AREA5B 0x00208dc8 boss5b_HitBoxOverlapA CONFIRM four-edge AABB test vs player box, returns side bits 1/2 and 4/8
+GEKAN_AREA5B 0x00208f00 boss5b_HitBoxOverlapSmall CONFIRM same test with half-size own box
+GEKAN_AREA5B 0x0020906a boss5b_HitBoxOverlapB CONFIRM same test with different x margins and no y shrink
+GEKAN_AREA5B 0x002091a4 boss5b_CopyTwoBlocks CONFIRM calls copy helper twice into one dest buffer with two sources

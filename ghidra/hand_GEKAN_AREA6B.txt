@@ -1,0 +1,116 @@
+0x00200000 func boss6b_UpdateMain hand boss object update; switches on state byte +0x11 (init, intro, fight, dispatch via pointers), clamps position, sets sprite value
+0x0020010c func boss6b_Init hand copies tables into work RAM, zeroes many globals, sets start position from table, loops 0x30/0x18 calls, registers 20 parts
+0x00200450 func boss6b_UpdateIntro hand intro substate machine; sets sprite frame pointers via +0x5c, counts timers, calls sound id 0x72 and 0x71
+0x00200620 func boss6b_UpdateFightAI hand big boss AI switch on substate +8 (0..0x2b) choosing attacks by player distance, plays sounds 0x72 0x7c 0x77 0x79
+0x00201138 func boss6b_UpdateFightPhase2 hand second large boss behaviour switch on substate; moves toward player x/y, calls attack handlers and DMA-like helper loops
+0x002019f6 func boss6b_UpdateFightPhase3 hand largest boss state machine with four args; attack, hit-reaction and defeat substates, many handler calls
+0x00202864 func boss6b_AnimStepDown hand sets two sprite frame pointers from frame index +0xe, advances timer, decrements frame then next substate
+0x00202900 func boss6b_AnimStepUp32 hand sets sprite frames from index +0xe, counts up to 0x1f then next substate and plays sound 0x73
+0x00202a4c func boss6b_AnimLoop32 hand sets sprite frames from index +0xe, loops frame counter 0 to 0x1f forever
+0x00202ae4 func boss6b_AnimStepUp16 hand sets sprite frames from index, counts to 0xf then resets and advances substate
+0x00202b88 func boss6b_AnimAttackSpawn hand animates frames to 0x20; at frame 0x18 plays sound 0x75 and spawns two child objects
+0x00202d08 func boss6b_AnimStepUp30 hand sets sprite frames, counts up to 0x1e then resets and advances substate
+0x00202da8 func boss6b_AnimStepDown32 hand sets sprite frames, counts frame index down to 0, reloads 0x1f and advances substate
+0x00202e44 func boss6b_AnimPingPongSound hand frame index goes up then down, direction flag +8, plays sound 0x76 at frame 0x10, repeat count vs table
+0x00202f66 func boss6b_AnimPingPong hand frame index up to 0xf then back to 0 by direction flag; returns 1 when peak reached
+0x00203034 func boss6b_AnimStepUp15Advance hand sets sprite frames, counts up past 0xe then advances substate each tick
+0x002030cc func boss6b_AnimStepUp8 hand sets sprite frames, counts to 7 then advances substate
+0x00203168 func boss6b_AnimStepDownAdvance hand sets sprite frames, counts index down to 0 then advances substate
+0x00203204 func boss6b_AnimHoldUp16 hand sets sprite frames, direction flag raises index to 0xf or lowers to 0
+0x002032b8 func boss6b_AnimHoldUp16FastDown hand like AnimHoldUp16 but lowers index by up to three per tick
+0x00203390 func boss6b_AnimHoldUp16B hand sets sprite frames, direction flag raises index to 0xf or lowers to 0 (was boss6b_AnimHoldUp16_2)
+0x00203440 func boss6b_AnimHoldUp16C hand sets sprite frames, direction flag raises index to 0xf or lowers to 0 (was boss6b_AnimHoldUp16_3)
+0x002034f0 func boss6b_AnimStepUp16Advance hand sets sprite frames, counts to 0xf then advances substate
+0x0020358c func boss6b_AnimPingPongRepeat hand frame index up and down by direction flag, repeat counter vs table, then advances substate
+0x0020367c func boss6b_AnimStepDownAdvanceB hand sets sprite frames, counts index down to 0 then advances substate (was boss6b_AnimStepDownAdvance_2)
+0x00203718 func boss6b_AnimConditionalStep hand sets sprite frames, increments frame index when direction flag zero and condition holds
+0x002037b0 func boss6b_AnimLoop16 hand sets sprite frames, loops frame counter 0 to 0xf
+0x00203848 func boss6b_AnimStepUp32Advance hand sets sprite frame, counts to 0x1f then advances substate
+0x002038c4 func boss6b_AnimPingPongReturnDone hand frame index up to 0xf then down; returns 1 when back at zero
+0x00203974 func boss6b_AnimStepUp16AdvanceB hand sets sprite frame, counts to 0xf then advances substate (was boss6b_AnimStepUp16Advance_2)
+0x002039f4 func boss6b_AnimLoop32B hand loops frame counter 0 to 0x1f (was boss6b_AnimLoop32_2)
+0x00203a68 func boss6b_AnimLoop32C hand loops frame counter 0 to 0x1f (was boss6b_AnimLoop32_3)
+0x00203adc func boss6b_AnimLoop32D hand loops frame counter 0 to 0x1f (was boss6b_AnimLoop32_4)
+0x00203b50 func boss6b_AnimCountUp hand sets sprite frame, increments frame counter each tick
+0x00203bbc func boss6b_AnimCountUpB hand sets sprite frame, increments frame counter each tick (was boss6b_AnimCountUp_2)
+0x00203c18 func boss6b_AnimStepUp16Reset hand sets sprite frame, counts to 0xf then resets
+0x00203d14 func boss6b_AnimPingPongSound7e hand frame index ping-pong, plays sound 0x7e at frame 3, advances when count reached; returns state
+0x00203dec func boss6b_AnimStepDownAdvanceC hand sets sprite frame, counts down to 0 then advances substate (was boss6b_AnimStepDownAdvance_3)
+0x00203e64 func boss6b_AnimLoop32E hand sets sprite frames, loops frame counter 0 to 0x1f (was boss6b_AnimLoop32_5)
+0x00203efc func boss6b_AnimCountUpC hand increments frame counter each tick (was boss6b_AnimCountUp_3)
+0x00203f8c func boss6b_AnimCountDownAdvance hand sets sprite frame, counts down to 0 then advances substate
+0x00204080 func boss6b_AnimPingPongSoundPair hand frame index ping-pong, plays two sounds at frame 1, advances after 3 repeats
+0x00204164 func boss6b_AnimPlaySoundOnce hand sets sprite frames, plays sound at frame 1, returns 1 after 0x20 ticks
+0x00204220 func boss6b_AnimPlaySoundOnceB hand sets sprite frames, plays sound at frame 1, returns 1 after 0x1f ticks (was boss6b_AnimPlaySoundOnce_2)
+0x002042e0 func boss6b_AnimSoundAtFrames hand sets sprite frames from index, plays a sound when frame index is 1 or 8
+0x0020434a func boss6b_SetSpriteFrames hand sets two sprite frame pointers from frame index +0xe via draw helper
+0x002043b0 func boss6b_SetSpriteFramesB hand sets two sprite frame pointers from frame index +0xe via draw helper (was boss6b_SetSpriteFrames_2)
+0x002043f8 func boss6b_MoveToTablePosition hand steps boss x/y/z toward table target position; returns 1 when all axes arrived
+0x002044d8 func boss6b_TrackPlayerX hand moves boss x toward player x with clamping and speed limit, uses math helper; substate in +0x14
+0x0020468c func boss_ActionMashBreakFree hand state machine counting button presses, sounds 0x78/0x7b, knocks boss back after ten presses
+0x0020488e func boss_ActionHoldDirBreakFree hand state machine reading pad direction bits, sounds 0x78/0x7b, launches boss away from player
+0x00204ab2 func boss_ActionLeapAtPlayer hand computes clamped velocity toward player X, arcs with gravity, sounds 0x7a/0x7b
+0x00204cf4 func boss_ActionJumpArcLand hand random-scaled jump velocity, arcs up and lands at floor Y, sets flags, sound 0x76/0x7b
+0x00204ee4 func boss_ActionDropToFloor hand drops boss to fixed Y and Z with decaying velocity, sound 0x7b when settled
+0x00204fa6 func boss_ActionHoverSweep hand horizontal sweep with accelerating speed, wall turnaround at limits, multi-phase wobble in depth
+0x0020521a func boss_ActionSwoopAcrossArena hand picks side by X, travels across arena using speed table, reverses at edge, depth ease
+0x00205394 func boss_ActionDashAcross hand dash across arena with speed table and deceleration, sets done when edge reached
+0x002054b4 func boss_MoveToWaypoint hand steps XYZ toward table waypoint, snaps when near, returns true when all axes arrived
+0x00205584 func boss_ApplyVelocityGravity hand integrates velocity into position with gravity until ground height table reached
+0x002055d4 func boss_ActionJumpForwardDir hand five-phase hop forward, rise, fall, land with timers from tables, direction by facing flag
+0x00205776 func boss_ActionJumpForwardDirB hand five-phase hop variant with speed tables and facing flag, returns true at landing (was boss_ActionJumpForwardDir_2)
+0x00205916 func boss_IntroSequence hand multi-state boss entrance, drops in, spawns many child parts, plays sound, sets flags
+0x00205e58 func boss_AnimateParts hand sets sprite frame from two animation tables and advances frame counter wrapping at 32
+0x00205efc func boss_BounceInArena hand moves by velocity and reflects off six XYZ bounds, returns true on any bounce
+0x00205fd0 func boss_ConvergeToHome hand eases X and Y toward home point, bounces depth, returns true when at home
+0x00206272 func boss_InitPartFromParent hand calls base clear, copies facing from parent, sets anim frame and sprite pointer from table
+0x002062b0 func boss_UpdatePartHurtboxA hand handles hit flags, decrements hitpoints, picks parent state 0x1b/0x1e, plays sound, sets hittable flag
+0x0020658c func boss_UpdatePartHurtboxB hand hit flag check, decrements hitpoints, parent states 0x18/0x1c, sound by table
+0x002067c0 func boss_UpdatePartHurtboxC hand hit check, damages, at zero hitpoints resets phase and plays sound, else parent state 0x26
+0x00206a02 func boss_InitPartAnim hand clears flags, sets animation frame and sprite pointer from table via parent
+0x00206a3e func boss_UpdatePartFollowParentA hand positions part at offset table relative to parent, hit detection, hitpoints, parent states 0x1b/0x1e
+0x00206de6 func boss_UpdatePartFollowParentB hand positions part at offsets by frame, hit detection, parent states 0x18/0x1c, hittable range check
+0x00207166 func boss_UpdatePartFollowParentC hand position from offset table, hit check, hitpoints to zero resets phase, parent state 0x26
+0x002073b4 func boss_InitChildFromParent hand calls obj_ClearState, copies facing, sets anim frame and sprite from parent table
+0x002073ea func boss_UpdateShadowFollow hand places linked object at parent offset by table when flag is 1 else copies position from global
+0x002074d2 func projectile_InitSimple hand sets flags, sprite frame, sprite pointer and facing from X position
+0x00207528 func boss_UpdateOrbitingPart hand positions part from offset table relative to parent, flips by facing, blinks and calls sound every few frames
+0x00207686 func effect_InitAtOrigin hand calls obj_ClearState, sets sprite frame and pointer, zeroes position
+0x00207758 func effect_InitAtOriginB hand calls obj_ClearState, sets sprite frame and pointer, zeroes position (was effect_InitAtOrigin_2)
+0x002077d0 func effect_InitSprite hand sets flags, sprite frame, sprite pointer and animation data pointer
+0x002077f4 func boss_UpdateHomingProjectile hand three-state projectile, homes toward player, spawns objects, plays sound, kills itself, hit check
+0x00207b9e func projectile_MoveBounceX hand moves with velocity and gravity, reflects X at limits, flags done at low Y, returns 0x40
+0x00207c18 func projectile_MoveBounceXB hand moves with velocity and stronger gravity, reflects X at limits, flags done at low Y, returns 0x40 (was projectile_MoveBounceX_2)
+0x00207cb0 func projectile_InitSideSpawn hand sets sprite, copies parent position, offsets and velocity by side flag, increments live counter
+0x00207d40 func projectile_UpdateBounceFlicker hand calls projectile_MoveBounceX, alternates call on odd frames, kills when below Y limit
+0x00207dda func projectile_InitAtTablePos hand sets sprite and position from six-byte table entry by index, frame by parity
+0x00207e48 func particle_UpdateFalling hand runs initial setup once, integrates velocity, gravity decay, advances 32-frame animation, dies below zero Y
+0x00207f2c func particle_InitRandomBurst hand random-seed multiply, sine table lookup gives velocities, positions near parent with random offset
+0x00208038 func effect_InitAboveParent hand sets sprite, animation pointers, copies parent position with Y offset
+0x002080d6 func effect_InitAtPartOffset hand sets sprite and position from parent anim table offsets, mirrored by facing
+0x0020819c func projectile_InitFromTable hand sets sprite, position from table by index, X velocity and facing by parameter
+0x00208264 func projectile_UpdateBounceDespawn hand calls projectile_MoveBounceX, per-frame callback, kills when below Y limit
+0x00208290 func boss_CheckPlayerSideHit hand reads pad bits, on left or right pushes player by offset, sets knockback state 0x28
+0x00208338 func obj_ClearState hand zeroes common object fields (state, anim, velocities, timers) and the extra data block
+0x0020838c func camera_UpdateByMode hand dispatches camera scroll mode from global state, saves previous position, stores result
+0x00208444 func camera_FollowMidpoint hand scrolls toward midpoint of two actors X with smoothing and clamp, falls back to camera_FollowPlayerOnly when far
+0x002085e0 func camera_FollowMidpointB hand scrolls toward midpoint of two actors X with smoothing and clamp, fallback when far apart (was camera_FollowMidpoint_2)
+0x0020879c func camera_FollowMidpointXY hand midpoint follow using X and Y distance, smoothing, clamp, fallback to camera_FollowPlayerOnly
+0x00208986 func camera_FollowPlayerOnly hand scrolls X and Y toward one actor with proportional easing and clamps
+0x00208ae8 func camera_FollowSingleActor hand scrolls X and Y toward one actor with limits, flags done when at limit
+0x00208f28 func obj_TestBoxHitPlayer hand builds hitbox from sprite bounds and player rect, calls rect overlap, returns side bits
+0x0020908a func obj_TestBoxHitPlayerB hand builds slightly different hitbox from sprite bounds and player rect, overlap test, returns side bits (was obj_TestBoxHitPlayer_2)
+0x00209270 func debris_InitFromSpawn hand sets position from spawn table, zero velocity, gravity -50, sprite pointers and initial flags
+0x0020930e func debris_UpdateDispatch hand reads state flags, sets velocity, dispatches debris_Update* state handlers by state byte
+0x0020957e func debris_UpdateState0Fall hand =GEKAN_AREA81 state 0 ballistic move with tile collision, bounce, rotate, hit check, to state 4
+0x00209698 func debris_UpdateState1Slide hand =GEKAN_AREA81 state 1 fixed vertical drop with tile collision, goes to 0, 3 or 4
+0x00209744 func debris_UpdateState2Hit hand =GEKAN_AREA81 state 2 checks overlap with objects, to state 4 on hit
+0x0020977c func debris_UpdateBounceMove hand =GEKAN_AREA61_LO moves with gravity, bounces off wall and floor, state 5 or 1 on settle
+0x0020981c func debris_UpdateState4Break hand =GEKAN_AREA81 state 4 spawns fragments once per type, spawns two child objects, remove flag
+0x0020993c func debris_UpdateSpinningFall hand =GEKAN_AREA61_LO moves with gravity, wall bounce, rotates angle, state 6 when landed or low
+0x00209a6c func debris_InitFromParent hand =GEKAN_AREA61_LO copies parent position, sets gravity, initial speed by facing, anim and hitbox 0x20
+0x00209b02 func debris_UpdateTumble hand moves with gravity, bounces off horizontal and vertical tile collision, animates, times out after 60 frames
+0x00209c0c func obj_CollideHorizontalTiles hand =GEKAN_AREA61_LO tile checks both sides with push-out then object list scan, returns hit code
+0x00209fec func obj_CollideVerticalTiles hand =GEKAN_AREA61_LO tile checks floor and ceiling with slopes then object list scan, returns hit code
+0x0020a43c func obj_FindOverlappingObject hand =GEKAN_AREA81 walks object list, tests box overlap with other, sets hit flags on it, returns 1
+0x0020a64c func obj_AppendSpriteCommandRotated hand =GEKAN_AREA61_LO appends 0x10-short VDP1 command with scale, rotation and offscreen cull

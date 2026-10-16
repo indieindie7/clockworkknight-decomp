@@ -1,0 +1,95 @@
+CK2USA_A 0x0600eade gfs_StartTransferNoWait CONFIRM gfs_StartTransferNoWait clamps size to remaining, sets state, registers handle; caller checks nonzero return
+CK2USA_A 0x0600eb8a gfs_AbortHandle CONFIRM gfs_AbortHandle clears state, unlinks from active list, returns position
+CK2USA_A 0x0600ebc8 gfs_GetHandleStatus CONFIRM gfs_GetHandleStatus returns state and transferred count; used by wait loop
+CK2USA_A 0x0600ec30 gfs_PollPendingHandle CONFIRM gfs_PollPendingHandle PollHandle calls it for state -1 pending; marks ready on status 2
+CK2USA_A 0x0600ec5a gfs_PollHandle CONFIRM gfs_PollHandle steps driver and transfer, finishes handle; used by wait loop and PollAll
+CK2USA_A 0x0600ecd2 gfs_PollAllHandles CONFIRM gfs_PollAllHandles loops over active handle list calling PollHandle
+CK2USA_A 0x0600ed44 gfs_SetHandleField58 UNSURE gfs_SetHandleField58 swap setter at +0x58, no callers, purpose unknown
+CK2USA_A 0x0600ed9c gfs_SetHandleParamA4 RENAME gfs_SetHandleTransferMode stores mode and forwards to TransferSetMode; callers pass 3 right after open
+CK2USA_A 0x0600edfa gfs_SetHandleField68 UNSURE gfs_SetHandleField68 value set temporarily in wait loop and restored; meaning of field unclear
+CK2USA_A 0x0600ee56 gfs_CallHandleDriverFunc CONFIRM gfs_CallHandleDriverFunc calls function pointer with handle+0x6c subobject, no callers
+CK2USA_A 0x0600ef1c gfs_CallGlobalVfunc RENAME gfs_GetErrorStatus caller passes buffer then reads error code at +8 of copied status block
+CK2USA_A 0x0600ef34 gfs_GetDirEntryInfo CONFIRM gfs_GetDirEntryInfo copies 12 byte entry by index; caller reads offset/unit fields from it
+CK2USA_A 0x0600efac gfs_InitVtableDefaults CONFIRM gfs_InitVtableDefaults stores four default callbacks into work area; called from InitWorkArea
+CK2USA_A 0x0600efc4 gfs_InitWorkArea CONFIRM gfs_InitWorkArea zeroes work area and handle slots, called by gfs_Init
+CK2USA_A 0x0600f068 gfs_FindFirstSetFlagIndex CONFIRM gfs_FindFirstSetFlagIndex scans entries for bit0 flag; SetDirTable stores result as count
+CK2USA_A 0x0600f0ca gfs_FindFreeHandleSlot CONFIRM gfs_FindFreeHandleSlot scans slots, marks first free used; callers pass result to open handle
+CK2USA_A 0x0600f112 gfs_ClearFirstWord RENAME gfs_ClearHandleUsedFlag only caller CloseHandle frees slot whose first word FindFreeHandleSlot set to 1
+CK2USA_A 0x0600f11a gfs_ReleaseHandleResources CONFIRM gfs_ReleaseHandleResources releases lock owner and driver for handle; called by FreeHandle and AbortHandle
+CK2USA_A 0x0600f196 gfs_SetError CONFIRM gfs_SetError stores error code, calls callback; 25 callers return its result
+CK2USA_A 0x0600f1d4 gfs_FindHandleInActiveList CONFIRM gfs_FindHandleInActiveList linear search of active list; used by add and remove
+CK2USA_A 0x0600f208 gfs_AddHandleToActiveList CONFIRM gfs_AddHandleToActiveList appends if absent; called when transfers start
+CK2USA_A 0x0600f240 gfs_RemoveHandleFromActiveList CONFIRM gfs_RemoveHandleFromActiveList removes and shifts list down; used by abort poll close
+CK2USA_A 0x0600f294 gfs_OpenHandleOnDevice CONFIRM gfs_OpenHandleOnDevice inits transfer and file subobjects, clears state; callers pass free slot
+CK2USA_A 0x0600f2e8 gfs_ReadBootSectorCheck RENAME gfs_ReadVolumeSectorCheck reads one sector at fixed offset and checks 6 byte signature; ReadVolumeDescriptor parses the buffer
+CK2USA_A 0x0600f3cc gfs_ReadVolumeDescriptor CONFIRM gfs_ReadVolumeDescriptor parses start sector and size from sector buffer; OpenVolume uses output
+CK2USA_A 0x0600f486 gfs_OpenVolume RENAME gfs_LoadRootDirTable opens handle on root sector and calls ReadDirectoryEntries into table; Init uses count result
+CK2USA_A 0x0600f4fc gfs_StepHandleDriver CONFIRM gfs_StepHandleDriver runs driver step, tracks owner, maps status; called by PollHandle
+CK2USA_A 0x0600f59c gfs_StepHandleTransfer CONFIRM gfs_StepHandleTransfer runs transfer step with owner tracking, returns 1 or 6; called by PollHandle
+CK2USA_A 0x0600f640 gfs_GetDirEntryOffset CONFIRM gfs_GetDirEntryOffset computes offset from entry info plus param, no callers
+CK2USA_A 0x0600f6a2 gfs_ResetHandleCounters CONFIRM gfs_ResetHandleCounters resets transfer counters at start of transfers
+CK2USA_A 0x0600f6da gfs_UnpackFileInfo CONFIRM gfs_UnpackFileInfo copies optional outputs; GetFileInfo and GetHandleFileSize wrap it
+CK2USA_A 0x0600f732 gfs_CloseHandle CONFIRM gfs_CloseHandle removes from active list, clears used flag, tail-calls driver close
+CK2USA_A 0x0600f76c gfs_GetHandleField58 UNSURE gfs_GetHandleField58 field only tested for 1 on driver status 3; role unclear
+CK2USA_A 0x0600f778 gfs_IsHandleFinished CONFIRM gfs_IsHandleFinished true when driver state 4 and idle; PollHandle uses it to finish
+CK2USA_A 0x0600f7c4 gfs_MapDriverStatusToError CONFIRM gfs_MapDriverStatusToError maps driver status to error codes stored in handle
+CK2USA_A 0x0600f850 cdc_GetStatusCmd0 CONFIRM cdc_GetStatusCmd0 CD block command 0 packet, expands 8-byte status; fallback in GetStatusPacket
+CK2USA_A 0x0600f88c cdc_CallAndReturn0 UNSURE cdc_CallAndReturn0 calls callback on buffer and returns 0; only caller caches first byte, role unclear
+CK2USA_A 0x0600f89a cdc_GetStatusChecked CONFIRM cdc_GetStatusChecked reads stable CR regs, expands status, -8 on bad status; used by GetStatusPacket
+CK2USA_A 0x0600f8f2 cdc_ReadStableCR CONFIRM cdc_ReadStableCR rereads CR until two reads match, up to 100 tries
+CK2USA_A 0x0600f980 cdc_GetHardwareInfo CONFIRM cdc_GetHardwareInfo command 1 packet copying five result bytes, no callers
+CK2USA_A 0x0600f9d0 cdc_GetTocCmd2 CONFIRM cdc_GetTocCmd2 command 2 then reads data words into buffer; InitDrive calls it
+CK2USA_A 0x0600fa28 cdc_SetStatusByteCmd3 RENAME cdc_GetSessionInfo command 3 with session byte returns word; ReadHirqMasked calls it twice for session start
+CK2USA_A 0x0600fa7c cdc_InitSystemCmd4 CONFIRM cdc_InitSystemCmd4 command 4 init packet with 4 args; called from GFS init and drive init
+CK2USA_A 0x0600fb28 cdc_OpenTrayCmd5 CONFIRM cdc_OpenTrayCmd5 builds command 5 packet and executes, no callers
+CK2USA_A 0x0600fb48 cdc_WaitHirqCheck CONFIRM cdc_WaitHirqCheck waits on HIRQ mask, ends transfer on failure; used by ReadDataWords and ExecTask3
+CK2USA_A 0x0600fba8 cdc_GetCmd6Result RENAME cdc_EndDataTransfer command 6 returns transferred word count; ReadDataWords compares count to expected and EndTask3 uses it
+CK2USA_A 0x0600fd74 sh2_DisableIntRestoreSR UNSURE sh2_DisableIntRestoreSR masks ints, calls pointer with constant and 0, clears queued flag; does not restore SR; exact role unclear
+CK2USA_A 0x0600fdc4 sh2_QueueRangeCheckedRequest RENAME scu_QueueDmaTransfer FlushCommandBuffer passes VDP1 dest, buffer and size; configures SCU DMA level and end handler
+CK2USA_A 0x0600fef4 sh2_PollQueuedRequest RENAME scu_PollQueuedDma checks ready flags and SCU DMA level flag after QueueDmaTransfer; returns 2 while busy; no callers
+CK2USA_A 0x0600ffc8 gfs_ReadDirectoryEntries CONFIRM gfs_ReadDirectoryEntries checks flag, starts transfer, loads dir via 12 or 24 byte format loader
+CK2USA_A 0x06010038 gfs_FindDirEntryByName CONFIRM gfs_FindDirEntryByName compares 12 byte name in 24 byte records; GetDirEntryName returns index
+CK2USA_A 0x06010094 gfs_Index12Ptr CONFIRM gfs_Index12Ptr base plus index*12; used by AllocHandle and GetDirEntryInfo
+CK2USA_A 0x060100a8 gfs_Index24Ptr CONFIRM gfs_Index24Ptr base plus index*24; used by AllocHandle and GetDirEntryInfo
+CK2USA_A 0x060100ba gfs_GetEntry12Flags CONFIRM gfs_GetEntry12Flags returns flag byte of 12 byte entry; used by FindFirstSetFlagIndex
+CK2USA_A 0x060100ce gfs_GetEntry24Flags CONFIRM gfs_GetEntry24Flags returns flag byte of 24 byte entry; used by FindFirstSetFlagIndex
+CK2USA_A 0x060100e4 cd_WaitDriveReady CONFIRM cd_WaitDriveReady polls CD status with retries, maps errors to distinct codes, then pumps until idle; gfs_Init calls it when no volume given
+CK2USA_A 0x0601016c gfs_LoadDirShort CONFIRM gfs_LoadDirShort parses records via iterator into 12 byte entries, sets last flag, returns count; caller picks it for format 0
+CK2USA_A 0x060101da gfs_LoadDirLong CONFIRM gfs_LoadDirLong parses records into 24 byte entries with 12 byte name copy, sets last flag, returns count
+CK2USA_A 0x06010280 gfs_DirIterInit CONFIRM gfs_DirIterInit sets handle, buffer ptr, pos -1, counter, length from handle+0x20; used by both loaders
+CK2USA_A 0x060102a8 gfs_IterRead CONFIRM gfs_IterRead buffered read of n bytes from 2048 byte sector buffer with refill; all IterRead* wrappers use it
+CK2USA_A 0x0601037c gfs_IterReadU8 CONFIRM gfs_IterReadU8 reads 1 byte via IterRead, stores error code; used by record length and ParseDirRecord
+CK2USA_A 0x06010398 gfs_IterReadS16 CONFIRM gfs_IterReadS16 reads 2 bytes via IterRead, stores error code; only caller ParseDirRecord
+CK2USA_A 0x060103b8 gfs_IterReadS16Both CONFIRM gfs_IterReadS16Both reads two shorts (both-endian pair), returns second, error out param; only caller ParseDirRecord
+CK2USA_A 0x060103fc gfs_IterReadU32Both CONFIRM gfs_IterReadU32Both reads two 32 bit words (both-endian pair), returns second; used for extent and size
+CK2USA_A 0x06010440 gfs_IterReadU32 CONFIRM gfs_IterReadU32 reads one 32 bit word via IterRead, stores error, returns value
+CK2USA_A 0x0601045c gfs_IterNextRecordLen CONFIRM gfs_IterNextRecordLen reads record length byte; on zero padding advances sector count and refills buffer; ParseDirRecord uses result as record-present flag
+CK2USA_A 0x060104d4 gfs_ParseDirRecord CONFIRM gfs_ParseDirRecord reads ISO9660 record: extent, size, flags, 8.3 name with version suffix stripped, optional extension fields; loaders call it per entry
+CK2USA_A 0x060107fa gfs_CopyDirRecordCompact CONFIRM gfs_CopyDirRecordCompact copies extent, size, flag and id bytes from parsed record into 12 byte entry; both loaders call it
+CK2USA_A 0x06010836 gfs_DispatchStart RENAME gfs_DispatchQuery vtable slot 0 result is stored as status/count in GetHandleStatus and tested for zero in IsHandleFinished; a query not a start
+CK2USA_A 0x06010850 gfs_DispatchSlot1 RENAME gfs_DispatchAcquire vtable slot 1 called with size returns buffer ptr stored at handle+0x78 in TransferAllocBuffer; pairs with slot 3 release
+CK2USA_A 0x06010870 gfs_DispatchSlot2 UNSURE gfs_DispatchSlot2 slot 2 called with buffer and returns nonzero when data ready in TransferCopyChunk; exact role unclear
+CK2USA_A 0x06010898 gfs_DispatchSlot3 RENAME gfs_DispatchRelease vtable slot 3 called with buffer after use; callers add buffer size to done count then clear the buffer pointer
+CK2USA_A 0x060108c0 gfs_TransferInit CONFIRM gfs_TransferInit zeroes transfer descriptor, sets unit 1 and mode 3; called on open of handle
+CK2USA_A 0x060108f6 gfs_TransferSetMode CONFIRM gfs_TransferSetMode stores mode at +0x38 and clears position fields, returns old; SetHandleTransferMode and TransferInit call it
+CK2USA_A 0x06010902 gfs_TransferSetUnit CONFIRM gfs_TransferSetUnit stores unit multiplier at +0x2c; TransferInit sets 1, TransferAcquireDest tests it against 2
+CK2USA_A 0x06010906 gfs_TransferSetSize CONFIRM gfs_TransferSetSize stores requested size, clears progress, rounds to multiple of 4 for modes 1-3; StartTransfer functions call it
+CK2USA_A 0x0601095e gfs_TransferSetFlag CONFIRM gfs_TransferSetFlag sets flag at +0x30 to 1 after BufferInit in StartTransferToBuffer; role of flag minor but name matches
+CK2USA_A 0x0601096a gfs_TransferRunAll CONFIRM gfs_TransferRunAll loops TransferStep until idle/done/error, releases pending buffer and slot, sets state 6; ReleaseHandleResources uses it to finish
+CK2USA_A 0x06010a00 gfs_TransferStepN CONFIRM gfs_TransferStepN runs TransferStep 1 or 2 times depending on mode and state, stops on 7; StepHandleTransfer calls it when data remains
+CK2USA_A 0x06010a82 gfs_TransferStepSimple CONFIRM gfs_TransferStepSimple allocs buffer, sends via release slot, advances done count, state 5 then 6; StepHandleTransfer uses it when no remaining
+CK2USA_A 0x06010af6 gfs_TransferStep CONFIRM gfs_TransferStep state machine 0..5: alloc buffer, acquire dest slot, copy dispatch, copy chunk, check done, release; returns state; RunAll and StepN call it
+CK2USA_A 0x06010bf4 gfs_TransferAllocBuffer CONFIRM gfs_TransferAllocBuffer picks chunk size from block and remaining bytes, acquires buffer via slot-1 call, resets copy offset
+CK2USA_A 0x06010c6c gfs_TransferAcquireDest CONFIRM gfs_TransferAcquireDest computes destination bytes available and acquires request slot of that size; only caller TransferStep
+CK2USA_A 0x06010d74 scu_SetupDmaTransfer RENAME sh2_SetupDmacTransfer body disables and configures SH-2 on-chip DMAC channel with add direction from param signs, enables it, records tail count; not SCU; no direct callers
+CK2USA_A 0x06010efc mem_CopyStrided32 CONFIRM mem_CopyStrided32 copies 32 bit words with separate src and dst strides then tail bytes; used by TransferCopyChunk and ResetSelector
+CK2USA_A 0x06010f48 gfs_TransferCopyDispatch CONFIRM gfs_TransferCopyDispatch returns 1 for mode 4 else jumps through mode table slot 0 (alt handler for special address ranges); only caller TransferStep state 2
+CK2USA_A 0x06010f9a gfs_TransferCopyChunk CONFIRM gfs_TransferCopyChunk copies one chunk via user callback (mode 4) or mode handler table slot 1, advances copied counter at +0x8c
+CK2USA_A 0x0601107c gfs_TransferCheckDone CONFIRM gfs_TransferCheckDone tests completion via mode table slot 2, or sign of +0xc field in mode 4; TransferStep state 4
+CK2USA_A 0x060110f4 mem_CopyTailBytes CONFIRM mem_CopyTailBytes copies 1-3 leftover bytes from a source word; only caller CopyStrided32
+CK2USA_A 0x0601113c gfs_TransferRemaining CONFIRM gfs_TransferRemaining returns field4*unit minus field8; used by StepHandleTransfer, AllocBuffer, AcquireDest as bytes left
+CK2USA_A 0x0601114e gfs_AcquireRequestSlot CONFIRM gfs_AcquireRequestSlot takes single global slot if not busy, fills address count length, marks busy; returns 0 if busy
+CK2USA_A 0x0601117c gfs_ReleaseRequestSlot CONFIRM gfs_ReleaseRequestSlot adds slot length to progress counter and clears busy flag; RunAll and TransferStep call it
+CK2USA_A 0x06011198 gfs_BufferInit CONFIRM gfs_BufferInit stores buffer ptr, size, flag, clears progress in transfer descriptor; StartTransfer functions call it after SetSize
+CK2USA_A 0x060111b0 cd_ClearFlagCmdRetry RENAME cd_InitDriveSetReadyFlag clears ready bit, issues drive init command, sets bit on success, maps -0x10..-0xd to GFS errors; gfs_Init then tests the bit
+CK2USA_A 0x06011254 gfs_FileHandleInit CONFIRM gfs_FileHandleInit fills file handle from dir entry (extent, size, flags), computes sector count size/2048, opens stream; OpenHandleOnDevice calls it

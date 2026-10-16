@@ -1,0 +1,51 @@
+GEKAN_AREA8B 0x00205ce8 boss_UpdateIntroPhaseSync CONFIRM boss_UpdateIntroPhaseSync 4-state intro machine setting both players' states in lockstep, called from boss controller
+GEKAN_AREA8B 0x00205e94 boss_UpdateRoundResetState CONFIRM boss_UpdateRoundResetState phases 0-2 reset both players/entity table and decide next boss phase
+GEKAN_AREA8B 0x0020627c boss_UpdateDefeatSequence CONFIRM boss_UpdateDefeatSequence phased defeat: random debris spawns, fall motion, sets end flags
+GEKAN_AREA8B 0x0020671e boss_InitEffectEntity CONFIRM boss_InitEffectEntity resets object, sets position/anim table, state 1; no callers to refine
+GEKAN_AREA8B 0x00206794 boss_UpdateHelperSprite CONFIRM boss_UpdateHelperSprite follows parent/orbits via sine table, picks anim frame, draws; calls debris update in state 0xb
+GEKAN_AREA8B 0x00206ad0 boss_UpdateFallingDebris CONFIRM boss_UpdateFallingDebris velocity+accel fall, bounce, spawns child pieces; called by helper update
+GEKAN_AREA8B 0x00206dea boss_InitHelperLeft CONFIRM boss_InitHelperLeft side 0 helper init with position and box fields
+GEKAN_AREA8B 0x00206efa boss_InitHelperRight CONFIRM boss_InitHelperRight same as left with side 1 and other constants
+GEKAN_AREA8B 0x00206f94 boss_UpdateOrbitSegmentChain CONFIRM boss_UpdateOrbitSegmentChain per-side segment placed relative to parent, follows target, aims/transforms; fall state calls segment fall
+GEKAN_AREA8B 0x00207302 boss_UpdateSegmentStateMachine CONFIRM boss_UpdateSegmentStateMachine 13-state per-side machine copying move params and comparing positions; called by segment update
+GEKAN_AREA8B 0x00207846 boss_UpdateSegmentFall CONFIRM boss_UpdateSegmentFall velocity/accel fall after delay and random debris spawns; called by segment update state 0xb
+GEKAN_AREA8B 0x00207a84 boss_UpdateFollowTarget3D CONFIRM boss_UpdateFollowTarget3D tweens current xyz toward target with random speed and arrival clamp; called by segment chain
+GEKAN_AREA8B 0x00207eb4 boss_InitSegmentSideB UNSURE boss_InitSegmentSideB uses table 0 and sets flip byte but also side byte 1 like SideA; A/B meaning unclear, no callers
+GEKAN_AREA8B 0x00207fe8 boss_InitSegmentSideA UNSURE boss_InitSegmentSideA uses table 1 position, side byte 1; A/B mapping to left/right unclear, no callers
+GEKAN_AREA8B 0x00208050 boss_UpdateSegmentAnimFrame CONFIRM boss_UpdateSegmentAnimFrame states 3-10 pin to side table position and pick anim word by blink counter; state 0xb falls
+GEKAN_AREA8B 0x00208128 boss_UpdateSegmentFallShort CONFIRM boss_UpdateSegmentFallShort fall variant with table velocity, accel and debris child spawn; called by anim-frame update
+GEKAN_AREA8B 0x002083a2 boss_InitChildFromParent CONFIRM boss_InitChildFromParent base init then copies sprite ptr and side flag from parent
+GEKAN_AREA8B 0x002083e4 boss_UpdateAttackHitCheck RENAME boss_UpdateHurtboxDamage follows parent, finds overlapping thrown objects (states 7/0xb) and lowers boss HP word by 0x20/0x10 with hit flash/timer; it is the boss taking damage
+GEKAN_AREA8B 0x002088b8 boss_InitProjectileA CONFIRM boss_InitProjectileA sets anim words, sprite and anim table, flips by side flag; no callers
+GEKAN_AREA8B 0x0020890c boss_UpdateProjectileMotion CONFIRM boss_UpdateProjectileMotion integrates vel/accel, builds sprite commands, destroys below floor
+GEKAN_AREA8B 0x002089a4 boss_InitProjectileRandomSide CONFIRM boss_InitProjectileRandomSide random side flag and random branch tail-call; no callers
+GEKAN_AREA8B 0x00208a54 boss_CallIfConditionTrue CONFIRM boss_CallIfConditionTrue calls test and tail-calls action if nonzero
+GEKAN_AREA8B 0x00208b9a boss_InitProjectileRandomSideB CONFIRM boss_InitProjectileRandomSideB like random-side init, tail-call only when random is 0
+GEKAN_AREA8B 0x00208c38 boss_CallIfConditionTrue_2 RENAME boss_CallIfConditionTrueB identical test-then-action wrapper; drop numeric suffix
+GEKAN_AREA8B 0x00208c6c boss_TestPlayerOverlapSide CONFIRM boss_TestPlayerOverlapSide rect overlap test returning left/right and above/below bits; used by hurtbox check
+GEKAN_AREA8B 0x00208df0 boss_FindOverlappingObject CONFIRM boss_FindOverlappingObject walks active list, rect overlap in same layer, returns first hit
+GEKAN_AREA8B 0x00208f6e boss_SpawnTimerObject CONFIRM boss_SpawnTimerObject spawns object and stores duration in work +8; called on boss hit with 0x78/0x3c/0x14
+GEKAN_AREA8B 0x00208f94 boss_AdvanceAnimFrameCounter CONFIRM boss_AdvanceAnimFrameCounter steps tick and sequence index from anim table, sets frame-done and end flags
+GEKAN_AREA8B 0x00209038 boss_ComputeAimAnglesToTarget CONFIRM boss_ComputeAimAnglesToTarget integer sqrt, atan and sine tables to get angles toward target offset
+GEKAN_AREA8B 0x002092e0 boss_TransformPointArrayByRotation CONFIRM boss_TransformPointArrayByRotation rotates 24+16 point arrays by Euler angles in 14-bit fixed point
+GEKAN_AREA8B 0x0020973c boss_SpawnBodyPartObject RENAME boss_SpawnProjectileObject only caller is the boss projectile attack, which passes position and velocity blocks per shot and counts successful spawns
+GEKAN_AREA8B 0x002099c6 boss_UpdateDebrisBounce CONFIRM boss_UpdateDebrisBounce gravity on y, clamp to arena bounds, settle to state 1, periodic sound; no callers
+GEKAN_AREA8B 0x00209a64 boss_SetEntityHeightFromParent RENAME boss_SpawnShockwaveAtParentHeight copies z from parent work, calls shockwave spawn with 5 and decrements counter on failure; no callers
+GEKAN_AREA8B 0x00209a94 boss_DrawProjectedSpriteStrip CONFIRM boss_DrawProjectedSpriteStrip writes VDP1 command entries with perspective scale per part then secondary draw
+GEKAN_AREA8B 0x00209f44 boss_SpawnShockwaveObject UNSURE boss_SpawnShockwaveObject spawns generic 3D effect object (state 0x16) at caller position; shockwave meaning not proven
+GEKAN_AREA8B 0x0020a09c boss_SpawnPlayerLockedObject UNSURE boss_SpawnPlayerLockedObject spawns object above player (state 0x11) with hp-based anim; used in intro sync, actual role unclear
+GEKAN_AREA8B 0x0020a25c boss_UpdateMainStateMachine CONFIRM boss_UpdateMainStateMachine switch on state byte +8 dispatching 21 action handlers then collision/tile switch; called from nowhere (task entry)
+GEKAN_AREA8B 0x0020a87c boss_AdjustAnimOffsetByFlags CONFIRM boss_AdjustAnimOffsetByFlags adds one of two offsets to anim word +0x10 by masked flags; caller boss_EnterSpawnedState uses it on non-matching state
+GEKAN_AREA8B 0x0020a8c2 boss_DecideApproachOrTurnAround CONFIRM boss_DecideApproachOrTurnAround player in range goes state 0xe else horizontal move with tile check picks state 0 or 3; callers walk patrol and turn flag
+GEKAN_AREA8B 0x0020aa66 boss_UpdateTurnSequence CONFIRM boss_UpdateTurnSequence flips facing on flag, sub-state 0xe picks 0xf/0x10 by player x, then enters state 0x12 with facing set
+GEKAN_AREA8B 0x0020aae8 boss_StartJumpBackAfterTurn CONFIRM boss_StartJumpBackAfterTurn on flag enters state 0x13 and sets launch velocity by sub-state 0x12 or 0x13 (opposite x directions)
+GEKAN_AREA8B 0x0020ab3c boss_UpdateLandingRecover CONFIRM boss_UpdateLandingRecover gravity with floor clamp, on landing zeroes x speed and returns to state 0xf with speed by facing
+GEKAN_AREA8B 0x0020b322 boss_UpdateHurtKnockback CONFIRM boss_UpdateHurtKnockback hit counter sub-states 10/11, hurt frames, spawns effect, leaves to state 0x14 or 0xc, recovery on landing
+GEKAN_AREA8B 0x0020b618 boss_UpdateKnockedAirBounce CONFIRM boss_UpdateKnockedAirBounce on state entry sets launch velocity by sub-state, reverses vertical speed on wall/floor, ends in state 10
+GEKAN_AREA8B 0x0020b826 boss_TurnOnFlagThenDecide CONFIRM boss_TurnOnFlagThenDecide on flag clears it, flips facing, tail-calls decide-approach; used by state 3
+GEKAN_AREA8B 0x0020b854 boss_ResetOnAnimFrame0xe CONFIRM boss_ResetOnAnimFrame0xe at anim index 0xe clears counter, on flag flips facing and returns to state 0
+GEKAN_AREA8B 0x0020b88a boss_TurnAndStartWalkAway CONFIRM boss_TurnAndStartWalkAway on flag flips facing, enters state 0x10, sets x speed by facing
+GEKAN_AREA8B 0x0020b9b2 boss_DrawDefeatedBossFlying RENAME boss_UpdateSpinDashMove called from live state 0xf (not defeat): moves diagonally, rotates sprite angle in 7 steps, draws secondary sprite, then returns to state 0x10 or decide-approach
+GEKAN_AREA8B 0x0020bd28 boss_CheckAttackHitObjects CONFIRM boss_CheckAttackHitObjects loops active object list, tests x/y interval overlap against attack box, sets hit-direction flags and damage values on hit objects, returns hit; used by attack jump and attack move
+GEKAN_AREA8B 0x0020bf02 boss_DrawSpriteCommand CONFIRM boss_DrawSpriteCommand appends two VDP1 command entries per call from part tables with perspective scale and facing flip
+GEKAN_AREA8B 0x0020c186 boss_DrawSpriteCommandSecondary CONFIRM boss_DrawSpriteCommandSecondary loops all parts building VDP1 commands with extra width/height stretch from param_2 fields, then calls a post-draw helper; used by spin dash move

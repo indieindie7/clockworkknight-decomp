@@ -1,0 +1,86 @@
+GEKAN_A 0x06020274 obj_InitProjectileB CONFIRM obj_InitProjectileB sets position/velocity/accel and anim tables from parent; projectile-like init
+GEKAN_A 0x06020368 obj_InitProjectileC CONFIRM obj_InitProjectileC same init as B with constant anim fields
+GEKAN_A 0x06020556 obj_UpdateProjectileMulti CONFIRM obj_UpdateProjectileMulti draws two offset sprites per frame, applies velocity, releases offscreen
+GEKAN_A 0x06020b0a fx_UpdateRadialParticles CONFIRM fx_UpdateRadialParticles sin/cos table radial particle sprite queue
+GEKAN_A 0x0602106c fx_UpdateRadialParticlesB CONFIRM fx_UpdateRadialParticlesB variant of radial particle queue with mirror flag
+GEKAN_A 0x06021866 obj_FollowParentState CONFIRM obj_FollowParentState copies parent position, sets facing from parent state byte
+GEKAN_A 0x06021c1c obj_SpawnerStateMachine CONFIRM obj_SpawnerStateMachine state0 spawns child, state1 releases offscreen or runs handler
+GEKAN_A 0x06021ca6 obj_SpawnerChildStateMachine CONFIRM obj_SpawnerChildStateMachine decrements parent counter, spawns next child, adds velocity
+GEKAN_A 0x06022088 obj_EmitterStateMachine CONFIRM obj_EmitterStateMachine follows parent and periodically spawns object with initial velocity
+GEKAN_A 0x060221f2 obj_PhysicsStepStateMachine CONFIRM obj_PhysicsStepStateMachine integrates velocity and accel, draws, releases on flag
+GEKAN_A 0x0602282c obj_InitBossGauge RENAME hud_InitGauge allocs gauge child objects and sets constants; pairs with hud_UpdateGaugeStateMachine, no boss evidence
+GEKAN_A 0x060228b0 hud_UpdateGaugeStateMachine CONFIRM hud_UpdateGaugeStateMachine gauge counter fills to 0x14 or drains by state, queues copy
+GEKAN_A 0x06022bf8 obj_UpdateBobbingStateMachine CONFIRM obj_UpdateBobbingStateMachine sine bob then dispatches substates 5-12
+GEKAN_A 0x06022f60 obj_UpdateAnimLoopPlayerPalette RENAME obj_UpdateAnimLoopSlotHighlight loops 0x15 frames, flag 3 vs 1 depends on slot matching selected index, not a palette
+GEKAN_A 0x06022ffc obj_UpdateAnimFlickerFinish CONFIRM obj_UpdateAnimFlickerFinish toggles visibility each frame, sets state 13 when anim list ends
+GEKAN_A 0x0602311c obj_UpdateBounceArcPlayerFlag CONFIRM obj_UpdateBounceArcPlayerFlag sine arc, flag 3 or 1 by selected slot, state 7 on trigger
+GEKAN_A 0x060231f0 obj_UpdateBounceArcTimeout CONFIRM obj_UpdateBounceArcTimeout sine arc plus blink, state 5 or 8 after 0x3f frames
+GEKAN_A 0x060232e8 obj_UpdateBounceArcAnimEnd CONFIRM obj_UpdateBounceArcAnimEnd sine arc plus 14 frame anim then state 9
+GEKAN_A 0x060233e8 obj_UpdateFallAccelerate CONFIRM obj_UpdateFallAccelerate accelerating fall with arc, state 10 past limit
+GEKAN_A 0x060234d0 obj_UpdateWaitFrames CONFIRM obj_UpdateWaitFrames counts 0x3c frames then sets flag and state 13
+GEKAN_A 0x06023548 obj_UpdateArcAnimTwoSprite CONFIRM obj_UpdateArcAnimTwoSprite sine arc, 14 frame anim, two sprite slots, state 12 at end
+GEKAN_A 0x06023670 obj_UpdateArcGravityClamp CONFIRM obj_UpdateArcGravityClamp sine arc with downward drift clamp, draws two-part sprite
+GEKAN_A 0x06023798 obj_InitEffectAtPlayerOffset RENAME obj_InitEffectAtParentOffset position copied from parent object (param+8) plus Y offset, not necessarily the player
+GEKAN_A 0x06023820 fx_UpdateSparkleRings CONFIRM fx_UpdateSparkleRings four rotating sets of 7 sprites, drifts up and dies at top
+GEKAN_A 0x06023a08 fx_InitFallingSprite CONFIRM fx_InitFallingSprite allocs work struct, sprite table by parent index, dies if index negative
+GEKAN_A 0x06023abc fx_UpdateFallingSwayDown CONFIRM fx_UpdateFallingSwayDown sine sway while falling, deleted below screen
+GEKAN_A 0x06023baa vdp2_InitLineScrollWindowTables CONFIRM vdp2_InitLineScrollWindowTables fills two per-line tables and window param blocks
+GEKAN_A 0x06023cbc vdp2_UpdateCircleWindowWipe CONFIRM vdp2_UpdateCircleWindowWipe sine-driven circle window written per scanline, ends on global state 2
+GEKAN_A 0x06023fec obj_InitAtScrollPosition CONFIRM obj_InitAtScrollPosition allocs, position from scroll globals, spawns child tasks
+GEKAN_A 0x06024058 obj_UpdateTwoFrameDraw CONFIRM obj_UpdateTwoFrameDraw draws two sprite frames, deletes self when global flag clear
+GEKAN_A 0x06024120 obj_InitRandomColumnSpawn CONFIRM obj_InitRandomColumnSpawn random column index times 0x20 offset from parent
+GEKAN_A 0x060241c2 obj_UpdateThrownItemStates RENAME obj_UpdateFlyToTargetStates slides toward target, box test, then velocity flight with sfx; no evidence of thrown by player
+GEKAN_A 0x06024718 obj_InitAtScrollTop CONFIRM obj_InitAtScrollTop allocs, position from scroll globals minus 0x40
+GEKAN_A 0x0602477e obj_UpdateProximityPopUp CONFIRM obj_UpdateProximityPopUp waits for player in box, steps anim, sfx 7 then state change
+GEKAN_A 0x06024918 obj_InitNearPlayerOffset RENAME obj_InitNearParentOffset position from parent object (param+8) plus fixed offsets
+GEKAN_A 0x06024984 obj_UpdateAnimByGlobalState CONFIRM obj_UpdateAnimByGlobalState state by global flags, loops 9 frame or plays 4 frame anim
+GEKAN_A 0x06024bd4 vdp1_BuildSpriteCommandsFromPartList CONFIRM vdp1_BuildSpriteCommandsFromPartList writes 32 byte VDP1 entries per part relative to camera
+GEKAN_A 0x06024df0 scene_InitParallaxLayerTable CONFIRM scene_InitParallaxLayerTable builds six scroll layer entries, allocs children, sfx 2
+GEKAN_A 0x06025e84 mem_ClearWordPairTable CONFIRM mem_ClearWordPairTable zeroes global and table of word pairs; called from reset state
+GEKAN_A 0x0602625e snd_QueueCommandStop CONFIRM snd_QueueCommandStop command 6 with all-zero params pushed to sound ring
+GEKAN_A 0x060262ca snd_QueueCommandFromTable5 CONFIRM snd_QueueCommandFromTable5 copies 5-byte record by index plus command byte into ring
+GEKAN_A 0x06026324 snd_QueueCommandFromStageTable CONFIRM snd_QueueCommandFromStageTable record found via stage and index tables
+GEKAN_A 0x06026440 snd_QueueCommandFromPtr CONFIRM snd_QueueCommandFromPtr command 1 with record at pointer index, -1 on null
+GEKAN_A 0x060264de snd_RingPopCommandToDriver CONFIRM snd_RingPopCommandToDriver pops 16-byte record into driver mailbox when free
+GEKAN_A 0x06026540 gfs_InitOrSystemError CONFIRM gfs_InitOrSystemError library init with error screen on failure
+GEKAN_A 0x06026664 gfs_LoadFileVerifySize CONFIRM gfs_LoadFileVerifySize opens file, reads sectors, checks size
+GEKAN_A 0x060268c8 cd_ResetControlBlockFields CONFIRM cd_ResetControlBlockFields resets fields of global CD control struct
+GEKAN_A 0x06026990 smpc_RestartSlaveSh2 CONFIRM smpc_RestartSlaveSh2 SMPC cmd 3 SSHOFF, load slave loop, cmd 2 SSHON
+GEKAN_A 0x06026b70 sys_InitSubsystemsZero UNSURE sys_InitSubsystemsZero calls unknown functions with zero args, no evidence they are inits
+GEKAN_A 0x06026ccc video_SetupScreenModeFromFlags RENAME sys_LoadStartupFilesByFlag mainly loads startup files selected by flags rather than setting video mode
+GEKAN_A 0x060274a4 dbg_MemoryViewerLoop CONFIRM dbg_MemoryViewerLoop pad-driven address scroll memory viewer
+GEKAN_A 0x06027bd8 math_Div1Chain32 CONFIRM math_Div1Chain32 unrolled DIV1 signed 32-bit divide helper used for digit and sector math
+GEKAN_A 0x06027ca0 math_Div1Chain32_2 CONFIRM math_Div1Chain32_2 unrolled DIV1 variant used with unsigned divide for digit tiles
+GEKAN_A 0x06027dbc stub_06027dbc RENAME str_CompareThunk tail-calls the string compare routine and returns its result
+GEKAN_A 0x06028086 math_ShiftLeft14 CONFIRM math_ShiftLeft14 returns r0 shifted left 14 bits
+GEKAN_A 0x0602825c gfs_Init CONFIRM gfs_Init validates open max 1..24 and work alignment, inits work area and volume, matches GFS_Init
+GEKAN_A 0x06028348 gfs_OpenFileById UNSURE gfs_OpenFileById mixed behaviour with param zero branch, no callers, role unclear
+GEKAN_A 0x060283e6 gfs_SetDirTable CONFIRM gfs_SetDirTable copies dir table info into work area and counts entries
+GEKAN_A 0x06028438 gfs_GetDirEntryName RENAME gfs_NameToId finds directory index by name; caller uses result as file id for open
+GEKAN_A 0x06028486 gfs_GetDirEntryPtr CONFIRM gfs_GetDirEntryPtr range-checked pointer to directory entry by index
+GEKAN_A 0x060284e8 gfs_AllocHandle RENAME gfs_Open takes free handle slot and opens file id on device, returns handle or 0 like GFS_Open
+GEKAN_A 0x06028578 gfs_FreeHandle RENAME gfs_Close releases handle resources and closes it, pairs with gfs_Open
+GEKAN_A 0x0602863c gfs_HandleGetPosition CONFIRM gfs_HandleGetPosition per-type position getter via handle table
+GEKAN_A 0x0602867a gfs_IsEndOfFile CONFIRM gfs_IsEndOfFile position compared with file size
+GEKAN_A 0x060286c2 gfs_HandleStartRead UNSURE gfs_HandleStartRead no callers, only calls an unknown function when size nonzero
+GEKAN_A 0x06028770 gfs_GetFileInfo CONFIRM gfs_GetFileInfo unpacks sector and offset into byte offset and flags
+GEKAN_A 0x060287da gfs_ReadFromHandle RENAME gfs_ReadFileFromOffset opens handle by id, seeks to offset, reads rest, waits, closes
+GEKAN_A 0x06028884 gfs_TransferWaitLoop CONFIRM gfs_TransferWaitLoop starts transfer then polls until done, error or timeout
+GEKAN_A 0x060289b4 gfs_StartTransferToBuffer CONFIRM gfs_StartTransferToBuffer clamps size to remaining and registers handle active
+GEKAN_A 0x06028aa6 gfs_StartTransferNoWait CONFIRM gfs_StartTransferNoWait starts clamped transfer on idle handle without waiting
+GEKAN_A 0x06028b52 gfs_AbortHandle CONFIRM gfs_AbortHandle clears state, unlinks from active list, releases resources
+GEKAN_A 0x06028b90 gfs_GetHandleStatus CONFIRM gfs_GetHandleStatus returns state and transferred count
+GEKAN_A 0x06028bf8 gfs_PollPendingHandle CONFIRM gfs_PollPendingHandle marks pending handle done when status call returns 2
+GEKAN_A 0x06028c22 gfs_PollHandle CONFIRM gfs_PollHandle steps driver and transfer state, removes finished handle from active list
+GEKAN_A 0x06028c9a gfs_PollAllHandles CONFIRM gfs_PollAllHandles polls every active handle, returns first handle or error
+GEKAN_A 0x06028d0c gfs_SetHandleField58 CONFIRM gfs_SetHandleField58 swaps field at +0x58 and returns old value
+GEKAN_A 0x06028d64 gfs_SetHandleParamA4 RENAME gfs_SetTransferMode stores mode at +0xa4 and forwards to transfer set-mode; caller passes 3
+GEKAN_A 0x06028dc2 gfs_SetHandleField68 CONFIRM gfs_SetHandleField68 swaps field at +0x68, wait loop sets then restores it
+GEKAN_A 0x06028e1e gfs_CallHandleDriverFunc CONFIRM gfs_CallHandleDriverFunc calls driver fn on subobject at +0x6c
+GEKAN_A 0x06028e72 gfs_LockHandle CONFIRM gfs_LockHandle calls driver lock, records current handle, reports error
+GEKAN_A 0x06028ee4 gfs_CallGlobalVfunc RENAME mem_CopyLongsThunk only forwards to the long-copy routine; no GFS state used
+GEKAN_A 0x06028efc gfs_GetDirEntryInfo CONFIRM gfs_GetDirEntryInfo copies 12-byte dir entry by index, error when out of range
+GEKAN_A 0x06028f74 gfs_InitVtableDefaults CONFIRM gfs_InitVtableDefaults stores four default callback pointers in work area
+GEKAN_A 0x06028f8c gfs_InitWorkArea CONFIRM gfs_InitWorkArea zeroes work fields and handle slots for open max
+GEKAN_A 0x06029030 gfs_FindFirstSetFlagIndex CONFIRM gfs_FindFirstSetFlagIndex scans entries until flag bit 0 set, returns index
+GEKAN_A 0x06029092 gfs_FindFreeHandleSlot CONFIRM gfs_FindFreeHandleSlot scans slots for unused, marks used, returns pointer or null

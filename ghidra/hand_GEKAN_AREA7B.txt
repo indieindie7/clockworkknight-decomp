@@ -1,0 +1,136 @@
+0x00200000 func boss7b_ControllerUpdate hand boss controller per-frame: init once via boss7b_ControllerInit, runs phase state, decrements timers, flashes via callback
+0x002000bc func boss7b_ControllerInit hand controller init: sets difficulty-based counts, links child objects through lookup callback, copies tables, clears buffers
+0x00200438 func boss7b_ClearControllerState hand zeroes controller state fields (timers, phase, substate, counters, accumulators)
+0x00200488 func boss7b_ControllerPhaseSwitch hand controller phase switch: wait timers, set minions to states 1-6, calls attack-pick and attack-run helpers
+0x00200748 func boss7b_ControllerIntroSequence hand controller substate sequence ordering minions into states 3,4,6 with frame timers; advances phase
+0x00200918 func boss7b_ControllerPickAttack hand chooses attack substate by difficulty table and minion count, dispatches attack routines 1-8
+0x00200a12 func boss7b_AttackTargetedMinions hand attack: orders nearest or flagged minions to state 5 in sequence, delay by difficulty, then ends attack
+0x00200c02 func boss7b_AttackSequentialMinions hand attack: activates minions in table order by index/position thresholds, delay by difficulty, ends attack
+0x00200d96 func boss7b_AttackThreeMinions hand attack: picks three minion indices, sets them to state 5, waits difficulty-based frames
+0x00200e9c func boss7b_PickThreeMinionIndices hand selects three minion indices from player position thresholds, stores in controller bytes 8-10
+0x00200f4c func boss7b_AttackRandomMinions hand attack: LCG random minion choice (multiply, bits 16-17), activates minions until count by difficulty
+0x002010f2 func boss7b_AttackSingleMinion hand attack: activates one minion (flagged or nearest to player), sets its timer by difficulty
+0x00201244 func boss7b_AttackMinionPair hand attack: activates two minions chosen by player position, timers by difficulty, then waits
+0x002013b4 func boss7b_AttackRepeatedMinion hand attack: repeatedly activates flagged/nearest minion with shrinking timer, repeats then ends
+0x002015e2 func boss7b_AttackAlternatingPair hand attack: alternates between minion pairs, timers by difficulty, toggles side and repeats
+0x00201792 func boss7b_ControllerDefeatSequence hand defeat sequence: timed sparks via callback, sets flags, sets minions flag 0x10, checks hit flags 0x40
+0x002019f6 func boss_AdvanceAnimFrameX hand adds constant to animation counter at object offset 0x14
+0x00201a08 func boss_AdvanceAnimFrameY hand adds constant to animation counter at object offset 0x16
+0x00201a18 func boss_UpdateSpriteFromFrameTable hand copies frame entry from table by index into sprite words, chooses palette/size block by frame range
+0x00201aa0 func boss_AnimLoopTableA hand advances counter, wraps at 30, looks up frame index from byte table
+0x00201ad4 func boss_AnimLoopTableB hand advances counter, wraps at 15, looks up frame index from byte table
+0x00201b10 func minion_UpdateAnimStateFromParent hand maps parent state (0-6) to child animation state when anim timer expires
+0x00201bb4 func minion_Init hand minion object init: clears state, sets flags, position constants, attaches state table via setup callback
+0x00201c24 func minion_Update hand minion per-frame: dispatches by state 0-6 to handlers, updates animation, sets frame pointer, draws via callback
+0x00201cd8 func minion_StateIdleSync hand minion state 1: resets substate on state change, calls animation state update
+0x00201cfe func minion_StateInit hand minion state 0: resets substate on state change, one-shot substate advance
+0x00201d32 func minion_StateWakeSequence hand minion state 2 substate dispatcher: start, spawn, rise, wait 60 frames, fall, finish
+0x00201dd8 func minion_WakeBegin hand wake step 0: clear timer and advance substate
+0x00201dea func minion_WakeSpawnParts hand wake step: sets rise velocity, spawns five child objects numbered 1-5 via lookup callback, plays sound
+0x00201eb0 func minion_WakeRise hand wake step: waits 120 frames then accelerates Y position up to limit, plays sound at top
+0x00201f1a func minion_WakeFallStart hand wake step: sets fall velocity and gravity, sets timer to 64, advances substate
+0x00201f50 func minion_WakeFall hand wake step: applies gravity to Z position, counts timer down, clears velocities at end
+0x00201f96 func minion_StateAttackDispatch hand minion state 4: runs attack start once then attack tick
+0x00201fd6 func minion_AttackStart hand attack start: sets upward velocity -128, child state 3, advances substate
+0x00201ffe func minion_AttackTick hand attack tick: counts frames, plays sound, moves position by velocity, invokes callback every 4th frame
+0x00202098 func minion_StateHurt hand minion state 5: sets child state 7 once then updates animation state
+0x002020d6 func minion_StateDead hand minion state 6: sets child state 1 once on entry
+0x00202112 func minion_StateStun hand minion state 3: sets child state 2 once on entry
+0x00202152 func minion_UpdateChildState hand dispatches child object state 0-7 to its handler and stores previous state
+0x002021d0 func boss_PingPongFadeCounter hand ping-pong counter 0-31 for palette/brightness fade, direction flag toggles at ends
+0x0020223a func minion_ChildStateIdle hand child idle: picks sprite set and palette by player position thresholds, updates fade and animation
+0x0020232a func minion_ChildStateAttackAnim hand child state 4: sets attack animation pointer on entry, advances animation
+0x00202380 func minion_ChildStateRise hand child state 2: sets animation on entry, increments fade counter to 31, advances anim frame
+0x002023e6 func minion_ChildStateFall hand child state 3: sets animation on entry, wraps fade counter at 32, advances anim frame
+0x00202458 func minion_ChildStateHurtAnimA hand child state 5: sets hurt animation on entry, fade counter and animation update
+0x002024a0 func minion_ChildStateHurtAnimB hand child state 6: same as state 5, sets hurt animation, fade counter and animation update
+0x002024f0 func minion_ChildStateFinalAnim hand child state 7: sets animation on entry, fade counter, advances frame clamped to 7
+0x00202558 func minion_ChildStateSwing hand child state 1: sets animation and plays sound on entry, swings angle, fade counter, countdown timer
+0x002025de func minion_SwingAngleStep hand advances swing angle, wraps at 45, sets shadow flag if above 23, looks up frame from table
+0x00202682 func satellite_Init hand satellite object init: sets flags, picks start position constants by index 0-3, copies to home position
+0x00202728 func satellite_Update hand satellite per-frame: dispatches state 0-7 to handlers, flags 0x10 forces state 7, sets frame pointer
+0x00202836 func satellite_StateIdle hand satellite state 0: on entry sets Z position and animation table once
+0x00202880 func satellite_StateLaunch hand satellite state 1: sets animation, accelerates position with velocity cap, fade counter, then goes to state 2
+0x00202964 func satellite_StateOrbit hand satellite state 2/3: moves by index-dependent speed, computes position via callback, ping-pong fade phases
+0x00202b2c func satellite_StateFlash hand satellite state 4: sets animation on entry, fade counter 0-15 ping-pong
+0x00202bd4 func satellite_StateAttackSequence hand satellite state 5: multi-step rise, spawn projectile via callback, fall, timed sound by difficulty
+0x00202e6c func satellite_StateReturn hand satellite state 6: sets animation, accelerates position back down, fade counter, clears active flag
+0x00202f42 func satellite_StateDefeated hand satellite state 7: sets fall velocity, waits timer, moves position until below threshold
+0x00203004 func satellite_ChildInit hand child object init: flags, setup callback, position constants, state 5, animation pointer
+0x0020306c func boss_UpdateMain hand dispatches boss body state 0-5 to handlers, applies per-frame offset table, then draws
+0x00203238 func boss_StateReposition hand state 1 sub-step machine with 13 cases: slide to target x, set animation, timers (was boss_StateWalkIn)
+0x002037b4 func boss_StateHitReact hand state 2 sub-steps: set animation, wait on flag bit, countdown frame fade (was boss_StateAttackWindup)
+0x00203904 func boss_StateHurtSlide hand provisional: state 3 two-step: set animation and velocity, then move y until frame 0x1f
+0x002039b2 func boss_StateIdleBob hand state 0 two-step: set animation then oscillate frame 0..0x1f up and down
+0x00203a7c func boss_StateRetreat hand provisional: state 4: reset, then move y by velocity until threshold, return to state 3
+0x00203b0c func boss_StateDefeatedInit hand provisional: state 5 one-shot: set animation and y position
+0x00203ce0 func bossPart_Init hand child part init: copies parent position, clears fields, sets sprite words and animation
+0x00203d36 func bossPart_NextAnimA hand adds constant to part field 0x14 animation counter
+0x00203d46 func bossPart_NextAnimB hand adds constant to part field 0x16 animation counter
+0x00203d6c func bossPart_LookupFrameOffset hand copies two halfwords from per-animation table indexed by part fields 0x10 and 0x14
+0x00203d92 func bossPart_StepAnimTable hand advances field 0x16, wraps at 0x0f, loads field 0x14 from byte table
+0x00203dc6 func bossPart_Update hand dispatches part state 0-4, copies parent position, applies frame offset table by mirrored x, draws
+0x00203e44 func bossPart_StateBody hand dispatches 13 substates to handlers, copies parent substate
+0x00203f0c func bossPart_SubInit hand sets animation script and clears frame
+0x00203f2a func bossPart_CopyFrameFromParent hand copies parent frame field 0xe
+0x00203f36 func bossPart_SetAnimStub hand only sets animation script
+0x00203f4c func bossPart_CopyFrameStep hand copies parent frame then steps animation table
+0x00203f58 func bossPart_SetAnimStubB hand only sets animation script (was bossPart_SetAnimStub_2)
+0x00203f60 func bossPart_CopyFrameStepB hand copies parent frame then steps animation table (was bossPart_CopyFrameStep_2)
+0x00203f6c func bossPart_SubSetAnimLaneDist hand sets animation, flags whether parent facing differs from global by more than 1 (was bossPart_SubSetAnimTurn)
+0x00203fd4 func bossPart_SubFireProjectiles hand at frame 0x1f runs blink/flash sub-steps, calls spawn at 4 ticks, plays sound (was bossPart_SubBlink)
+0x0020414c func bossPart_SubSetAnimCopyFrame hand sets animation script and copies parent frame
+0x00204170 func bossPart_CopyFrameStepC hand copies parent frame then steps animation table (was bossPart_CopyFrameStep_3)
+0x00204184 func bossPart_StateBodyB hand state 2 handler, substate dispatch, steps animation, copies parent substate
+0x002041ee func bossPart_StateBodyB_Init hand clears fields, sets flag 1 and animation script
+0x00204218 func bossPart_CopyFrameStub_A hand copies parent frame field only
+0x00204224 func bossPart_CopyFrameStub_B hand copies parent frame field only
+0x00204230 func bossPart_StateBodyC hand state 3 handler, two substates, copies parent substate
+0x00204282 func bossPart_StateBodyC_Init hand clears fields and sets animation script
+0x00204292 func bossPart_StateBodyC_Step hand copies parent frame then steps animation table
+0x0020429e func bossPart_StateIdle hand state 0 handler with two substates, copies parent substate
+0x002042f6 func bossPart_StateIdle_Init hand clears fields, sets animation script, clears facing and counter
+0x0020431e func bossPart_StateIdle_Step hand copies parent frame and facing then steps animation table
+0x0020432e func bossPart_StateEnd hand state 4 handler with two substates, copies parent substate
+0x00204388 func bossPart_StateEnd_Init hand clears fields 0x10 and 0x14
+0x00204392 func bossPart_StateEnd_Flicker hand copies parent frame and facing, toggles field 0x14 between 4 and 5 by counter
+0x002043d4 func boss_SpawnProjectile hand creates object, places it at one of 4 targets plus offset by facing, copies facing
+0x002044b4 func boss_PickLaneByPlayerX hand classifies player x into 4 zones, dispatches by pattern variable to lane pickers
+0x00204528 func boss_PickLanePatternA hand maps zone and facing to lane index or -1
+0x0020457e func boss_PickLanePatternB hand maps zone and facing to lane index or -1
+0x002045dc func boss_PickLanePatternC hand maps zone and facing to lane index or -1
+0x00204686 func debris_Init hand sets sprite words, clears flags, calls launch, resets substate
+0x002046cc func debris_Update hand integrates velocity and acceleration, animates, lifetime countdown, draws
+0x00204840 func debris_Launch hand sets velocity from aim helper calls toward target, lifetime 0x60
+0x0020490a func fragment_Init hand random frame via LCG multiply, sets sprite words, flags, draw
+0x00204968 func fragment_Update hand dispatches state 0 follow-parent or 1 flight, then draws
+0x002049e8 func fragment_FollowParent hand positions on parent frame offset, advances state when parent flag set
+0x00204a3e func fragment_StateFlight hand first tick launches, later ticks update motion
+0x00204a7a func fragment_Launch hand random lifetime and velocity via LCG multiply and helper calls
+0x00204b5c func fragment_UpdateMotion hand integrates velocity, bounces off floor with sound, ends when above screen top
+0x00204cba func waveSurface_Init hand sets sprite words, masks index to 0-7, clears facing (was target_Init)
+0x00204d34 func waveSurface_Update hand draws, on state 1 refreshes wave and stores value to global (was target_Update)
+0x00204da8 func wave_UpdatePositions hand fills sine table from lookup and writes 16-bit y coords into polygon vertex table
+0x00204fd8 func floater_Init hand registers object in slot table by index, saves y, sets sprite words, draws
+0x00205030 func floater_Update hand sine bobbing of y by phase, input bit steers phase, draws
+0x00205334 func pickup_SpawnRandomA hand provisional: creates object at random x,y from LCG, zero velocity, random frame 0-15
+0x002053dc func pickup_SpawnRandomB hand provisional: creates object near parent at random offset from LCG, frame 0-3
+0x002054ca func shadow_Init hand provisional: sets sprite words, computes anim from y diff, flips by x bit
+0x00205528 func shadow_Update hand provisional: adds velocity to y, tests helper, calls follow-up if hit
+0x002055c8 func hand_Init hand calls base init, sets sprite words, clears state, flag, substates
+0x0020560a func hand_Update hand dispatch by kind, advances frame 0..0xe, draws
+0x0020568c func hand_PlaceKind0 hand sets position from parent with y offset from global
+0x002056b0 func hand_PlaceKindN hand x from parent by kind, 4-state y motion, slides then lowers, calls helper at end
+0x00205870 func hitbox_Init hand calls base init, clears flags and sub fields, sets mode 8
+0x002058a2 func hitbox_Update hand picks frame set by kind 1-7, positions relative to parent, runs hit check, or kind 8
+0x00205b00 func hitbox_HandleHit hand processes hit bits, decrements counter, plays sound, spawns effect, sets parent flags
+0x00205c66 func hitbox_UpdateKind8 hand copies parent state, flags by y distance, calls helper, may jump to end
+0x00205d2a func hitbox_Overlap hand AABB overlap test against player, returns direction bits 1/2 and 4/8 or 0
+0x00205efa func camera_UpdateTargets hand copies previous camera values, calls handler by mode, stores new target values
+0x00205f76 func camera_ModeDispatch hand picks camera follow routine by boss state 0-0xd
+0x00205fe6 func camera_FollowPlayer hand tracks single target x with clamped velocity and damped scroll values
+0x00206130 func camera_FollowMidpoint hand tracks midpoint of two objects x with clamped velocity and damped scroll values
+0x0020648a func camera_FollowSimple hand tracks x and y of one target with clamped velocity and damped scroll values
+0x002065d8 func particle_InitRandomPos hand sets random x,y positions and zero velocities in particle fields (was particle_InitVelocity)
+0x00206850 func rng_StepLcg hand scrambles 16-bit seed global by multiply by 3 with byte add
+0x0020688a func anim_SetScript hand stores animation pointer and clears frame, timer, and counters

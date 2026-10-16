@@ -1,0 +1,83 @@
+GEKAN_AREA52 0x00200000 scroll_UpdateCameraTarget CONFIRM scroll_UpdateCameraTarget computes scroll x/y from player pos with clamps and stores via helpers
+GEKAN_AREA52 0x0020022c obj_SetupProjectedQuad CONFIRM obj_SetupProjectedQuad builds projected quad corners from offsets and scale; no callers to refine
+GEKAN_AREA52 0x00200518 obj_Init_0020377c RENAME obj_InitFromStageTable sets state/flags and copies sprite params from per-stage table; flag bit when low y
+GEKAN_AREA52 0x002006d6 obj_AnimateThenSpawnFromTable CONFIRM obj_AnimateThenSpawnFromTable counts anim frames then loads spawn params from table into globals
+GEKAN_AREA52 0x0020081c child_InitFollowA CONFIRM child_InitFollowA copies parent flag byte, clears state; fits follow init
+GEKAN_AREA52 0x00200854 child_UpdateFollowA CONFIRM child_UpdateFollowA reacts to parent state 1 and bumps parent counter; fits follow update
+GEKAN_AREA52 0x002008e4 child_InitFollowB CONFIRM child_InitFollowB copies parent flag and sets y from parent plus offset
+GEKAN_AREA52 0x00200930 child_UpdateFollowB CONFIRM child_UpdateFollowB tracks parent y and steps its own state off parent state
+GEKAN_AREA52 0x00200a5e child_InitFollowC CONFIRM child_InitFollowC copies parent flag byte, sets own state 1
+GEKAN_AREA52 0x00200a8e child_UpdateFollowC CONFIRM child_UpdateFollowC when helper true and key is 'C' sets parent state 4
+GEKAN_AREA52 0x00200ada obj_UpdateSpawnerPlayer UNSURE obj_UpdateSpawnerPlayer init once then update; role of player unclear, no callers
+GEKAN_AREA52 0x00200b5e obj_InitSpawnThree CONFIRM obj_InitSpawnThree registers three children via same call then tests player proximity
+GEKAN_AREA52 0x00200cae obj_Update_00203f12 RENAME obj_UpdateRangeTriggeredAnim state0 waits until scroll x leaves window then state1 steps frame countdown
+GEKAN_AREA52 0x00200d8c child_UpdateFollowD CONFIRM child_UpdateFollowD places child from parent y plus offset and follows parent state 2
+GEKAN_AREA52 0x00200de2 child_UpdateFollowE CONFIRM child_UpdateFollowE follows parent state changes and parent y offset
+GEKAN_AREA52 0x00200e8a child_InitFollowD CONFIRM child_InitFollowD copies parent flag byte; same shape as other follow inits
+GEKAN_AREA52 0x00200eba obj_Dispatch_0020411e RENAME obj_UpdateSpawnTrigger init once then checks trigger and loads spawn data
+GEKAN_AREA52 0x00200f06 obj_Init_0020416a RENAME obj_InitSpawnTrigger sets state 1, sprite table and first frame for the trigger object
+GEKAN_AREA52 0x00200f3e obj_CheckTriggerLoadSpawnData CONFIRM obj_CheckTriggerLoadSpawnData copies stage table spawn record into globals when triggered
+GEKAN_AREA52 0x002010d4 trigger_UpdateSetFlag CONFIRM trigger_UpdateSetFlag sets two globals and state 1 when helper true and condition met
+GEKAN_AREA52 0x002011cc item_InitThrown UNSURE item_InitThrown places object by parent facing; thrown role not proven, no callers
+GEKAN_AREA52 0x0020148c obj_UpdateFallingAnimated CONFIRM obj_UpdateFallingAnimated 30-frame anim, velocity plus gravity, tile bounce
+GEKAN_AREA52 0x00201662 obj_InitIdleAnim CONFIRM obj_InitIdleAnim sets sprite table and clears state/ticks
+GEKAN_AREA52 0x002016a0 obj_UpdateHitFlashToggle CONFIRM obj_UpdateHitFlashToggle on flag plays sound, 3-frame anim, toggles variant
+GEKAN_AREA52 0x002017a8 obj_InitStateTwoSprite CONFIRM obj_InitStateTwoSprite sets state 2 and first frame from parent data
+GEKAN_AREA52 0x002017de obj_UpdateFollowParentAnim CONFIRM obj_UpdateFollowParentAnim parent-driven 9-frame fwd/reverse anim
+GEKAN_AREA52 0x00201b4c obj_FindFreeSlot CONFIRM obj_FindFreeSlot scans 15 three-word slots for first empty
+GEKAN_AREA52 0x00201b80 obj_ClampToPlatformTop RENAME obj_ClampXToRightEdge clamps other object's x to this x plus width bound, returns -1 if clamped
+GEKAN_AREA52 0x00201ba4 obj_TestPlayerOverlapSide CONFIRM obj_TestPlayerOverlapSide depth+side check, rect overlap with player, returns direction bits
+GEKAN_AREA52 0x00201d48 obj_CollectOverlappingObjects CONFIRM obj_CollectOverlappingObjects walks list, stores up to 15 overlapping same-side objects
+GEKAN_AREA52 0x00201f4a obj_InitSpriteVariantByType CONFIRM obj_InitSpriteVariantByType picks anim table by parent type, resets state
+GEKAN_AREA52 0x00201fe4 obj_UpdateThreePhaseAnim CONFIRM obj_UpdateThreePhaseAnim idle loop, play to marker with sound, flicker phase
+GEKAN_AREA52 0x0020214c obj_BuildFlagsFromDirection CONFIRM obj_BuildFlagsFromDirection composes object flag word from direction helper bits
+GEKAN_AREA52 0x002021e6 obj_InitEffectSprite CONFIRM obj_InitEffectSprite clears state, tick 8, sets sprite table
+GEKAN_AREA52 0x0020222c obj_UpdateHitReact CONFIRM obj_UpdateHitReact on hit plays sound 4, spawns effect, then draws
+GEKAN_AREA52 0x002023bc obj_SpawnFiveDebris CONFIRM obj_SpawnFiveDebris creates five children indexed 4..0 with parent link; matches 8-byte debris table
+GEKAN_AREA52 0x0020246a obj_InitDebrisFromTable CONFIRM obj_InitDebrisFromTable position and velocity from per-index table, drag from velocity
+GEKAN_AREA52 0x00202508 obj_UpdateDebrisPhysics CONFIRM obj_UpdateDebrisPhysics drag, kill on sign flip, move, 3-frame anim, queue sprite
+GEKAN_AREA52 0x0020259c obj_SpawnFourDebris RENAME obj_SpawnFourSparks four children indexed 3..0 use 12-byte spark table with delay, not debris velocities
+GEKAN_AREA52 0x0020264a obj_InitSparkFromTable CONFIRM obj_InitSparkFromTable parent pos plus 12-byte table entry and delay
+GEKAN_AREA52 0x002026c8 obj_UpdateSparkAnim CONFIRM obj_UpdateSparkAnim delay then 12-frame anim then kill, queues sprite
+GEKAN_AREA52 0x0020272c vdp1_QueueObjectSprite CONFIRM vdp1_QueueObjectSprite appends 32-byte command with camera-relative pos
+GEKAN_AREA52 0x00202ae0 player_UpdateMain CONFIRM player_UpdateMain input-driven state transition then per-state handler switch and collision/shadow steps
+GEKAN_AREA52 0x00202e68 player_TryHandlerIfEnabled CONFIRM player_TryHandlerIfEnabled runs check helper, if nonzero tail-calls follow-up handler
+GEKAN_AREA52 0x00202e90 player_CheckTileResponse CONFIRM player_CheckTileResponse tile result 2 sets state 9, 0x0f sets object flag
+GEKAN_AREA52 0x00202eec player_StartLandingState UNSURE player_StartLandingState button flags enter state 11 with set velocity and y snap; landing vs jump unclear
+GEKAN_AREA52 0x00202f78 player_UpdateHorizontalSpeed CONFIRM player_UpdateHorizontalSpeed steps x velocity 0x40 per frame toward per-state table target
+GEKAN_AREA52 0x00203086 player_StateIdleCheck CONFIRM player_StateIdleCheck state 0 clears speed, on anim end and distance picks state 1 and side
+GEKAN_AREA52 0x00203114 player_StateTurnStart RENAME player_StateWalkStart state 1 keeps facing, on anim end within distance window enters state 3; no turn happens here (turn is state 2)
+GEKAN_AREA52 0x00203188 player_StateTurnToggle CONFIRM player_StateTurnToggle xors facing byte on anim end then picks state 4 or 5
+GEKAN_AREA52 0x00203210 player_StateWalkEnd CONFIRM player_StateWalkEnd on anim end goes to turn state 2 or state 4/5 by distance and side
+GEKAN_AREA52 0x00203294 player_StateCountdown CONFIRM player_StateCountdown decrements counter per anim end then enters state 4
+GEKAN_AREA52 0x002032c8 player_StateDefaultAnimEnd CONFIRM player_StateDefaultAnimEnd default-state handler, on anim end and distance returns to state 2
+GEKAN_AREA52 0x0020330c player_EnterRecoverState RENAME player_StateStartDefeat state 8 clears flags and enters state 9 which is the defeat/spawn-effects state, not recovery
+GEKAN_AREA52 0x0020333e player_StateDefeatedSpawn CONFIRM player_StateDefeatedSpawn stops motion, spawns two effect objects, enters state 10 hidden
+GEKAN_AREA52 0x00203464 player_StateLandedToggle UNSURE player_StateLandedToggle state 0xb toggles facing and enters knockback on flags else timer; landing not shown, likely hit-stun
+GEKAN_AREA52 0x00203508 player_StateKnockback CONFIRM player_StateKnockback timer and offset knockback then restores saved state
+GEKAN_AREA52 0x002035c6 player_StateRespawnCheck UNSURE player_StateRespawnCheck state 0xd mirrors idle check (clear speed, distance then state 1); respawn not evidenced
+GEKAN_AREA52 0x0020364a player_DrawShadowOffset CONFIRM player_DrawShadowOffset temporarily state 14 with y offset, runs draw handler, restores fields
+GEKAN_AREA52 0x0020369c player_DrawShadowFlipped CONFIRM player_DrawShadowFlipped temporary state 14 with flip-dependent offset, calls shadow queue, restores
+GEKAN_AREA52 0x0020374a vdp1_QueueScaledShadowSprites CONFIRM vdp1_QueueScaledShadowSprites scales parts by depth and appends VDP1 commands per part
+GEKAN_AREA52 0x00203a34 player_StepBlinkCounter RENAME player_StepCounterSpawnCompanion 4-step counter; at zero with flag 4 spawns an object whose update is companion_UpdateMain; no blinking
+GEKAN_AREA52 0x002040d4 obj_TryHandlerIfEnabled CONFIRM obj_TryHandlerIfEnabled check helper then tail-call follow-up handler
+GEKAN_AREA52 0x002040fc obj_CheckTileResponse CONFIRM obj_CheckTileResponse tile result 2 sets state 6, 0x0f sets flag
+GEKAN_AREA52 0x002043bc obj_UpdateChargeTarget UNSURE obj_UpdateChargeTarget distance tests vs globals pick state 2 or bit index; charge not evidenced, no callers
+GEKAN_AREA52 0x002044ac obj_StateHitRetry CONFIRM obj_StateHitRetry counts hits, up to three re-enters state 5 with velocity and effect, then state 6
+GEKAN_AREA52 0x002048e2 companion_UpdateMain CONFIRM companion_UpdateMain init once, parent-gone check, state update or fall handling, sets self pointer global
+GEKAN_AREA52 0x00204a10 companion_Init CONFIRM companion_Init sets state and sprite tables from parent mode bits then follows parent
+GEKAN_AREA52 0x00204b58 companion_UpdateStates CONFIRM companion_UpdateStates table-driven state transition then per-state handlers 0-8 and tile checks
+GEKAN_AREA52 0x00204ddc companion_CheckParentGone CONFIRM companion_CheckParentGone returns 1 when parent object slot empty, else propagates parent flag
+GEKAN_AREA52 0x00204e44 companion_FollowParent CONFIRM companion_FollowParent copies parent position, velocities and flag with facing offset
+GEKAN_AREA52 0x00204f84 companion_TryHandlerIfEnabled CONFIRM companion_TryHandlerIfEnabled check helper then tail-call follow-up handler
+GEKAN_AREA52 0x00204fc4 companion_ReactToParentState CONFIRM companion_ReactToParentState idle companion switches to state 4 or 6 by parent state
+GEKAN_AREA52 0x00205050 companion_CheckGroundAndWalls CONFIRM companion_CheckGroundAndWalls tile and collision checks, on edge or hit enters state 4
+GEKAN_AREA52 0x00205162 companion_StateIdle CONFIRM companion_StateIdle state 0, parent state 2 match enters state 1
+GEKAN_AREA52 0x002051dc companion_StateStart CONFIRM companion_StateStart state 1, on anim end enters state 2 with velocity set
+GEKAN_AREA52 0x00205240 companion_StateFly CONFIRM companion_StateFly state 2, loops anim, flag 4 enters state 4
+GEKAN_AREA52 0x002052d0 companion_StateLand CONFIRM companion_StateLand state 3 enters state 4 with timer set
+GEKAN_AREA52 0x00205324 companion_StateDefeatedSpawn CONFIRM companion_StateDefeatedSpawn state 4 stops motion, spawns two effect objects, enters state 5
+GEKAN_AREA52 0x00205402 companion_AdjustTimerByInput CONFIRM companion_AdjustTimerByInput adds one of three constants to timer by input bits
+GEKAN_AREA52 0x00205476 companion_StateFollowParentEnd CONFIRM companion_StateFollowParentEnd state 6, parent state 9/10 gives state 7 else restore
+GEKAN_AREA52 0x002054d0 companion_StateRestoreAfterKnock CONFIRM companion_StateRestoreAfterKnock state 7 restores saved state when velocities zero
+GEKAN_AREA52 0x0020552a companion_StateWaitParent CONFIRM companion_StateWaitParent state 8 clears speed, parent state 1 returns to state 0

@@ -1,0 +1,13 @@
+Review of provisional function names in a Sega Saturn SH-2 game decompile (Clockwork Knight / Clockwork Knight 2, Sega CS2, 1994-1995; code likely Hitachi SHC or GNU; Sega SBL library: GFS file system, CDC, SMPC, SCU DMA, VDP1 sprites, VDP2 scroll planes, SND driver). Research only.
+These names were marked provisional by a first naming pass. Now each entry also has its callers.
+Entry layout: "#### PROG 0x<addr> <name> | <comment>", then the function decompile, then "---- callers: N (names)", then up to 3 caller decompiles.
+Names of callees are already substituted where known. Programs: GEKAN_A / CK2USA_A = the boot program A.BIN at 0x06003000 (SBL init, file loading, sound driver, VDP setup, title/menu, area overlay loading, shared object code); GEKAN_AREA<n><x> = per-area level overlays at 0x00200000 (player Pepperouchau movement/attacks, enemies, items, moving platforms, camera scroll, boss fights in the <n>B overlays). 2D side-scrolling platformer with pre-rendered sprites; the player can pick up and throw objects, wind-up key attack, ride a toy horse.
+Name from what the code does; never copy text from any leaked source.
+Rule: read EVERY entry's body and its callers before deciding. Do not decide from the name or comment alone; do not skim. Read the file in pieces (offset/limit, about 600 lines at a time) until the end.
+For each entry decide, using the body AND how callers use it (arguments passed, result used, the caller's own name and job):
+- CONFIRM: the name fits.
+- RENAME: a clearly better name (same style: lowercase module prefix + CamelCase, letters digits underscore, no _<number> suffix; official SBL names like GFS_/CDC_/SMPC_/SCL_ only when the behaviour clearly matches).
+- UNSURE: still not enough evidence. Keep it.
+Write each verdict line to the result file as soon as you decide it (append as you go), in input order, exactly:
+<PROG> 0x<addr> <oldname> CONFIRM|RENAME|UNSURE <newname or oldname> <short reason, one line>
+Every entry gets exactly one line. Do not quote game text longer than 3 words. Edit no other file. At the end reply only with the counts: confirmed N renamed N unsure N.

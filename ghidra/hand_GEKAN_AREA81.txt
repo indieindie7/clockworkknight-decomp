@@ -1,0 +1,218 @@
+0x00200000 func cam_UpdateFollowPlayerClamped hand scroll camera toward player pos 0x2c/0x30 with acceleration, clamps to room bounds, two forbidden zones
+0x00200242 func cam_UpdateFollowPlayerMinMax hand variant of camera follow with simple min/max clamp of X and Y scroll targets (was cam_UpdateFollowPlayerClamped_2)
+0x0020044c func cam_UpdateFollowPlayerLockedY hand camera follow variant, X clamped, Y locked to fixed value (was cam_UpdateFollowPlayerClamped_3)
+0x00200760 func scene_InitMode2Boss hand calls scene_SetupBossObject(2), sets display/scroll registers via callbacks, stores player pos, clears flags
+0x0020082c func scene_InitMode3Boss hand calls scene_SetupBossObject(3), sets callbacks and scroll params, writes constant 7 fields, stores player position
+0x00200928 func scene_InitMode3BossAlt hand near-identical copy of mode 3 init with different data constants (was scene_InitMode3Boss_2)
+0x00200a24 func scene_InitSimpleScroll hand sets callbacks and scroll params, stores player position, returns 0x50
+0x00200a9c func scene_UpdateScrollShakeEffect hand accumulates scroll offsets from vector, cycles palette color table every 5 frames, countdown then sprite fades
+0x00200da0 func scene_UpdateScrollOffsets hand simplified version of scroll effect, accumulates offsets and cycles color entries every 5 frames
+0x00201218 func boss_SetupObjectByMode hand param 2 or 3 initializes object fields (speeds, flags, sizes), then clears velocity and position fields
+0x00201394 func enemy_InitStandingSprite hand sets sprite table pointers from global lookup, picks animation by flag bits, lowers Z, sets size
+0x00201484 func enemy_UpdateFacingAnim hand runs anim step when state 0, sets facing angle by comparing X with global scroll limit
+0x002014fc func enemy_StepLoopAnimFrame hand every 8 ticks steps animation frame forward or backward by flags, loads frame pointer into 0x5c
+0x002015ea func enemy_InitFollowerSprite hand sets sprite table pointers like standing init, copies flags from parent object, sets frame count 0x5a
+0x002016ec func enemy_CopyParentPosition hand copies X,Y from parent object, copies facing and index flags into child state
+0x00201724 func enemy_DispatchByFacing hand if state 0, tail-calls one of two handlers depending on facing flag versus table entry
+0x002017e0 func enemy_InitSpriteAndJump hand sets sprite table pointers from global lookup then tail-calls animation setter
+0x0020185e func enemy_UpdateOpenCloseAnim hand state 0 plays frames forward, state 1 reverses; plays sound 0x2a at frame 0x12
+0x002019d2 func enemy_InitMinimal hand tiny init, sets two halfword flags to 1 and 0
+0x002019e2 func enemy_UpdateAttachedToParentOffset hand position follows parent plus 3D offset from parent frame table, collision flags after frame 0x17
+0x00201bc8 func enemy_InitSpriteLowerZAnim hand lowers Z, sets sprite tables, tail-calls animation setter with 4 depending on parent state
+0x00201c66 func enemy_UpdateRotationFromTable hand sets angle by owner facing index then adds table entry, masks result
+0x00201d4c func enemy_InitSpriteLowerZ hand lowers Z coordinate, sets sprite table pointers from global lookup, no animation
+0x00201df0 func enemy_UpdateAngleFromTable hand if state 0 sets angle from per-owner table entry and masks it
+0x00201e72 func enemy_UpdatePositionBetweenParentPoints hand position is midpoint of two parent frame points plus parent position
+0x00201f00 func enemy_UpdateRotatedPartPosition hand midpoint of parent frame points rotated by parent angle using sin/cos table, then tail-calls helper
+0x0020204e func model_ProjectAndDrawFaces hand rotates model vertices by angle, back-face tests, per-face calls bounding-test and VDP1 command builder
+0x002023ca func model_FaceBoundsVisibleTest hand min/max of 5-vertex face in screen space, rejects off-screen faces, returns depth range
+0x002025a6 func model_EmitFaceVdp1Command hand builds VDP1 sprite/polygon command from face vertices and texture, bumps command count, limit check
+0x00202920 func enemy_InitDoorOrSwitch hand sets sprite tables, two anim setups, frame count by flag, restores opened state from global flag array
+0x00202a40 func enemy_UpdateStateSwitch hand dispatches ten state handlers 0-9 via switch, then clears bit 1 of flags
+0x00202ae0 func enemy_State0WaitHit hand if flagged hit advance counter; below 5 go state 1 else state 4
+0x00202b16 func enemy_State1AnimForward hand steps animation forward each tick, after 3 steps enters state 2
+0x00202b6c func enemy_State2HoldOrRehit hand waits 30 frames then state 3, or if hit again goes state 1 or 4
+0x00202bce func enemy_State3AnimBackward hand steps animation backward, returns to state 0 at frame 0
+0x00202c20 func enemy_State4AnimToEnd hand steps animation forward to last frame, sets global flags and sound 0x2d, state 5
+0x00202cb2 func enemy_State5WaitHit hand if hit counter below 5 goes state 6 else state 9
+0x00202cf6 func enemy_State6AnimBackward hand steps animation backward, after 3 steps enters state 7
+0x00202d4c func enemy_State7HoldOrRehit hand waits 30 frames then state 8, or hit again goes state 6 or 9
+0x00202dae func enemy_State8AnimForward hand steps animation forward until last-but-one frame then state 5
+0x00202e02 func enemy_State9AnimReset hand steps animation backward to 0, clears global flags, plays sound 0x2d, state 0
+0x00202ed4 func enemy_InitFollowParentXY hand copies X,Y from parent and clears two flag halfwords
+0x00202f38 func enemy_InitFollowParentOffset hand copies X,Y from parent plus constant offsets, clears flags
+0x00202f5c func enemy_ForwardHitToParent hand if flag mask matches, sets bit 1 on parent flags, then masks own flags; returns 0x28
+0x00203004 func enemy_InitSpriteTables hand sets sprite table pointers from global lookup, flag 1, no anim
+0x0020307a func enemy_UpdatePlayAnimForwardBack hand state 0 steps frames forward to end marker, state 1 steps back to 0
+0x002031ac func enemy_InitSpriteTablesTimer hand sets sprite tables like spritetables init and zeroes timer 0x18
+0x00203226 func enemy_UpdateTimerSpawn hand counts to 60 frames then calls spawn helper and resets timer
+0x002032cc func projectile_InitFalling hand sets sprite tables, initial vertical velocity 0 and gravity -0x60, copies spawn data pointer
+0x0020336e func projectile_UpdateFallBounce hand five-state fall with gravity, ground check callbacks, landing, final state increments parent counter
+0x0020363c func obj_InitSpriteTablesLowZFlag hand =GEKAN_AREA61_LO object init (was obj_Init_0020377c)
+0x00203710 func enemy_UpdateAnimThenLoadHitbox hand animate forward, collide, then play backward and load hitbox params into globals at finish
+0x00203940 func child_InitFollowA hand =GEKAN_AREA61_LO small child follow init
+0x00203978 func child_UpdateFollowA hand =GEKAN_AREA61_LO child follow update tied to parent state
+0x00203a08 func child_InitFollowB hand =GEKAN_AREA61_LO small child follow init
+0x00203a54 func child_UpdateFollowB hand =GEKAN_AREA61_LO child follow update tied to parent state
+0x00203b82 func child_InitFollowC hand =GEKAN_AREA61_LO small child follow init
+0x00203bb2 func child_UpdateFollowC hand =GEKAN_AREA61_LO child follow update tied to parent state
+0x00203c82 func obj_InitSpawnThree hand =GEKAN_AREA61_LO init spawning three objects and checking player proximity
+0x00203dd2 func obj_UpdateRangeCheckPlayBack hand =GEKAN_AREA61_LO object update following spawn of children (was obj_Update_00203f12)
+0x00203eb0 func child_UpdateFollowD hand =GEKAN_AREA61_LO child follow update tied to parent state
+0x00203f06 func child_UpdateFollowE hand =GEKAN_AREA61_LO child follow update tied to parent state
+0x00203fae func child_InitFollowD hand =GEKAN_AREA61_LO small child follow init
+0x00203fde func obj_UpdateInitOnceThenHitbox hand =GEKAN_AREA61_LO state dispatcher (was obj_Dispatch_0020411e)
+0x0020402a func obj_InitFrameTablePtr hand =GEKAN_AREA61_LO object init (was obj_Init_0020416a)
+0x00204062 func enemy_UpdateLoadHitboxOnTrigger hand when trigger callback fires loads hitbox/attack parameter block into globals, state 1
+0x002041f8 func trigger_UpdateSetFlag hand =GEKAN_AREA61_LO update setting a flag, possibly level end trigger
+0x002042f0 func item_InitThrown hand =GEKAN_AREA61_LO provisional: init for thrown item
+0x00204714 func player_UpdateStateMachine hand =GEKAN_AREA61_LO main per-frame actor update, switch on state byte 0-0x10, calls state handlers
+0x00204b0e func enemy_CycleHitCounter hand if flag bit 0x80 set, increments counter at +0x24 wrapping at 14
+0x00204b52 func player_StateE hand =GEKAN_AREA61_LO state 0xe handler
+0x00204bc8 func player_StateF hand =GEKAN_AREA61_LO state 0xf handler
+0x00204c7c func player_State0 hand =GEKAN_AREA61_LO state 0 handler
+0x00204da6 func player_State5 hand =GEKAN_AREA61_LO state 5 handler
+0x00205100 func player_State4 hand =GEKAN_AREA61_LO state 4 handler
+0x0020523e func player_State6 hand =GEKAN_AREA61_LO state 6 handler
+0x002052d8 func player_StateB hand =GEKAN_AREA61_LO state 0xb handler
+0x0020531c func enemy_CheckPlayerHitboxOverlap hand builds hitbox from table by index and facing, overlap test with player, sets hit flags toward player
+0x00205478 func player_State1Transition hand =GEKAN_AREA61_LO state 1 and 3 transition helper
+0x00205494 func player_StateC hand =GEKAN_AREA61_LO state 0xc handler
+0x0020556e func player_States7to10 hand =GEKAN_AREA61_LO states 7-10 handler
+0x002058c0 func boss_SubStateHandler hand =GEKAN_AREA61_LO boss or actor sub-state handler for sub-states 4, 5, 6
+0x00205a22 func actor_HitReaction hand =GEKAN_AREA61_LO hit reaction handler
+0x00205ba4 func actor_ApplyGravity hand =GEKAN_AREA61_LO gravity helper skipping certain states
+0x00205bf4 func actor_ResetVelocity hand =GEKAN_AREA61_LO velocity reset helper skipping certain states
+0x00205c38 func actor_SpawnHelper hand =GEKAN_AREA61_LO spawn helper for states 5 and 0xc
+0x00205c8a func vdp1_BuildSpriteShadowCommands hand =GEKAN_AREA61_LO builds sprite and shadow VDP1 command entries with zoom factor in loop
+0x00206128 func boss_UpdateTopLevel hand stores current object global, three-phase init then dispatch via callbacks by owner type 2
+0x00206220 func boss_InitFromSpawnData hand sets facing, state, speeds, position and size from spawn record, owner type 0/1/2 variants, offscreen flag
+0x002063f0 func boss_UpdateStateMachine hand state remap by flags, 19-state switch (walk, turn, hit, etc), then collision and physics callbacks
+0x00206868 func boss_DecideApproachOrIdle hand if player close picks state 10 and faces player, else tries chase state 0 or idle state 1
+0x00206954 func boss_UpdateWalkState hand walks at speed 0x66 by facing, reverses on wall or flag, handles hit-recovery counter
+0x002069e2 func boss_UpdateBehaviorSelectTurn hand flips facing on flag bit 1, picks mode 0x14/0x15 by player side, enters state 0xd
+0x00206a98 func boss_UpdateJumpLaunch hand when flagged sets state 0xe, launches with velocity by mode 0x17 or 0x18, horizontal speed
+0x00206b14 func boss_UpdateJumpAirbornLanding hand while airborne watches frame 0x16, on landing zeroes speed, may enter state 0xb with walk speed
+0x00206b88 func boss_UpdateLandedStartWalk hand when flagged clears bits, enters state 0xb, sets walk speed by facing
+0x00206bc4 func boss_UpdateWalkTowardPlayer hand walks toward player by distance and facing, within range enters state 3, else reverts
+0x00206ca6 func boss_UpdateKnockback hand applies knockback motion on state change, damages player on overlap, bounces, ends in state 7
+0x00206ee8 func boss_EnterRecoverState hand reverses facing, zeroes timer, sets speed and state 7, spawns effect once via callback
+0x00206f36 func boss_UpdateStagger hand on state entry chooses stagger velocity by flags and plays effect; bounces and settles into state 7
+0x00207088 func boss_UpdateDefeatedSequence hand multi-state hit/flash sequence from table, ends in state 8 or 0xf, spawns effect on player contact
+0x002072ac func boss_BounceOffGroundTiles hand map tile collision check below object, bounces vertical speed and halves horizontal on contact (was boss_ClampToGroundTiles)
+0x00207354 func boss_UpdateFallPhysics hand gravity-limited fall, map tile collision test, sets landing flags when ground hit
+0x00207460 func boss_UpdateLaunchedAirborne hand on state entry sound 5, launch velocity by side; bounce then settle to state 7
+0x00207528 func boss_FlipFacingAndDecide hand if flag bit 1 clear it and toggle facing, then call approach/idle decision
+0x00207548 func boss_CheckTurnAtFrameD hand at animation frame 0xd resets timer, on flag toggles facing, returns to state 0 walking
+0x0020759c func boss_FlipFacingStartWalk hand if flag set toggles facing, enters state 0xb, sets walk speed by facing
+0x002075d4 func boss_FlipFacingResetOwnerThenDecide hand if flag set clears owner counter, sets constant, calls approach/idle decision
+0x00207600 func boss_SpawnEffectAndDecide hand if flagged spawns effect at position and faces player; on turn flag resets owner counters and decides approach
+0x002079a8 func boss_DrawShadowPieces hand builds VDP1 sprite commands for each shadow piece with scale by depth, X mirrored by facing
+0x00207cd2 func boss_DrawShadowPiecesXYScale hand variant of shadow piece sprite drawing using separate X/Y scale fields (was boss_DrawShadowPieces_2)
+0x00207fb4 func boss_DefeatedStateAClear hand on state change zeroes speed, spawns effect, sets state 0x13 and flag 0x10; else adjusts timer by flags
+0x0020807c func boss_DefeatedStateBCountdown hand counts owner timers down, at negative sets state 0x13 and flag 0x10; on entry zeroes speed
+0x002080e8 func boss_UpdateFallOffscreen hand handles falling states 8-11 with gravity and bounce velocity, sets off-screen flag below limit
+0x00208280 func boss_UpdateAndDrawTop hand top-level boss update: init from spawn data, then physics, state handler by state class, shadow draw and offscreen cull
+0x002083f4 func boss_InitFromSpawnData_083f4 hand =GEKAN_AREA61_LO reads spawn flags for facing and speed 0x66, sets initial state from spawn data
+0x00208578 func boss_UpdateAiStateMachine hand =GEKAN_AREA61_LO large routine using multiple data pointers, handles draw plus state update (was boss_DrawAndUpdateShadow)
+0x00208bc0 func boss_CheckCeilingTile hand =GEKAN_AREA61_LO tile lookup above head, tile 2 sets state 0x14, tile 0xf sets flag
+0x00208c78 func boss_AdjustHitboxByInput hand =GEKAN_AREA61_LO adds offset to AI field at +0x10 depending on input flag mask
+0x00208cd0 func boss_CheckPlayerNear hand =GEKAN_AREA61_LO abs distance to player on both axes with same layer then state 0xe
+0x00208d88 func boss_UpdateWalkPatrol hand =GEKAN_AREA61_LO state 0 waits anim end then state 1 walk speed 0x66 by facing with jump velocity
+0x00208e72 func boss_UpdateTurnAndApproach hand =GEKAN_AREA61_LO flips facing on anim end, picks substate 0xf or 0x10 by player x compare
+0x00208f10 func boss_StartLeapState hand =GEKAN_AREA61_LO on anim end state 0x13, sets jump velocity gravity and sideways speed by substate, random
+0x00208f88 func boss_UpdateLeapAirborne hand =GEKAN_AREA61_LO adds fall velocity to z with clamp, tile collision, animation index 9 handling
+0x00209048 func boss_StartWalkTowardState hand =GEKAN_AREA61_LO on anim end state 0xf, substate 0, sets speed by facing
+0x00209088 func boss_CheckPlayerRangeReturn hand =GEKAN_AREA61_LO on anim end tests player offset window and layer, else state 0xf substate 5
+0x0020915e func boss_StartAttackJump hand =GEKAN_AREA61_LO state change sets substate 0x14 or 0x15 with different jump velocity by input flags
+0x00209360 func boss_UpdateAttackMove hand =GEKAN_AREA61_LO sets horizontal speed by input flag, tile and player checks during attack
+0x002095a6 func boss_CheckFloorLanding hand =GEKAN_AREA61_LO tile lookup below feet, snaps landing when falling, returns tile
+0x00209686 func boss_MoveHorizontalWithTileCheck hand =GEKAN_AREA61_LO moves x by velocity plus offset by facing, tile check and revert on block
+0x00209762 func boss_UpdateHitFlashSequence hand =GEKAN_AREA61_LO copies hit flags, dispatches AI substates like 0xa with hit masks (was boss_UpdateAiSubstateMachine)
+0x002099d6 func boss_EnterHurtState hand =GEKAN_AREA61_LO on state change clears flags, state 0x14 when hp low, sets AI timer
+0x00209b06 func boss_EnterHopBackState hand =GEKAN_AREA61_LO plays sound 5, sets horizontal speed by input, hop velocity, substate 0xc
+0x00209bca func boss_FlipFacingThenCheckPlayer hand =GEKAN_AREA61_LO on anim end flips facing then calls player-near check
+0x00209bf8 func boss_UpdateTurnAnimTail hand =GEKAN_AREA61_LO on anim index 0xe resets counter, if grounded flips facing and stops else gravity -0x14
+0x00209c3c func boss_FlipFacingStartDash hand =GEKAN_AREA61_LO on anim end flips facing, state 0x10, sets dash speed by facing
+0x00209c80 func boss_StartChargeApproach hand =GEKAN_AREA61_LO on anim end sets AI fields 0x24 0x28, state 0xf substate 5
+0x00209caa func boss_HitPlayerObject hand =GEKAN_AREA61_LO when flagged finds target object, sets its hit flags by relative x
+0x00209d62 func boss_UpdateJumpArc hand =GEKAN_AREA61_LO provisional: moves along jump arc with tile checks and landing detection
+0x0020a078 func boss_ShiftForAttackSpawn hand =GEKAN_AREA61_LO saves state, sets state 0x16 and offsets position by facing for attack hitbox
+0x0020a0ec func boss_HitOverlappingObjects hand =GEKAN_AREA61_LO allocates child object from list and fills fields from boss position (was boss_SpawnProjectileCommand)
+0x0020a2da func boss_DrawSpriteCommand hand =GEKAN_AREA61_LO appends VDP1 command entries for boss sprite from tables
+0x0020a55e func boss_DrawSpritePartsStretched hand =GEKAN_AREA61_LO second VDP1 command builder, similar to primary sprite draw (was boss_DrawSpriteCommandSecondary)
+0x0020a80e func boss_EnterSpawnedState hand =GEKAN_AREA61_LO state change calls hook, else zeroes velocity, spawns effects, swaps anim table, state 0x15
+0x0020a912 func enemyA_UpdateTopLevel hand stores object global, init via callback, runs update; state 2 delegates to callbacks (was prop_UpdateTopLevel)
+0x0020a996 func enemyA_UpdateOwnedShooter hand init on first run storing parent as owner at +0x50, then runs per-frame update helper (was prop_UpdateWithOwnerLink)
+0x0020a9ea func prop_InitFromSpawnRecord hand provisional: resets state/flags/velocities, copies position from spawn record, sets size 0x14 and sprite table pointers
+0x0020aaec func enemyA_Init hand resets AI fields, sets position from spawn data, spawns child object, sets sprite tables and hitbox
+0x0020ac96 func enemyA_InitVariant hand init variant of enemyA for type 5, sets state 0/1, hitbox 0x20, sprite tables
+0x0020add6 func enemyA_UpdateMain hand per-frame update dispatches state 0/1/2 handlers, applies tilt, collision, player contact flags
+0x0020af70 func enemyA_SpawnShotOnTrigger hand when flag 3 and counter below 5 spawns projectile at parent offset table, calls enemyA_InitSpawnedShot
+0x0020b01e func enemyA_UpdateAI hand picks next state from transition tables by input bits, switch over states 0-0xb handlers, tile collision
+0x0020b270 func enemyA_UpdateState1Fly hand state 1 walking; checks flags, distance to player, switches to state 2 and spawns effect (was enemyA_UpdateState1Walk)
+0x0020b3fc func enemyA_StartChase hand computes angle to player via atan, sets velocity from sine table scaled 0x180, state 1
+0x0020b496 func enemyA_UpdateState2Sparkle hand state 2 spawns four effects around object then blinks until counter passes 6, sets remove flag 0x10
+0x0020b588 func enemyA_UpdateState0Idle hand state 0 idle, measures distance to player, delays then chases, retreats or goes to state 0xb
+0x0020b686 func enemyA_UpdateState4Wait hand state 4 waits for animation end flag then switches to state 3 and sets timer 1
+0x0020b6b8 func enemyA_UpdateState1AnimEnd hand on anim end turns to state 3 if player is behind else state 5
+0x0020b710 func enemyA_UpdateState6Turn hand on anim end picks state 3 or 5 depending on player side and facing
+0x0020b756 func enemyA_UpdateState5Flip hand on anim end flips facing byte, goes to state 3
+0x0020b784 func enemyA_UpdateState3Attack hand attack state, fires shot via spawn call with per-type offsets, decrements ammo, state 2 when empty
+0x0020b8fa func enemyA_InitSpawnedShot hand fills new child object fields from parent template, position, size, animation, facing
+0x0020b9b0 func enemyA_UpdateState2Restart hand on anim end resets counter and state to 0, reseeds random delay via LCG
+0x0020ba1a func enemyA_UpdateState10Done hand on anim end sets state 2 and command byte 0x25
+0x0020ba44 func enemyA_UpdateHurtStates hand states 7-9 hurt reaction, hit counter vs HP, enters death state 0xb, spawns effect
+0x0020bdbc func enemyA_UpdateState11Dying hand death state, sets gravity launch, falls and sets remove flag below floor
+0x0020beda func enemyA_DrawAttackOverlaySprite hand builds one 32-byte VDP1 command from anim table with scaling and screen offset, only when above ground (was enemyA_DrawShadowSprite)
+0x0020c3f2 func enemyA_DrawSpritesScaled hand emits scaled VDP1 sprite commands for each animation part with flip handling
+0x0020c8fc func enemyA_DrawSpritesRotated hand emits sprite commands per part with rotated offsets from sine table, calls rotate helper
+0x0020cce8 func enemyA_DrawSpritesParts hand emits VDP1 sprite commands per part, stores screen center in object, calls post-draw callback
+0x0020d56c func enemyB_Update hand per-frame update of enemy B, state transition tables, switch handlers states 0-0x13, collision, hit checks
+0x0020da80 func enemyB_UpdateFollower hand child object mirrors parent state, flags and position, sets size, runs hit checks
+0x0020dc38 func enemyB_FollowParentBounce hand child offset eases up and down relative to parent Y with random step LCG
+0x0020dd20 func enemyB_IsPlayerAttacking hand returns 1 when player on same side and player state is in attack list
+0x0020ddd6 func enemyB_UpdateWatchPlayer hand state 0x11 waits near player, turns on distance, starts jump state 0x12 or walk state 0
+0x0020dfa6 func enemyB_UpdateJumpArc hand state 0x12 applies velocity and gravity to Z and Y, returns to state 0 on land
+0x0020e064 func enemyB_UpdateWalk hand state 0 walk toward player, switches to 0x11 when passed player or to 2 or 4
+0x0020e18a func enemyB_UpdateTurn hand state 1 turn; on anim end back to state 0 and reverse X velocity
+0x0020e1e6 func enemyB_UpdateStrafe hand states 4-5 set facing from player velocity and halve speed, return to 0 if not attacking
+0x0020e25c func enemyB_UpdateHurtKnock hand state 8 hurt knockback, sets velocity from table with divide, lands into state 0x13
+0x0020e6c0 func enemyB_StartRecover hand state 0xe on anim end goes to state 0xf, clears effect byte
+0x0020e6ec func enemyB_UpdateRecoverEnd hand state 0xf on anim end goes to state 1 and calls helper
+0x0020e71c func enemyB_UpdateBounceDamage hand damage bounce with gravity, counts hits, lowers HP, state 0xd or 0xe
+0x0020e838 func enemyB_UpdateStates2And3 hand states 2-3 sidestep with LCG random, back to state 1 or 0
+0x0020e994 func enemyB_UpdateHurtStates hand states 10-13 hurt, knockback, hit counter vs HP, death to state 0x13
+0x0020eca2 func enemyB_SpawnDeathEffect hand zeroes velocity, sets remove flag, spawns two effects and swaps sprite table
+0x0020ed66 func enemyB_CheckDeathTransition hand if mode 2 and state 8 sets state 0x13 and clears flags
+0x0020edd4 func enemyB_ApplyGravityAirborne hand lowers vertical speed by 0x80 clamped unless in grounded states
+0x0020ee1c func enemyB_ClearVelocityGrounded hand zeroes vertical velocity and accel unless in jump or hurt states
+0x0020ee74 func enemyB_DrawSprites hand emits scaled VDP1 commands per animation part using pair of sprite tables
+0x0020f4f0 func enemyC_Update hand boss C per-frame update via object pair, state transition tables, switch handlers 0-0xb, collision
+0x0020f822 func enemyC_CheckTileCollision hand probes tile map at foot and center, kills on tile type 2, flags hit
+0x0020f93e func enemyC_AdvanceAnimOffset hand adds one of three constants to animation offset by flag mask
+0x0020f998 func enemyC_UpdateOrbitChase hand default state orbit around anchor point using atan angle and sine table velocity
+0x0020fcba func enemyC_UpdateState2 hand state 2 zero velocity, waits timer, switches to state 3 when near player
+0x0020fd58 func enemyC_UpdateState3 hand state 3 on anim end moves to state 4
+0x0020fd84 func enemyC_UpdateState4 hand state 4 on anim end picks state 8 if same depth as player else state 6
+0x0020fe12 func enemyC_UpdateState5 hand state 5 on anim end returns to state 2
+0x0020fe3c func enemyC_UpdateState6DepthMove hand state 6 moves depth toward target Z, stops, then state 8
+0x0020fecc func enemyC_UpdateState7MoveToTarget hand state 7 moves X Y Z to target clamping each axis then state 5
+0x0020ff70 func enemyC_UpdateState8Aim hand state 8 picks next target from player position, switches to state 9 or 7
+0x00210128 func enemyC_UpdateState9Dash hand state 9 accelerates X Y toward target with acceleration, then back to state 8
+0x00210234 func enemyC_UpdateState10Hit hand state 10 clears flags and goes to state 0xb, sets animation
+0x00210266 func enemyC_UpdateState11Die hand state 11 death, spawns effect twice, swaps tables, state 0xc and remove flag
+0x00210308 func enemyC_DrawTrail hand draws repeated afterimage copies at spaced offsets by temporarily changing object fields
+0x002104f6 func debris_Update hand debris piece update picks state from flags, dispatches to 0-5 state handlers
+0x00210766 func debris_UpdateState0Fall hand state 0 ballistic move with tile collision, bounce, rotate, hit check, to state 4
+0x00210880 func debris_UpdateState1Slide hand state 1 fixed vertical drop with tile collision, goes to 0, 3 or 4
+0x0021092c func debris_UpdateState2Hit hand state 2 checks overlap with objects, to state 4 on hit
+0x00210964 func debris_UpdateBounceMove hand =GEKAN_AREA61_LO moves with gravity, bounces off wall and floor, state 5 or 1 on settle
+0x00210a04 func debris_UpdateState4Break hand state 4 spawns fragments once per type, spawns two child objects, remove flag
+0x00210b24 func debris_UpdateSpinningFall hand =GEKAN_AREA61_LO moves with gravity, wall bounce, rotates angle, state 6 when landed or low
+0x00210c54 func debris_InitFromParent hand =GEKAN_AREA61_LO copies parent position, sets gravity, initial speed by facing, anim and hitbox 0x20
+0x00210cea func debris_UpdateFlyingAnim hand in state 0 moves with tile collision bounce and steps animation, timeout to state 1
+0x00210df4 func obj_CollideHorizontalTiles hand =GEKAN_AREA61_LO tile checks both sides with push-out then object list scan, returns hit code
+0x002111d4 func obj_CollideVerticalTiles hand =GEKAN_AREA61_LO tile checks floor and ceiling with slopes then object list scan, returns hit code
+0x00211624 func obj_FindOverlappingObject hand walks object list, tests box overlap with other, sets hit flags on it, returns 1
+0x00211834 func obj_AppendSpriteCommandRotated hand =GEKAN_AREA61_LO appends 0x10-short VDP1 command with scale, rotation and offscreen cull
