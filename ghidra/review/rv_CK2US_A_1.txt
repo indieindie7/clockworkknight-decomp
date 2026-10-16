@@ -1,0 +1,45 @@
+CK2US_A 0x060030b6 dbg_UpdateOverlayToggle RENAME sys_UpdatePauseToggle Start bit toggles flag; flag set returns 0 so main loop skips tasks, else -1; combo flips blinking 7-cell text; pause not debug
+CK2US_A 0x060031a6 dbg_DrawOverlayCells RENAME ui_DrawPauseText copies 2x7 cells to map when pause blink phase is on; only caller is pause toggle
+CK2US_A 0x060031d6 dbg_ClearOverlayCells RENAME ui_ClearPauseText zeroes same 2x7 cells; used by pause toggle for blink off and reset
+CK2US_A 0x0600322a snd_SendInitCommands RENAME snd_SyncPauseState on pause state change sends cmd 3 and cmd 2 for channels 1-7 (entering) or cmd 4 (leaving); called each frame by pause toggle
+CK2US_A 0x06003318 sys_GetBootModeFromArea CONFIRM sys_GetBootModeFromArea returns -1/0/1/2 from loaded file char +0x11 letters C-I; main loop branches to overlay load or callback
+CK2US_A 0x06003600 sys_InitHardwareState CONFIRM sys_InitHardwareState sets mask bits, waits flag, resets timers/state vars; first call from main loop
+CK2US_A 0x060061b4 save_IncrementClampedCounter CONFIRM save_IncrementClampedCounter backup block read, byte +1 incremented with clamp, written back
+CK2US_A 0x060061e8 save_IsEntryEmpty CONFIRM save_IsEntryEmpty checks byte pairs at +0xf..+0x18 stride 3 all zero returns 1
+CK2US_A 0x0600630c vdp2_ClearTwoTables CONFIRM vdp2_ClearTwoTables zeroes two tables of 2 rows x 10 halfwords with row stride; vdp2 map clears
+CK2US_A 0x0600634a player_InitStateByMode CONFIRM player_InitStateByMode mode 0 or 2 sets player struct pos/speed/flags then common reset
+CK2US_A 0x0600647a vdp2_CopyMapRows23 CONFIRM vdp2_CopyMapRows23 copies 2 rows of 0x17 halfwords from ROM plus tile offset; blink on phase
+CK2US_A 0x060064a2 vdp2_ClearScrollRows CONFIRM vdp2_ClearScrollRows zeroes same 2x0x17 map cells; blink off phase
+CK2US_A 0x060064be vdp2_SetLayerRegMask CONFIRM vdp2_SetLayerRegMask ors mask into reg then sets or clears bits, writes const words, dirty flag
+CK2US_A 0x060064fc snd_ClearChannelSlots CONFIRM snd_ClearChannelSlots zeroes both channel records
+CK2US_A 0x0600651a snd_SetChannelSlot CONFIRM snd_SetChannelSlot fills record indexed by channel with id, value, active flag
+CK2US_A 0x060066ba area_InitScreenSetup CONFIRM area_InitScreenSetup loads sound bank and area files, sets scroll/window regs except modes 0 and 9
+CK2US_A 0x06006808 menu_DrawSelectedEntry RENAME area_LoadSelectedAreaFiles no drawing: loads sound bank and file pair by area/stage index tables
+CK2US_A 0x06006910 vdp1_InitSpriteDisplayState CONFIRM vdp1_InitSpriteDisplayState zeroes sprite regs, resets cmd buffers, sets system clip; called from both reset routines
+CK2US_A 0x06006f9e obj_ClampVelocityByRange RENAME obj_ClampPosXByDivRange divides, then clamps object+0x18 field +0x2c (x pos) to center+-result; 0 callers
+CK2US_A 0x060072a2 obj_MoveAndCollideTiles CONFIRM obj_MoveAndCollideTiles clamps velocity, adds to pos, probes tile runs horizontal/vertical, snaps, returns contact flags
+CK2US_A 0x0600796c obj_CollideWithObjects CONFIRM obj_CollideWithObjects walks active object list, builds boxes, rect overlap, pushes/rides platforms, returns contact flags
+CK2US_A 0x060091f4 data_DecompressToBuffer CONFIRM data_DecompressToBuffer byte-pair expansion with 256-entry table and 0x20 stack, over-expansion error halt; block list to buffer
+CK2US_A 0x060099aa obj_PickupHitTest CONFIRM obj_PickupHitTest scans objects with item bits, box overlap, marks picked flag 0x10 and calls player_ApplyItemEffect
+CK2US_A 0x06009adc player_ApplyItemEffect CONFIRM player_ApplyItemEffect switch on item id 1-9 adds hearts/counters/score and plays sounds
+CK2US_A 0x06009d78 fx_UpdateDebrisSprites RENAME fx_UpdateOneShotAnimEffect state0 alloc 0x60 and init effect, state1 runs anim timer until done flag then self-clears; no debris evidence
+CK2US_A 0x0600a178 fx_UpdateParticleBurst CONFIRM fx_UpdateParticleBurst init copies parent pos, LCG random x/z velocities, then moving-effect update
+CK2US_A 0x0600a484 fx_FreeEffectChildren_2 RENAME fx_SpawnThreeChildrenAndEnd calls obj_AllocChildAtTail three times for parent (spawns not frees) then clears own update ptr
+CK2US_A 0x0600a984 fx_UpdateSparkTrail CONFIRM fx_UpdateSparkTrail every other frame spawns six children, expands velocities until parent counter below 0x1f
+CK2US_A 0x0600aee4 obj_DrawAnimFrame CONFIRM obj_DrawAnimFrame appends sprite command per part of current anim frame, scaled via divide, flip by facing; used by all fx tasks
+CK2US_A 0x0600c622 text_QueueDecimal3 CONFIRM text_QueueDecimal3 queues 3 ascii digits via div/mod into text queue at position; hud callers
+CK2US_A 0x0600d408 player_ClearHitFlags CONFIRM player_ClearHitFlags clears three flag bits in two bytes, zeroes speeds and hit counters; area init
+CK2US_A 0x0600e190 data_FlushCopyQueue CONFIRM data_FlushCopyQueue runs queued halfword copies (src,dst,count) and zeroes count; vblank task
+CK2US_A 0x0600e1c2 gfx_LoadPatternList CONFIRM gfx_LoadPatternList by decode type 0-3 blits listed entries via helper calls
+CK2US_A 0x0600e386 mem_ClearBlock64 CONFIRM mem_ClearBlock64 zeroes fixed block of longwords in pairs; screen clear before error and viewer screens
+CK2US_A 0x0600e3d0 area_InitBackground CONFIRM area_InitBackground clears player hit flags, inits scroll state, fills and loads background image, sets layer scroll and priority
+CK2US_A 0x0600e432 area_InitBackground2 RENAME area_InitBackgroundLayer2 same as first but second layer: fills words, loads image, zeroes scroll offsets, sets priority
+CK2US_A 0x0600e484 camera_UpdateScrollTarget RENAME area_UpdateBackgroundParallax advances two counters by step, divides to get layer scroll offsets, sets update flag; touches bg fields
+CK2US_A 0x0600e54c camera_InitScrollState RENAME player_ResetStateDefault param 0 writes same player struct fields as player_InitStateByMode mode 0, not camera
+CK2US_A 0x0600ea86 map_ActivateRowObjects UNSURE map_ActivateRowObjects walks grid rows near player y, for each listed entry sets obj pos and calls draw helper; 0 callers
+CK2US_A 0x0600ec58 math_Atan2Table CONFIRM math_Atan2Table octant flags, divide, arctan table lookup, returns masked angle
+CK2US_A 0x0601003c rect_TestOverlap CONFIRM rect_TestOverlap compares two 4-short rects, returns 0 on overlap else -1; used by all hit tests
+CK2US_A 0x0601007c mesh_DrawObjectFaces CONFIRM mesh_DrawObjectFaces offsets mesh verts by object pos (mirrored by facing), per-face 64-bit MAC dot product sets visible flags; many anim-effect callers
+CK2US_A 0x06011c8c state_ClearCounters CONFIRM state_ClearCounters zeroes two longwords at +8 and +0xc of a global struct; vblank task
+CK2US_A 0x06012390 obj_BreakableTask CONFIRM obj_BreakableTask state0 init, then frees object if outside camera range else calls update
+CK2US_A 0x060123d4 obj_BreakableInit CONFIRM obj_BreakableInit sets flags, anim table, hit counter 3, picks initial anim from mask test

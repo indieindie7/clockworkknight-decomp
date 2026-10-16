@@ -1,0 +1,92 @@
+0x00200000 func boss_Update hand provisional boss object per-frame dispatcher: debug pad scroll, state switch init/intro/attack/defeat, random spawn timers
+0x00200190 func boss_Init hand provisional boss state 0 init: sets position, sprite size, HP 9, flags, spawns child parts via spawn callback
+0x00200340 func boss_UpdateIntro hand provisional boss entrance: slides in on Y, plays sfx 0x57/0x4e, steps animation frames to 0x1d
+0x00200470 func boss_UpdateAttackStates hand provisional boss main attack state machine switch: animation frame stepping, sfx 0x4c-0x59, hit flags, spawns
+0x00201442 func boss_UpdateDefeat hand provisional boss defeat: flashing spawns, sfx 0x54/0x55, falls with Y velocity, sets end flag
+0x002017a0 func bossPart1_Init hand provisional boss child part init: sets sprite size, frame table pointer, draw flags
+0x002017de func bossPart1_FollowParent hand provisional part tracks parent boss: offsets position, copies frame index, deletes when off-screen
+0x0020184c func bossPart1_UpdateFrames hand provisional part 1 animation switch on state: offsets position, picks frame table, random timer, copies parent frame
+0x002019cc func bossPart1_FollowParent_2 hand provisional second part-1 follower: offset from parent, frame copy, deletes on parent Y threshold
+0x00201ad4 func bossPart2_Init hand provisional boss child part init: sets sprite size, frame table pointer, draw flags
+0x00201afe func bossPart2_FollowParent hand provisional part tracks parent boss: offsets position, copies frame index, deletes when off-screen
+0x00201b70 func bossPart2_UpdateMotion hand provisional part motion: position offset from parent, frame table, copies parent frame, removed off-screen
+0x00201d34 func bossPart2_UpdateFall hand provisional part falling/drift update: velocity integrate, accelerate Y, bounce, delete past threshold
+0x00201e58 func bossPart3_Init hand provisional boss child part init: sets sprite size, frame table pointer, draw flags
+0x00201e82 func bossPart3_FollowParent hand provisional part tracks parent boss: offsets position, copies frame index, deletes when off-screen
+0x00201ef4 func bossPart3_UpdateMotion hand provisional part motion: position offset from parent, frame table, copies parent frame, removed off-screen
+0x0020207c func bossPart3_UpdateFall hand provisional part falling/drift update: velocity integrate, accelerate Y, bounce, delete past threshold
+0x002021ae func bossPart4_Init hand provisional boss child part init: sets sprite size, frame table pointer, draw flags
+0x00202208 func bossPart4_FollowParent hand provisional part tracks parent boss: offsets position, copies frame index, deletes when off-screen
+0x00202268 func bossPart4_UpdateMotion hand provisional part motion: position offset from parent, frame table, copies parent frame, removed off-screen
+0x00202428 func bossPart4_UpdateFall hand provisional part falling/drift update: velocity integrate, accelerate Y, bounce, delete past threshold
+0x0020254c func bossPart5_Init hand provisional boss child part init: sets sprite size, frame table pointer, draw flags
+0x00202576 func bossPart5_FollowParent hand provisional part tracks parent boss: offsets position, copies frame index, deletes when off-screen
+0x002025e8 func bossPart5_UpdateMotion hand provisional part motion: position offset from parent, frame table, copies parent frame, removed off-screen
+0x002027ac func bossPart5_UpdateFall hand provisional part falling/drift update: velocity integrate, accelerate Y, bounce, delete past threshold
+0x002028d4 func bossPart6_Init hand provisional boss child part init: sets sprite size, frame table pointer, draw flags
+0x002028fe func bossPart6_FollowParent hand provisional part tracks parent boss: offsets position, copies frame index, deletes when off-screen
+0x00202970 func bossPart6_UpdateMotion hand provisional part motion: position offset from parent, frame table, copies parent frame, removed off-screen
+0x00202b34 func bossPart6_UpdateFall hand provisional part falling/drift update: velocity integrate, accelerate Y, bounce, delete past threshold
+0x00202c5c func bossPart7_Init hand provisional boss child part init: sets sprite size, frame table pointer, draw flags
+0x00202c86 func bossPart7_FollowParent hand provisional part tracks parent boss: offsets position, copies frame index, deletes when off-screen
+0x00202cf8 func bossPart7_UpdateMotion hand provisional part motion: position offset from parent, frame table, copies parent frame, removed off-screen
+0x00202e6a func bossPart7_UpdateFall hand provisional part falling/drift update: velocity integrate, accelerate Y, bounce, delete past threshold
+0x00202f9c func bossPart8_Init hand provisional boss child part init: sets sprite size, frame table pointer, draw flags
+0x00202ff8 func bossPart8_FollowParent hand provisional part tracks parent boss: offsets position, copies frame index, deletes when off-screen
+0x00203058 func bossPart8_UpdateMotion hand provisional part motion: position offset from parent, frame table, copies parent frame, removed off-screen
+0x00203218 func bossPart8_UpdateFall hand provisional part falling/drift update: velocity integrate, accelerate Y, bounce, delete past threshold
+0x00203384 func boss2_Update hand provisional second boss object dispatcher by state 0..3: follows parent position, calls init/attack/fall
+0x00203402 func boss2_Init hand provisional second boss init: sets sprite size, Y velocity, frame table, flags parent
+0x00203474 func boss2_UpdateAttack hand provisional boss2 state switch: moves, checks player X range via collision callback, sets parent hit flags
+0x0020374e func boss2_UpdateRetreat hand provisional boss2 state 3: moves with Y velocity decreasing, resets parent flag when above parent
+0x002038a8 func bossHand_Init hand provisional boss hand init: positions hand at parent arm joint offsets, selects left/right, zeroes hand data block
+0x002039f2 func bossHand_UpdateTarget hand provisional hand target tracking: updates hand data block X/Y/Z from parent, eases toward rest, clears flag
+0x00203b9a func bossHand_UpdateAI hand provisional large hand attack AI state machine: tracks player X, state by flags, per-hand data block 0x3c
+0x002050ac func arm_ComputeJointAngles hand provisional arm IK: sqrt distances, atan2 via lookup, writes joint angles into arm data block 0x3c
+0x00205344 func math_IntSqrt hand integer square root by stepped search
+0x002053e6 func arm_RotateSkeletonPoints hand provisional rotates arm joint vertex tables by three angle sin/cos, writes 3 limbs 16/24 points
+0x00205a90 func armPart_Init hand provisional arm part init: reset via obj_ResetState, sprite size, frame table
+0x00205ac6 func armPart_UpdateFrame hand provisional arm part frame stepping by parent state, hit check, falls when arm destroyed
+0x00206082 func armPart_UpdateDestroyed hand provisional arm part when destroyed: sets arm flags, velocities, falls and deletes
+0x002061c4 func armPart2_Init hand provisional arm part init: resets state via obj_ResetState, visible flag
+0x002061e0 func armPart2_Update hand provisional arm part visibility by parent state, destroy check, frame table
+0x002062e8 func armPart_CheckDestroyedDelete hand provisional deletes object when arm destroyed flag set
+0x00206314 func armObj_Update hand provisional arm object dispatcher by state: init or update, copy parent state
+0x00206368 func armObj_Init hand provisional arm object init: reset state, side by player X, sets flags and spawns two children
+0x002063e2 func armObj_UpdateActive hand provisional arm active update: calls scroll shift and drop helpers, follows or deletes
+0x0020646c func armObj_UpdateScrollShift hand provisional shifts arm and player X when flagged, timer reset
+0x00206514 func armObj_UpdateDrop hand provisional arm vertical drop physics with gravity and flags
+0x00206632 func armChildA_Init hand provisional child init: reset state, hidden, sprite size
+0x0020665a func armChildA_Update hand provisional child update: delete or run depending on parent flag
+0x002066d4 func armChildB_Init hand provisional child init: reset state, sets sprite and extra data block fields
+0x00206710 func armChildB_Animate hand provisional child animation cycle of three frames, sets position from table
+0x00206756 func armChildB_Update hand provisional child update calling animation then delete or continue
+0x00206804 func armChildC_Init hand provisional child init: reset state, visible, sprite size
+0x00206828 func effect_UpdateFlash hand provisional boss effect update: counter below 0x79 flicker else flash end, moves, deletes
+0x0020688c func effect_UpdateFlashStep hand provisional counter step: sfx 0x51 at 0x50, copies or shifts four 6-byte palette entries
+0x00206970 func effect_FinishFlash hand provisional sfx 0x51/0x53 at counter 100, writes final entries 0x47
+0x002069b2 func obj_ResetState hand zeroes object state, velocities and position fields, clears control block
+0x00206a98 func spark_Init hand provisional spark init: random pick from table, position from parent frame table, sfx 0x51
+0x00206baa func spark_UpdateCheck hand provisional calls check and if nonzero runs follow-up, returns result
+0x00206c3c func spark2_Init hand provisional spark init: random position offset around parent, sprite size 0x80
+0x00206d20 func spark3_Init hand provisional spark init: random X Y offsets from parent, size 0x80, delete past threshold
+0x00206dc6 func spark3_UpdateCheck hand provisional calls check and if nonzero runs follow-up, returns result
+0x00206e48 func spark4_Init hand provisional spark init: position from parent or arm table by random 0..3, sprite size, off-screen flag
+0x00206f34 func spark4_UpdateCheck hand provisional calls check and if nonzero runs follow-up, returns result
+0x00206f84 func bossFace_UpdateExpression hand provisional boss face expression state machine: picks frame index by state and timers, updates sprite tables
+0x002071b6 func bossFace_Idle hand provisional face idle: advances counter wraps at 0x40, frame 7 to 10
+0x002071d8 func bossFace_Angry hand provisional face angry: counter picks frame 7..11 by timing and HP below 8
+0x00207294 func bossFace_State1 hand provisional face state 1: frame cycle 7..10 for 31 ticks then 4
+0x002072c6 func bossFace_State2 hand provisional face state 2: blinks 5 versus 7..10, advances to 2 after 60 ticks
+0x00207300 func bossFace_State3 hand provisional face state 3: frames 0..2 cycle, advances to 3 after 40 ticks
+0x00207354 func bossFace_State4 hand provisional face state 4: frames 4 or 3..0 cycle, resets state after 60 ticks
+0x0020738e func camera_UpdateFollowBoss hand provisional scroll update following boss: dispatch by state, store smoothed X Y Z
+0x00207490 func camera_FollowMidpoint hand provisional smooth camera toward midpoint of boss and player X, clamps with speed shift
+0x00207674 func camera_FollowHandMidpoint hand provisional smooth camera toward midpoint of hand and player X, clamped
+0x002077c2 func camera_FollowPlayer hand provisional smooth camera tracking player X when boss far, clamped range
+0x00207950 func collision_ApplyDirFlags hand provisional runs collision test, clears then sets facing flags from result bits 2-3
+0x00207996 func collision_ApplyDirFlagsFull hand provisional runs collision test, sets flags from result bits 0-1 and 2-3, returns result
+0x002079e6 func hitflash_Tick hand provisional invincibility flash countdown: toggles visibility flag, random re-arm, returns 1 when ready
+0x00247822 func stub_00247822 hand halts unimplemented: data region misdecoded as code
+0x002479dc func stub_002479dc hand indirect call through data offset; misdecoded data region
+0x00247c98 func stub_00247c98 hand misdecoded data fragment storing registers then indirect call

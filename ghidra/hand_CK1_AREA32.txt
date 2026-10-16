@@ -1,0 +1,121 @@
+0x00200000 func chain_UpdateActorStage hand provisional: stage 0 calls chain_InitSegments; stage 1 runs chain_UpdateStates and tail-calls update callbacks
+0x00200054 func chain_InitSegments hand =CK1_AREA31 provisional: init state fields and four-by-four chained sprite parts positioned from sine/cosine table lookups
+0x00200644 func chain_UpdateStates hand =CK1_AREA31 provisional: seven-state machine animating chained segments via chain_SetPartOffset, scaling positions per frame, switching states at counters
+0x00200ff4 func chain_SetPartOffset hand =CK1_AREA31 provisional: looks up table entry by angle index and sets part offset or neighbour coordinates by parity
+0x002011f0 func chain_FollowParentOffset hand provisional: saves old position, copies parent position plus offset depending on parent flag, calls move callback with delta
+0x002012ec func actor_InitFromSpawnFlag hand =CK1_AREA31 provisional: reads spawn flag byte, picks state 0 or 3 and animation frame, initialises anim then indirect call
+0x0020136c func carrier_UpdatePickup hand =CK1_AREA31 provisional: state 0 finds target actor via indirect call, links it; state 1 drags it until within distance then switches both to state 2
+0x0020176e func carrier_InitFromFlag hand =CK1_AREA31 provisional: reads spawn flag, chooses state 2 with anim frame 1 or state 0, sets anim pointer, indirect init
+0x002017f4 func carrier_UpdateDispatch hand =CK1_AREA31 provisional: state 0 calls carrier_FindPickup, state 1 calls carrier_DragPickup
+0x00201894 func carrier_InitCarrying hand =CK1_AREA31 provisional: starts in state 2 carrying, sets flag mask on shared block, anim frame 1, indirect init
+0x00201904 func carrier_FindPickup hand =CK1_AREA31 provisional: finds target actor via indirect call, links it, sets carry speed sign from flag and puts target in state 3
+0x00201990 func carrier_DragPickup hand =CK1_AREA31 provisional: moves linked actor x by speed until within distance of own x then sets trigger byte and state 2
+0x00201a94 func actor_InitSimple hand =CK1_AREA31 provisional: clears state, anim pointer from table, flag mask on shared block, zero velocity, indirect init
+0x00201b52 func actor_InitStaticSprite hand provisional: sets state 1, clears flags, sets sprite ids, copies Y, zeroes velocities, calls anim-set callback
+0x00201bec func actor_UpdateJumpFlag hand =CK1_AREA31 provisional: three states; state 1 flickers anim frame, rises when flagged, collides with tilemap via indirect call, sound 0xd, then state 2
+0x00201f08 func boss2_Init hand =CK1_AREA31 provisional init of six-part 24x24 sprite chain from 0x48-byte table, state 0
+0x00201fb2 func boss2_InitAlt hand =CK1_AREA31 provisional same six-part sprite chain init as boss2_Init but starting in state 7
+0x00202074 func boss2_Update hand =CK1_AREA31 provisional state dispatcher switch up to 0x21 calling slide and reposition state handlers
+0x002021d2 func boss2_InitVariant hand =CK1_AREA31 provisional six-part chain init choosing state 0x11 or 0x12 by config +0x50 equals 2
+0x002022c0 func boss2_UpdateAlt hand =CK1_AREA31 provisional second dispatcher with state-3 switch calling slide and hit handlers
+0x0020238c func boss2_CheckLinkedState hand =CK1_AREA31 provisional switches state when linked actor is in state 2, then calls move helper
+0x002023e8 func boss2_StateDecelSlide hand =CK1_AREA31 provisional decelerating slide of linked actors, sound 0xd, sprite part offsets shifted by velocity
+0x002024f0 func boss2_StateAccelSlide hand =CK1_AREA31 provisional accelerating slide, offscreen test, indirect hit test, sounds 0x13 and 0x14
+0x00202682 func boss2_StateSlideToTarget hand =CK1_AREA31 provisional slide to target position table, propagating velocity to linked actor
+0x0020274c func boss2_StateRepositionTable hand =CK1_AREA31 provisional states 0x20/0x21 reposition from position table using animation sequence stepper
+0x002028dc func boss2_StateRampSlide hand =CK1_AREA31 provisional velocity-ramped slide with bounds and hit test via actor_FindOverlap
+0x00202a8c func boss2_StateSlideCarry hand =CK1_AREA31 provisional slide that carries along a hit actor
+0x00202bec func boss2_StateRectOverlap hand =CK1_AREA31 provisional builds two rectangles, overlap test, sets flags and speed on miss
+0x00202d30 func actor_FindOverlap hand =CK1_AREA31 scans actor list for another actor of given type whose bounds overlap, returns it or zero
+0x00202f4a func anim_StepTable hand =CK1_AREA31 provisional animation table stepper returning 1 or 2 at sequence end or loop
+0x00203034 func actor_IsXOffscreen hand =CK1_AREA31 provisional boolean comparing actor x position against screen scroll
+0x002030c4 func actor_InitWithMotionParams hand provisional: clears state, sets hitbox bytes 0x14, sprite ids, loads motion params into child record at +0x20
+0x0020313a func prop_Update hand =CK1_AREA31 provisional three-state actor update with blink and animation toggle
+0x00203328 func switchblock_Init hand =CK1_AREA31 provisional init in state 2 if switch flag set else 0, stores position
+0x002033ac func switchblock_Update hand =CK1_AREA31 provisional state 0 pushes or collides along x with actors, sets state 1, reports move delta
+0x002035b0 func actor_FindOverlapAt hand =CK1_AREA31 scans actor list for non-dead actor overlapping own bounds offset by dx dy, returns it
+0x002037c8 func block_Init hand =CK1_AREA31 provisional init zero state velocities and anim pointer
+0x00203862 func switchblock_InitLinked hand =CK1_AREA31 provisional init state 2 if switch flag set with config pointer call, else 0, flags by config
+0x00203928 func presser_Update hand =CK1_AREA31 provisional state 0 links target of given type, state 1 drags it and sets switch flag
+0x00203a8c func stub_init_208170 hand =CK1_AREA31 provisional minimal init clearing state fields and setting anim pointer
+0x00203ad2 func switch_Update hand =CK1_AREA31 provisional three-state switch: idle, blink animation, pressed sets switch flag, sound 0xd, returns 0x28
+0x00203c9c func actor_InitSimple_03c9c hand provisional: clears state and flags, sets sprite ids and sprite table pointer from stage/area indices
+0x00203ce2 func platform_UpdateMovingPlatform hand provisional: waits for trigger flag, then moves by offset table, pushes player on contact, notifies actors at end
+0x00203e9e func platform_PushActorsOnTop hand provisional: builds box from platform position, walks actor list, rectangle overlap test, nudges X and flags actors
+0x002040ba func actor_IsPlayerInHitRect hand checks player position inside rect from hitbox record at +0x5c, player state not 0x3f, returns 1 or 0
+0x00204140 func actor_Free_2 hand =CK1_AREA73 duplicate of actor_Free: frees buffers and decrements live actor count
+0x00204298 func actor_InitFromSpawnPoint hand provisional: clears state, loads X,Y from spawn record shorts shifted by 8, sets flags 1
+0x002042f4 func actor_UpdateBobbingEffect hand provisional: in state 1 cycles 30-entry offset table to spawn effect at actor position plus offset via callback
+0x002043b2 func door_Init hand =CK1_AREA73 provisional: resets state and anim, state 0 if param==0 (runs two callbacks) else state 4
+0x0020442e func door_Update hand =CK1_AREA73 provisional: switch on state byte 8 dispatching to door substate handlers 0-5, masks flags
+0x002044b6 func door_StateIdleAnim hand =CK1_AREA73 provisional: counts 0x10 frames then toggles anim index by plus or minus 0x15
+0x002044fa func door_StateOpenAnim hand =CK1_AREA73 provisional: steps anim index until table null, then state 2 or 3 and calls callback five times with param entries
+0x00204586 func door_StateWaitPlayerFar hand =CK1_AREA73 provisional: if player position leaves door extent box, goes to state 5
+0x00204602 func door_StateWaitPlayerNear hand =CK1_AREA73 provisional: if player inside inner box sets flag and state 1; timer over 0x3c goes to state 6
+0x0020469c func door_StateCloseAnim hand =CK1_AREA73 provisional: steps anim index back down, at 0 clears flag and goes to state 6
+0x0020472c func door_ResetAnim hand =CK1_AREA73 provisional: clears flags, timer and anim index, state 0, loads anim pointer
+0x00204770 func door_UpdateLinked hand =CK1_AREA73 provisional: when flag matches, advances linked parent actor anim and calls callback, then sets parent state 1 and runs door_AffectRiders
+0x00204844 func door_AffectRiders hand =CK1_AREA73 provisional: box built from actor extents, walks actor list, sets flag bits on overlapping actors, returns 0x28
+0x00204b04 func actor_IsPlayerOnTop hand =CK1_AREA73 returns 1 when player (global, state not 0x3f) lies within actor's x range and standing on its top edge
+0x00204cd4 func swarm_Init hand =CK1_AREA73 provisional: resets state, saves spawn x y into parent record, sets timers, table pointers and sprite palette fields
+0x00204d2e func swarm_Update hand =CK1_AREA73 provisional: state 0 steps anim frame, loops over eight offset pairs positioning and emitting sprite parts; state 1 timer wait
+0x00204ec4 func sprite_EmitPart hand =CK1_AREA73 provisional: builds a VDP1 sprite command (0x20 bytes) from anim frame, screen scaling and flip flag, adds to command list
+0x002050d8 func actor_Free_2_2050d8 hand =CK1_AREA73 duplicate of actor_Free: frees buffers and decrements live actor count
+0x0020517c func enemy_RunSpawnSequence hand =CK1_AREA73 provisional: stepwise phase byte at +0x11 calls init, wait loop, then hands over to next state handler
+0x0020521c func enemy_InitFromSpawn hand =CK1_AREA73 provisional: resets state bytes and velocities, copies position from spawner, sets size and anim tables
+0x002052ba func enemy_InitFromPath hand =CK1_AREA73 provisional: resets state, takes start position from path table shifted by 8, sets size 0x28 and anim tables
+0x002053ac func enemy_UpdateMain hand =CK1_AREA73 provisional: runs per-state movement handlers, collision helpers, ground checks, facing, then tail-calls render update
+0x002054fc func enemy_UpdateStateMachine hand =CK1_AREA73 provisional: picks next state via transition tables by input bits, switch calls per-state handler, collision then draw
+0x00205792 func enemy_StateSlide hand =CK1_AREA73 provisional: sets horizontal speed by facing, on flag 0x20 sets done flag and spawns effect
+0x00205800 func enemy_StateAccelFall hand =CK1_AREA73 provisional: sets horizontal speed by facing sign, applies gravity to vertical speed, switches to state 5 on hit
+0x00205878 func enemy_StateHitFlash hand =CK1_AREA73 provisional: stops motion, spawns four effects around position, blinks via toggling +5, ends after counter
+0x0020593a func enemy_StateAirMove hand =CK1_AREA73 provisional: horizontal speed by facing, applies gravity with floor clamp, clears vertical speed on landing flag
+0x0020598c func enemy_StateIdleTurnToPlayer hand =CK1_AREA73 provisional: checks distance to player x, chooses next sub state and turns to face player
+0x00205a06 func enemy_StateWalkWait hand =CK1_AREA73 provisional: if player far goes to state 4, turns around on direction mismatch, counts down timer to state 2
+0x00205a84 func enemy_StateWaitAnimDone hand =CK1_AREA73 provisional: when anim end flag set clears it, returns to state 1 and resets counters
+0x00205ab8 func enemy_StateThrowAnim hand =CK1_AREA73 provisional: on anim frame 5 spawns projectile toward player, counts, returns to state 1 at anim end
+0x00205b60 func enemy_StateTurnAround hand =CK1_AREA73 provisional: toggles facing on frame 4 trigger, returns to state 1 at anim end
+0x00205bbc func enemy_StateHurtKnockback hand =CK1_AREA73 provisional: sets knockback velocity from hit flags, applies gravity, on landing spawns effect and moves to state 0xc
+0x00205e50 func enemy_StateBounceDeath hand =CK1_AREA73 provisional: initial hop velocity, bounces on floor, counts bounces then state 7 or 10, uses sound call
+0x00205f78 func enemy_StateWaitAnimToIdle hand =CK1_AREA73 provisional: when anim end flag set clears it and returns to state 0
+0x00205f94 func enemy_StateWaitAnimToWalk hand =CK1_AREA73 provisional: hides sub flag, on anim end resets counters and returns to state 1
+0x00205fc0 func enemy_StateChargeLoop hand =CK1_AREA73 provisional: states 5 to 7 hit-counter progression, uses lookup call for frame scale, spawns effect, goes to state 0xc
+0x002062b4 func enemy_StateDefeated hand =CK1_AREA73 provisional: on entry plays spawn effect and sets mode, then rises with gravity until below screen, sets remove flag
+0x002063a2 func enemy_ApplyGravity hand =CK1_AREA73 provisional: unless state 5 8 or 9, lowers vertical speed by 0x80 per frame with floor clamp
+0x00206408 func enemy_ApplyGravityState3 hand =CK1_AREA73 provisional: in state 3 only lowers vertical speed by 0x80 with floor clamp
+0x00206432 func enemy_CheckDefeatedHit hand =CK1_AREA73 provisional: for hit code 2, spawns effect in states 5-7 or 10, or forces state 0xc in state 9
+0x002064c8 func enemy_SpawnEffectState9 hand =CK1_AREA73 provisional: in state 9 tail-calls effect spawner at position offset by height times 0x80
+0x00206514 func vdp1_DrawEnemyParts hand =CK1_AREA73 provisional: emits VDP1 sprite commands for each part of current frame with zoom factor and facing flip, returns count
+0x002067ca func vdp1_DrawDebrisParts hand =CK1_AREA73 provisional: spawns and draws pieces flung outward by sine table with scaling, one VDP1 command each
+0x002070ae func enemy_AdjustAnimByDirection hand provisional: masks direction bits of flags at +0x2a, adds one of three constants to short at +0x14
+0x002072a6 func enemy_BossAIStateMachine hand =CK1_AREA73 provisional: big switch on sub state byte +0xb for jump arcs, targeting x, waits for anim end, uses clamp
+0x00207b9e func actor_AimVelocityToTarget_2 hand provisional: computes dx,dy to target, finds angle via table lookup, sets velocity from sin/cos tables by quadrant
+0x00207c98 func enemy_StateBounceHurt hand =CK1_AREA73 provisional: initial hop with speed by flag, flips on floor hit, then state 10 when settled
+0x00207d58 func enemy_StateEnterDefeated hand =CK1_AREA73 provisional: on state change picks state 0xd or launch velocity by level counter, on anim end goes to state 0xc and jumps
+0x0020871a func enemy_InitFinalState hand =CK1_AREA73 provisional: on state change swaps anim table, calls spawners, sets state 0xe and flags, tail-calls next
+0x00208ac0 func enemyB_Init hand =CK1_AREA31 provisional: initialises enemy object fields from spawn data: position, state 0, sprite and anim tables
+0x00208b88 func enemyB_UpdateStateMachine hand =CK1_AREA31 provisional: per-frame enemy B state dispatcher on state byte +8, hit checks, physics, sprite build
+0x00208f18 func enemyC_Update hand =CK1_AREA31 provisional: simple enemy update: dispatches states 0-2, hit checks, flips by facing, damages player
+0x00209128 func enemyB_SpawnProjectile hand =CK1_AREA31 provisional: spawns projectile object beside enemy with direction and hitbox copied from anim table
+0x00209218 func enemyB_CheckHitPlayer hand =CK1_AREA31 provisional: computes front hitbox from position and velocity, tests against player, flags hit
+0x0020957a func enemy_HandleHitReaction hand provisional: on hit flags sets state 2 and flag 1, spawns effect via callback at position plus Y offset
+0x0020961e func enemyC_StateDying hand =CK1_AREA31 provisional: state 2; stands still, counts frames, sets finished flag after timeout
+0x00209646 func enemyC_StateIdle hand =CK1_AREA31 provisional: state 0; picks walk direction and speed toward player, enters state 1
+0x00209686 func enemyB_StateIdleWalk hand =CK1_AREA31 provisional: state 0; walks toward player and chooses attack by distance
+0x00209756 func enemyB_ChooseStateByDistance hand =CK1_AREA31 provisional: picks next state from horizontal and vertical distance to player
+0x00209818 func enemyB_StateApproach hand =CK1_AREA31 provisional: state 1; walks toward player at set speed, updates patrol target bounds
+0x002098b2 func enemyB_StateTurnAround hand =CK1_AREA31 provisional: state 4; on anim end flips facing and returns to state 0
+0x002098da func enemyB_StateTurnThenAttack hand =CK1_AREA31 provisional: state 5; on anim end flips facing and enters queued attack state
+0x00209920 func enemyB_StateShoot hand =CK1_AREA31 provisional: state 3; spawns projectile once via enemyB_SpawnProjectile then waits anim end
+0x00209990 func enemyB_StateHitReact hand =CK1_AREA31 provisional: state 7; hit flinch with knockback arc, bounces, goes to state 0xc or 0x10
+0x00209b50 func enemyB_StateKnockdown hand =CK1_AREA31 provisional: state 0xf; set sprite anim and launch velocity, applies gravity, anim end
+0x00209c4c func enemyB_StateAirHurt hand =CK1_AREA31 provisional: state 8; moves with gravity while airborne hurt
+0x00209cc6 func enemyB_StateRecoverToFlyState hand =CK1_AREA31 provisional: on anim end sets frame data and enters state 0xe
+0x00209cf2 func enemyB_SetStateOnAnimEnd hand =CK1_AREA31 provisional: on animation end flag sets state byte to param_3
+0x00209d0e func enemyB_StateKnockedBack hand =CK1_AREA31 provisional: state 0xc; knocked-back arc with bounce and lives countdown to state 0xd
+0x00209e32 func enemyB_StateDamageChain hand =CK1_AREA31 provisional: states 9-12; multi-hit damage sequence using hit counter and recovery
+0x0020a142 func enemyB_StateDeath hand =CK1_AREA31 provisional: state 0x10 style death; on entry spawns effects and swaps animation table
+0x0020a220 func enemyB_ApplyHitKnockback hand =CK1_AREA31 provisional: applies launch velocity to enemy B on hit and may switch to state 0x10
+0x0020a2a2 func enemyB_ApplyGravityDecel hand =CK1_AREA31 provisional: decreases vertical velocity by gravity unless in a flying/airborne state
+0x0020a2e0 func enemyD_SpawnHitEffect hand =CK1_AREA31 provisional: spawns a hit effect object at the enemy position using state fields
+0x0020a330 func enemyD_BuildSpriteCommands hand =CK1_AREA31 provisional: builds VDP1 sprite command entries for the enemy from animation frame data

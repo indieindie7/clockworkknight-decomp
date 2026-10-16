@@ -1,0 +1,45 @@
+CK1_A 0x0600e044 player_CheckWallAhead CONFIRM player_CheckWallAhead samples map_ScanRowForSolid ahead of player by facing; callers are attack states testing wall
+CK1_A 0x0600e110 player_UpdateDamageState CONFIRM player_UpdateDamageState clears hit flags, decrements health, knockback or death state 0x3f; called by 63 states
+CK1_A 0x0600e224 obj_StepAnimation CONFIRM obj_StepAnimation advances frame table by state and sets end flag bit0 in +0x26
+CK1_A 0x0600e588 fx_DrawScaledBoxEffect CONFIRM fx_DrawScaledBoxEffect builds scaled screen quad from object minus camera and queues it; no callers seen
+CK1_A 0x0600e708 fx_UpdateEffectObjectC RENAME fx_QueueVdp1Quad not a state machine; appends one 16-halfword VDP1 command from 4 corner coords and depth
+CK1_A 0x0600e76e camera_FollowOrDebugScroll CONFIRM camera_FollowOrDebugScroll copies target pos or scrolls by pad bits when debug flag set
+CK1_A 0x0600e7d2 input_ClearHistoryBuffers CONFIRM input_ClearHistoryBuffers zeroes two 128-entry rings and index; called from player init
+CK1_A 0x0600e830 input_PushHistory CONFIRM input_PushHistory advances ring index mod 128 and stores pad words, hold counter at +4
+CK1_A 0x0600e88a input_DetectCommandMotion CONFIRM input_DetectCommandMotion checks direction held 8 frames and density over 28 frames; sets dash flag +3
+CK1_A 0x0600ea7c player_CollectItem CONFIRM player_CollectItem item type switch updating health/lives/coins counters, score and sound
+CK1_A 0x0600ec48 fx_UpdateEffectObjectD RENAME fx_InitCopyPosEffectB init only: copies parent x/y/z and facing, sets sprite tables; no update logic, twin of fx_InitCopyPosEffect
+CK1_A 0x0600ec8a fx_UpdateSpriteObjectA CONFIRM fx_UpdateSpriteObjectA frees on anim end else steps and draws
+CK1_A 0x0600ed30 fx_UpdateDebrisSprites RENAME fx_InitOffsetEffectByState init only: places effect at parent with offsets chosen by parent state 0xf/0x3a/0x20/0x21; no sprite emission
+CK1_A 0x0600edb4 fx_FreeEffectChildren RENAME fx_UpdateSpriteObjectC body identical to SpriteObjectA/B: free on anim end else step and draw; no children freed
+CK1_A 0x0600ee5c fx_InitFollowEffect CONFIRM fx_InitFollowEffect places effect at parent with facing offset plus LCG random jitter
+CK1_A 0x0600ef0c fx_UpdateSpriteObjectB CONFIRM fx_UpdateSpriteObjectB same as A
+CK1_A 0x0600ef70 fx_UpdateParticleBurst CONFIRM fx_UpdateParticleBurst state 0 allocs particle with LCG velocities, state 1 calls fx_UpdateMovingEffect
+CK1_A 0x0600f222 fx_InitCopyPosEffect CONFIRM fx_InitCopyPosEffect copies parent position and facing and sets sprite tables
+CK1_A 0x0600f264 fx_UpdateMovingEffect CONFIRM fx_UpdateMovingEffect adds velocity to position, frees on anim end else step and draw
+CK1_A 0x0600f4e4 fx_InitFollowEffectOffset RENAME fx_UpdateAcceleratedDriftEffect not init: vel x/y += +0x3c/+0x44, position += vel, frees on anim end, steps and draws
+CK1_A 0x0600f5b4 fx_InitThrownDebris CONFIRM fx_InitThrownDebris random x/y velocity, gravity, mirrored by facing, state 0x3b x offset
+CK1_A 0x0600f764 fx_UpdateAcceleratedEffect CONFIRM fx_UpdateAcceleratedEffect y velocity += gravity then position += vel, frees on anim end
+CK1_A 0x0600fcbc fx_UpdateBlinkEffect CONFIRM fx_UpdateBlinkEffect draws only on odd counter frames, frees on anim end
+CK1_A 0x0600fd14 obj_DrawAnimFrame CONFIRM obj_DrawAnimFrame emits VDP1 commands per frame part with camera offset, depth scale and facing flip
+CK1_A 0x0600ff0c pad_ClearPlayerInputSlot CONFIRM pad_ClearPlayerInputSlot zeroes pad words for slot and fills tables, clears stream state
+CK1_A 0x0601017c lz_InitDecompressState CONFIRM lz_InitDecompressState clears stream state and picks source mode 0/1/2; callers are movie players
+CK1_A 0x06010818 lz_StreamDecodeStep CONFIRM lz_StreamDecodeStep round-robins 8 jobs and dispatches to the two LZ block decoders
+CK1_A 0x060108d8 lz_DecodeBlockFromStream CONFIRM lz_DecodeBlockFromStream LZSS flag bits, literal or 12-bit offset plus 4-bit length+2
+CK1_A 0x060109a4 lz_DecodeBlockDirect CONFIRM lz_DecodeBlockDirect same LZSS with literals read from the same stream
+CK1_A 0x06010a76 rle_DecodeTable RENAME bpe_DecodeBlock builds 256-entry pair tables and expands with a stack: byte-pair compression, not run-length
+CK1_A 0x06010b70 gfx_SaveRestoreCommandCopy RENAME gfx_ResetTextQueueAndTables copies a 0x48-word block via a temp, clears text queue count and buffer pointer; called from init paths
+CK1_A 0x06010c4a vdp1_CopyShadowCommands UNSURE vdp1_CopyShadowCommands dirty-flag copy of 8-byte entries to a pointer constant; target not shown as VDP1 memory
+CK1_A 0x06010f44 text_QueueHexShort_Blank CONFIRM text_QueueHexShort_Blank queues 4 hex digits with leading zeros as spaces
+CK1_A 0x06010fe4 vdp1_QueueTextEntry RENAME text_QueueHexByte queues two hex digits of a byte (no blanking) into the same text queue
+CK1_A 0x0601103c text_QueueHexByte RENAME text_QueueHexByteBlank same as above but leading zero nibble becomes space
+CK1_A 0x060110c0 text_QueueSignedDecimal3 CONFIRM text_QueueSignedDecimal3 signed char as decimal with leading spaces and minus
+CK1_A 0x0601116c text_QueueDecimal2 CONFIRM text_QueueDecimal2 two digits via divide helpers
+CK1_A 0x060111cc text_QueueDecimal3 CONFIRM text_QueueDecimal3 three digits; called by HUD value draws
+CK1_A 0x06011244 text_QueueSignedDecimal5 CONFIRM text_QueueSignedDecimal5 signed short, 5 digit field
+CK1_A 0x06011310 text_QueueSignedDecimal10 CONFIRM text_QueueSignedDecimal10 signed int, 10 digit field
+CK1_A 0x06011498 vdp2_ExpandMapRuns CONFIRM vdp2_ExpandMapRuns expands flip bits and increment/decrement/constant runs into cell words
+CK1_A 0x06011d4a vdp2_SetTableEntry UNSURE vdp2_SetTableEntry stores 5-bit value in a table by lookup index and sets dirty flag; target hardware unclear
+CK1_A 0x06011d78 stub_06011d78 UNSURE stub_06011d78 clears a global and tail-calls a pointer from init; purpose unknown
+CK1_A 0x06011fd8 camera_DispatchByMode CONFIRM camera_DispatchByMode switch on mode*16+submode to camera follow variants
+CK1_A 0x06012244 camera_FollowPlayerA CONFIRM camera_FollowPlayerA scroll target leads player x, y by thresholds, clamps via camera_ClampX/Y

@@ -1,0 +1,360 @@
+F 00200000 cam_UpdateFollowPlayerClamped USER_DEFINED 274
+F 00200150 camera_FollowPlayerScrollX USER_DEFINED 192
+F 00200236 cam_UpdateFollowPlayerMinMax USER_DEFINED 202
+F 0020032c cam_UpdateFollowPlayerLockedY USER_DEFINED 202
+F 00200428 camera_FollowPlayerScrollX_2 USER_DEFINED 194
+F 0020071a scene_InitMode2Boss USER_DEFINED 132
+C 00201124
+F 002008d4 scene_InitMode3Boss USER_DEFINED 166
+C 00201124
+F 0020097a scene_InitSimpleScroll USER_DEFINED 80
+F 00200a1c scene_UpdateScrollShakeEffect USER_DEFINED 580
+F 00201124 boss_SetupObjectByMode USER_DEFINED 202
+F 00201262 enemy_InitStandingSprite USER_DEFINED 202
+F 0020132c enemy_UpdateFacingAndAim USER_DEFINED 72
+C 002013aa
+F 002013aa enemy_UpdateFacingAnim USER_DEFINED 124
+F 00201488 enemy_InitFollowerSprite USER_DEFINED 162
+F 0020156e enemy_CopyParentPosition USER_DEFINED 52
+F 002015a2 enemy_DispatchByFacing USER_DEFINED 72
+F 0020165e enemy_InitSpriteAndJump USER_DEFINED 130
+F 002016e0 enemy_PlayAnimForwardBack USER_DEFINED 218
+F 0020182c enemy_InitMinimal USER_DEFINED 16
+F 00201844 enemy_UpdateAttachedToParentOffset USER_DEFINED 128
+F 00201a08 enemy_InitSpriteLowerZAnim USER_DEFINED 156
+F 00201aa4 enemy_UpdateRotationFromTable USER_DEFINED 94
+F 00201b84 enemy_InitSpriteLowerZ USER_DEFINED 130
+F 00201c06 enemy_UpdateAngleFromTable USER_DEFINED 48
+F 00201ca8 enemy_UpdatePositionBetweenParentPoints USER_DEFINED 138
+F 00201d32 enemy_UpdateRotatedPartPosition USER_DEFINED 304
+F 00201e66 model_ProjectAndDrawFaces USER_DEFINED 784
+C 002021ac
+C 0020237c
+F 002021ac model_FaceBoundsVisibleTest USER_DEFINED 458
+F 0020237c model_EmitFaceVdp1Command USER_DEFINED 654
+F 0020268a enemy_InitDoorOrSwitch USER_DEFINED 250
+F 002027c0 enemy_UpdateStateSwitch USER_DEFINED 120
+C 0020284c
+C 00202878
+C 002028ba
+C 00202906
+C 00202942
+C 002029b8
+C 002029e4
+C 00202a26
+C 00202a82
+C 00202ac4
+F 0020284c enemy_CheckHitReactCount USER_DEFINED 44
+F 00202878 enemy_AnimHitStartFrames USER_DEFINED 66
+F 002028ba enemy_State3AnimBackward USER_DEFINED 76
+F 00202906 enemy_State5WaitHit USER_DEFINED 60
+F 00202942 enemy_AnimDeathFramesToEnd USER_DEFINED 118
+F 002029b8 enemy_CheckHitReactCount_2 USER_DEFINED 44
+F 002029e4 enemy_AnimHitRecoverFrames USER_DEFINED 66
+F 00202a26 enemy_State6AnimBackward USER_DEFINED 76
+F 00202a82 enemy_AnimForwardToLastFrame USER_DEFINED 66
+F 00202ac4 enemy_State7HoldOrRehit USER_DEFINED 110
+F 00202b6c enemy_InitFollowParentXY USER_DEFINED 26
+F 00202bdc enemy_InitFollowParentOffset USER_DEFINED 34
+F 00202bfe enemy_ForwardHitToParent USER_DEFINED 66
+F 00202c9a enemy_InitSpriteTables USER_DEFINED 122
+F 00202d14 enemy_PlayAnimForwardBack_2 USER_DEFINED 164
+F 00202e26 enemy_InitSpriteTablesTimer USER_DEFINED 126
+F 00202ea4 enemy_UpdateTimerSpawn USER_DEFINED 38
+F 00202f34 projectile_InitFalling USER_DEFINED 164
+F 00202fd8 projectile_UpdateFallBounce USER_DEFINED 408
+F 00203290 obj_InitSpriteTablesLowZFlag USER_DEFINED 178
+F 00203342 enemy_StateMachineAnimThenSpawnPickup USER_DEFINED 358
+F 00203552 child_InitFollowA USER_DEFINED 42
+F 0020357c child_UpdateFollowA USER_DEFINED 76
+F 00203618 child_InitFollowB USER_DEFINED 64
+F 00203658 child_UpdateFollowB USER_DEFINED 214
+F 00203782 child_InitFollowC USER_DEFINED 46
+F 002037b0 child_UpdateFollowC USER_DEFINED 76
+F 00203872 obj_InitSpawnThree USER_DEFINED 272
+F 002039c0 enemy_WaitPlayerNearThenAnim USER_DEFINED 120
+F 00203a7a child_UpdateFollowD USER_DEFINED 78
+F 00203ad8 child_UpdateFollowE USER_DEFINED 102
+F 00203b78 child_InitFollowD USER_DEFINED 42
+F 00203c46 enemy_TriggerSpawnFromTable USER_DEFINED 158
+F 00203ce4 obj_UpdateInitOnceThenHitbox USER_DEFINED 68
+C 00203d6e
+C 00203da4
+F 00203d6e obj_InitFrameTablePtr USER_DEFINED 54
+F 00203da4 enemy_TriggerWhenPlayerFlagged USER_DEFINED 108
+F 00203ea6 enemy_UpdateLoadHitboxOnTrigger USER_DEFINED 170
+F 00203f50 trigger_UpdateSetFlag USER_DEFINED 102
+C 00203fdc
+F 00203fdc enemy_InitChildSprites USER_DEFINED 140
+F 00204090 enemy_UpdateObjectStateMachine USER_DEFINED 152
+C 00204128
+C 00204252
+F 00204128 enemy_InitFromSpawnData USER_DEFINED 286
+F 00204252 player_UpdateStateMachine USER_DEFINED 774
+C 00204734
+C 00204e5e
+C 00204d50
+C 00204b60
+C 00204870
+C 00204c90
+C 00204f40
+C 00204f40
+C 00204d1c
+C 00204e5e
+C 00204e7a
+C 0020525c
+C 0020460e
+C 0020469e
+C 002045ec
+C 0020539c
+C 002055a6
+C 0020539c
+C 002054f6
+C 00205564
+F 002045ec enemy_CycleHitCounter USER_DEFINED 34
+F 0020460e player_StateE USER_DEFINED 100
+F 0020469e player_StateF USER_DEFINED 150
+F 00204734 player_State0 USER_DEFINED 274
+F 00204870 player_State5 USER_DEFINED 688
+F 00204b60 player_State4 USER_DEFINED 272
+F 00204c90 player_State6 USER_DEFINED 124
+F 00204d1c player_StateB USER_DEFINED 52
+C 0020539c
+F 00204d50 enemy_CheckPlayerOverlapHitbox USER_DEFINED 252
+F 00204e5e enemy_AdvanceStateOnAnimEnd USER_DEFINED 28
+F 00204e7a player_StateC USER_DEFINED 178
+F 00204f40 player_States7to10 USER_DEFINED 726
+F 0020525c boss_SubStateHandler USER_DEFINED 284
+F 0020539c actor_HitReaction USER_DEFINED 324
+F 002054f6 actor_ApplyGravity USER_DEFINED 80
+F 00205564 actor_ResetVelocity USER_DEFINED 66
+F 002055a6 actor_SpawnHelper USER_DEFINED 64
+F 00205b0e boss_InitFromSpawnData USER_DEFINED 362
+F 00205cb4 boss_UpdateStateMachine USER_DEFINED 856
+C 00206190
+C 0020621e
+C 002062bc
+C 00206324
+C 00206c40
+C 00206c60
+C 00206ca2
+C 002063bc
+C 00206488
+C 00206b82
+C 002066d0
+C 002067fe
+C 00206cf6
+C 00206cd4
+C 00206380
+C 002076a8
+C 002075a8
+C 00207654
+C 00206a80
+C 00206a80
+C 00206a80
+F 002060c8 boss_DecideApproachOrIdle USER_DEFINED 200
+F 00206190 boss_UpdateWalkState USER_DEFINED 130
+C 002060c8
+F 0020621e enemy_FlipAndChooseApproachAnim USER_DEFINED 132
+F 002062bc boss_UpdateJumpLaunch USER_DEFINED 104
+F 00206324 boss_UpdateJumpAirbornLanding USER_DEFINED 92
+F 00206380 boss_UpdateLandedStartWalk USER_DEFINED 44
+F 002063bc boss_UpdateWalkTowardPlayer USER_DEFINED 204
+F 00206488 boss_UpdateKnockback USER_DEFINED 434
+C 00206686
+C 002069e8
+F 00206686 boss_EnterRecoverState USER_DEFINED 74
+F 002066d0 boss_UpdateStagger USER_DEFINED 270
+F 002067fe boss_UpdateDefeatedSequence USER_DEFINED 444
+F 002069e8 boss_BounceOffGroundTiles USER_DEFINED 152
+F 00206a80 boss_UpdateFallPhysics USER_DEFINED 234
+F 00206b82 boss_UpdateLaunchedAirborne USER_DEFINED 164
+F 00206c40 boss_FlipFacingAndDecide USER_DEFINED 32
+C 002060c8
+F 00206c60 boss_CheckTurnAtFrameD USER_DEFINED 66
+F 00206ca2 boss_FlipFacingStartWalk USER_DEFINED 50
+F 00206cd4 boss_FlipFacingResetOwnerThenDecide USER_DEFINED 34
+C 002060c8
+F 00206cf6 boss_SpawnEffectAndDecide USER_DEFINED 172
+C 002060c8
+F 0020705c boss_DrawShadowPieces USER_DEFINED 674
+F 00207322 boss_DrawShadowPiecesXYScale USER_DEFINED 612
+F 002075a8 enemy_EnterHurtState_Knock USER_DEFINED 152
+F 00207654 enemy_CountdownKnockbackTimer USER_DEFINED 84
+F 002076a8 boss_UpdateFallOffscreen USER_DEFINED 286
+F 00207930 boss_UpdateAndDrawTop USER_DEFINED 300
+F 00207a64 boss_UpdateAiStateMachine USER_DEFINED 1270
+C 0020820c
+C 002082f0
+C 0020838e
+C 002083ec
+C 00208f24
+C 00208f44
+C 00208f88
+C 002084e2
+C 002085b2
+C 00208774
+C 00208e62
+C 00208d3a
+C 00208b22
+C 00208ff4
+C 00208fba
+C 002084b2
+C 00209092
+C 002099bc
+C 00209536
+C 00209318
+C 00209318
+C 00209536
+C 00209318
+C 00209318
+C 00209318
+C 00209318
+C 00209318
+C 00208074
+C 00208074
+F 00208074 boss_CheckCeilingTile USER_DEFINED 162
+F 00208116 enemy_AdjustCounterByInputBits USER_DEFINED 54
+F 00208170 boss_CheckPlayerNear USER_DEFINED 156
+C 00208a4e
+F 0020820c boss_UpdateWalkPatrol USER_DEFINED 210
+C 00208170
+F 002082f0 boss_UpdateTurnAndApproach USER_DEFINED 134
+F 0020838e boss_StartLeapState USER_DEFINED 94
+F 002083ec boss_UpdateLeapAirborne USER_DEFINED 162
+F 002084b2 boss_StartWalkTowardState USER_DEFINED 48
+F 002084e2 boss_CheckPlayerRangeReturn USER_DEFINED 182
+F 002085b2 boss_StartAttackJump USER_DEFINED 382
+C 00209394
+C 0020898c
+F 00208774 boss_UpdateAttackMove USER_DEFINED 476
+C 00209394
+C 0020898c
+F 0020898c boss_CheckFloorLanding USER_DEFINED 194
+F 00208a4e boss_MoveHorizontalWithTileCheck USER_DEFINED 196
+F 00208b22 boss_UpdateHitFlashSequence USER_DEFINED 508
+F 00208d3a boss_EnterHurtState USER_DEFINED 256
+F 00208e62 boss_EnterHopBackState USER_DEFINED 164
+F 00208f24 boss_FlipFacingThenCheckPlayer USER_DEFINED 32
+C 00208170
+F 00208f44 boss_UpdateTurnAnimTail USER_DEFINED 68
+F 00208f88 boss_FlipFacingStartDash USER_DEFINED 50
+F 00208fba boss_StartChargeApproach USER_DEFINED 40
+F 00208ff4 boss_HitPlayerObject USER_DEFINED 158
+F 00209092 boss_UpdateFlyingPartAnimation USER_DEFINED 596
+C 00209766
+C 00208170
+F 00209318 boss_ShiftForAttackSpawn USER_DEFINED 102
+F 00209394 enemy_ProjectileHitTestAgainstObjects USER_DEFINED 394
+F 00209536 boss_HitOverlappingObjects USER_DEFINED 530
+F 00209766 boss_DrawSpriteCommand USER_DEFINED 570
+F 002099bc boss_EnterSpawnedState USER_DEFINED 130
+C 00208116
+F 00209ab0 enemyA_UpdateTopLevel USER_DEFINED 118
+C 00209c3e
+C 0020a100
+F 00209b80 prop_InitFromSpawnRecord USER_DEFINED 190
+F 00209c3e enemyA_Init USER_DEFINED 358
+F 00209dd0 enemyA_InitVariant USER_DEFINED 246
+F 00209efa enemyA_UpdateMain USER_DEFINED 288
+C 0020a450
+C 0020a2ec
+C 0020a4ea
+C 0020b950
+F 0020a040 enemyA_SpawnShotOnTrigger USER_DEFINED 150
+C 0020a8d6
+C 0020b1fa
+F 0020a100 enemyA_UpdateAI USER_DEFINED 426
+C 0020a5cc
+C 0020a6e8
+C 0020a974
+C 0020a79c
+C 0020a6b0
+C 0020a76e
+C 0020a730
+C 0020a9e8
+C 0020a9c4
+C 0020ad00
+C 0020b1fa
+C 0020ae20
+F 0020a2ec enemy_CheckHitOrOutOfRangeToRetreat USER_DEFINED 302
+F 0020a450 enemyA_StartChase USER_DEFINED 154
+F 0020a4ea enemyA_UpdateState2Sparkle USER_DEFINED 194
+F 0020a5cc enemyA_UpdateState0Idle USER_DEFINED 228
+F 0020a6b0 enemyA_UpdateState4Wait USER_DEFINED 32
+F 0020a6e8 enemyA_UpdateState1AnimEnd USER_DEFINED 72
+F 0020a730 enemyA_UpdateState6Turn USER_DEFINED 62
+F 0020a76e enemyA_UpdateState5Flip USER_DEFINED 38
+F 0020a79c enemy_ShootProjectileByDirection USER_DEFINED 292
+F 0020a8d6 enemyA_InitSpawnedShot USER_DEFINED 158
+F 0020a974 enemyA_UpdateState2Restart USER_DEFINED 80
+F 0020a9c4 enemyA_UpdateState10Done USER_DEFINED 36
+F 0020a9e8 enemyA_UpdateHurtStates USER_DEFINED 720
+F 0020ad00 enemyA_UpdateState11Dying USER_DEFINED 244
+F 0020ae20 enemyA_DrawSpritesRotated USER_DEFINED 914
+F 0020b1fa enemy_DrawSpritesProjected USER_DEFINED 948
+F 0020b5d6 enemy_DrawSpritesAndSpawnTrails USER_DEFINED 824
+F 0020b950 enemy_DrawSpritesProjectedAndStore USER_DEFINED 896
+F 0020c09c enemyB_Update USER_DEFINED 946
+C 0020ca5e
+C 0020cb66
+C 0020d1a0
+C 0020cbc8
+C 0020d08c
+C 0020cc22
+C 0020d2c2
+C 0020d2c2
+C 0020d2c2
+C 0020d02e
+C 0020d04e
+C 0020c80c
+C 0020c9b4
+C 0020d590
+C 0020d63c
+C 0020d63c
+C 0020d686
+C 0020d6ec
+F 0020c504 enemyB_UpdateFollower USER_DEFINED 318
+C 0020c68c
+C 0020d740
+F 0020c68c enemyB_FollowParentBounce USER_DEFINED 192
+F 0020c74c enemyB_IsPlayerAttacking USER_DEFINED 64
+F 0020c80c enemyB_UpdateWatchPlayer USER_DEFINED 360
+F 0020c9b4 enemyB_UpdateJumpArc USER_DEFINED 170
+F 0020ca5e enemyB_UpdateWalk USER_DEFINED 240
+C 0020c74c
+F 0020cb66 enemyB_UpdateTurn USER_DEFINED 74
+F 0020cbc8 enemyB_ChooseWalkStateBySpeed USER_DEFINED 90
+C 0020c74c
+F 0020cc22 enemyB_UpdateHurtKnock USER_DEFINED 596
+F 0020cec0 enemyB_UpdateStateOnEnter USER_DEFINED 254
+F 0020d02e enemyB_StartRecover USER_DEFINED 32
+F 0020d04e enemyB_UpdateRecoverEnd USER_DEFINED 38
+F 0020d08c enemyB_UpdateKnockbackBounce USER_DEFINED 246
+F 0020d1a0 enemyB_UpdateBounceDamage USER_DEFINED 256
+F 0020d2c2 enemyB_UpdateHurtStates USER_DEFINED 676
+C 0020d63c
+F 0020d590 enemyB_SpawnDeathEffect USER_DEFINED 162
+F 0020d63c enemyB_CheckDeathTransition USER_DEFINED 74
+F 0020d686 enemyB_ApplyGravityAirborne USER_DEFINED 68
+F 0020d6ec enemyB_ClearVelocityGrounded USER_DEFINED 66
+F 0020d740 enemyC_UpdateOrbitChase USER_DEFINED 740
+F 0020dfcc enemyC_UpdateState9Dash USER_DEFINED 238
+F 0020e0ce enemyC_UpdateState10Hit USER_DEFINED 58
+F 0020e828 enemyB_UpdateVelocityToTarget USER_DEFINED 256
+F 0020e95e enemyC_UpdateState11Die USER_DEFINED 126
+C 0020e0ce
+F 0020efcc debris_UpdateState2Hit USER_DEFINED 52
+C 0020fc30
+F 0020f250 debris_UpdateObject USER_DEFINED 114
+C 0020f2da
+C 0020f360
+C 0020fe10
+F 0020f2da debris_InitFromParent USER_DEFINED 134
+F 0020f360 debris_UpdateFlyingAnim USER_DEFINED 216
+C 0020f44e
+C 0020f808
+F 0020f44e obj_CollideHorizontalTiles USER_DEFINED 882
+F 0020f808 obj_CollideVerticalTiles USER_DEFINED 988
+F 0020fc30 obj_FindOverlappingObject USER_DEFINED 462
+F 0020fe10 obj_AppendSpriteCommandRotated USER_DEFINED 1290

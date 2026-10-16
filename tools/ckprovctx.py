@@ -55,7 +55,7 @@ def poolcallers(img, starts):
         if own is not None: d.setdefault('%08x' % v, set()).add('%08x' % own)
     return d
 own = names(os.path.join(g, 'hand_%s.txt' % handname))
-boot = names(os.path.join(g, 'hand_GEKAN.txt')) if base == 0x00200000 else {}
+boot = names(os.path.join(g, 'hand_%s.txt' % prog.split('_AREA')[0])) if base == 0x00200000 else {}
 nm = {**boot, **own}
 b, cl, img = bodies(), callers(), image()
 starts = sorted(int(k, 16) for k in own)

@@ -1,0 +1,62 @@
+0x00200000 func boss_UpdateMain hand runs init on first frame then boss_RunState each frame, then tail-calls shared draw/update helper with object
+0x00200040 func boss_Init hand sets boss object fields (state flags, position, hp-based index), clears globals, copies tables via helper, registers child handlers
+0x002001fc func boss_RunState hand dispatches on state byte +8 (0-0x13) to per-state handlers; reloads animation frame on state change
+0x002003a0 func boss_StateEntrance hand state 0 intro: plays sound, animates frames 10-0x27 while rising, sets state 7 at end
+0x00200514 func boss_StateChooseAttack hand state 1 decision: picks state 3 or 2 from hp, distance to player and counters
+0x00200574 func boss_StateLeapArc hand state 2 jump: velocity+gravity arc in x/y, animates frames, lands at player position, then state 1 or 9
+0x00200832 func boss_StatePrepSlam hand state 3: plays sound, sets facing flag by player x, steps 14 animation frames then state 4
+0x002008be func boss_StateTurnAround hand state 4: toggles facing flag and parent flag, resets animation, goes to state 5 or 6
+0x00200916 func boss_StateWalkStep hand state 5: moves x by facing offset, plays walk animation, loops with sound, then state 7
+0x00200a0a func boss_StateWindUp hand state 6: three-phase animation up then down frames, increments counter, then state 7
+0x00200afe func boss_StateIdleWait hand state 7: animates frames to 0x1c, then picks state 5 or 8 by distance to player
+0x00200b84 func boss_StateRecover hand state 8: plays sound, runs 14 animation frames, clears flag, returns to state 1
+0x00200bfc func boss_StateSpawnBurst hand state 9: accelerates, plays sound, loops spawn table pairs via helper, sets state 10
+0x00200d58 func boss_StateRiseAndSwoop hand state 10: stores position in global, rises with velocity, waits 0x78 frames, swoops, then state 0xb
+0x00200eea func boss_StateAttackInit hand state 0xb: clears scroll/palette tables and globals, sets attack parameters, then state 0xc
+0x00201010 func boss_StateAttackA hand state 0xc: calls two movement helpers, syncs shared position, counter goes to state 0xd or 0xf
+0x002010e6 func boss_StateAttackB hand state 0xd: oscillating angle sweep with timer, moves via helpers, ends in state 0xc
+0x00201210 func boss_StateAttackSine hand state 0xe: sine-table vertical bob using angle, calls movement helpers, hp<7 goes to state 0x10
+0x0020131e func boss_StateRetreatSweep hand multi-phase handler: waits, offsets y, applies physics, moves toward target x, may go to state 0xe
+0x002014d4 func boss_StateTailTrail hand shifts two angle arrays, updates segment positions from sin table scaled 0x2800, hp<4 goes to state 0x11
+0x00201b7c func boss_StateSegmentChain hand updates chain of segment positions from angle arrays and sin/cos table, steers toward player, hp<4 state 0x11
+0x0020214a func boss_StateProjectileFire hand waits, aims at player via atan helper, steps projectile along vector, spawns shot objects every 4 frames
+0x0020231a func boss_ApplyHorizontalDrift hand accelerates x velocity toward player x with clamp, integrates and clamps position
+0x002023a4 func boss_CheckHit hand tests hit flags, plays sound, sets hurt flag, subtracts damage from hp, sets death state 0x12 at zero
+0x00202432 func boss_FlashPalette hand alternates palette copy via helper each frame during hurt, clears hurt flag after 20 frames
+0x002024e6 func boss_CyclePalette hand every 2 frames advances palette index 0-7 and copies that palette block via helper
+0x00202536 func boss_StateDeath hand state 0x12 defeat sequence: sound, shake, flashes, explosion sound, fade, then state 0x13 end
+0x00202910 func boss_PartInit hand init child part: flags, parent position copied from parent object, clears timer
+0x0020294a func boss_PartTick hand child timer increments, advances state counter after 30 frames or parent hp zero, calls helper
+0x002029dc func boss_DebrisInit hand init debris object: random offset from parent position via LCG, copies z, sets sprite by flag
+0x00202a6a func boss_CheckHelperDone hand calls helper; if nonzero advances state byte and returns 0x11 else 0
+0x00202b5c func boss_ProjectileInit hand init projectile: random sprite choice via LCG, offsets velocity from parent animation table, flags
+0x00202c44 func boss_ChildFollowParent hand sets child position from parent plus offsets, computes z sprite depth, calls helper and tail-calls second helper if nonzero
+0x00202cf6 func boss_OrbInit hand init orbiting child: flags, sprite, clears fields, picks one of two animation tables by index > 4
+0x00202d64 func boss_OrbUpdate hand state machine for child objects: bounce, sine-table orbit around parent, chain position buffers, spawn drift, per-state animation
+0x002036ac func boss_StepAnimFrame hand advances animation frame every 2 ticks over frames 0-0x1d, loads frame pointer from table
+0x002036f4 func boss_CheckYRange hand tests object y within bounds: clears hidden flag and returns 1, else sets hidden flag returns 0
+0x00203752 func boss_AttachHitboxToParent hand sets child position from parent frame offset table indexed by child number (3 bytes per entry), clears flags
+0x00203792 func boss_HitboxUpdate hand follows parent frame hitbox offsets with facing flip, triggers hit callbacks per parent state, applies damage to parent hp
+0x00203956 func boss_CopyParentPosition hand clears flags and copies x,y from parent object
+0x0020396c func boss_SpawnChildAtParent hand copies parent position, calls spawn helper, links new child to parent and advances state or calls fallback
+0x00203a98 func boss_SpawnerInit hand registers global pointer, sets sprite and flags, offsets y from parent, spawns sixteen child objects via helper table
+0x00203b42 func boss_SpawnerUpdate hand timed rise of y with sound effect, calls helper each tick, cycles counter and spawns via table every 8 frames
+0x00203c94 func boss_RotatorInit hand init rotating child: flags, sprite, stores start angle from index into scratch fields
+0x00203cf8 func boss_RotatorUpdate hand places child on rotating ellipse around parent using sin/cos table scaled 0x3000, advances angle by 0x20
+0x00203e3c func boss_DebrisSpawnInit hand init particle: flags, sprite, random x offset via LCG, y offset, shared field set
+0x00203e8c func boss_CountdownThenAct hand increments counter, after 60 frames tail-calls helper
+0x00203ee4 func boss_UpdateCamera hand camera target follows boss and player midpoint with clamping, nine-state scroll tracker controlling VDP-style scroll registers
+0x002046ec func boss_BuildScrollRotation hand computes rotation matrix style values for two background layers from scroll offsets via fixed-point helper
+0x00204972 func boss_ProjectMeshVertices hand transforms model vertices with flip, perspective scale, then per polygon calls cull test and sprite emitter
+0x00204b3c func boss_CullPolygonBounds hand computes screen-space bounding box of quad from vertex indices, rejects if outside range, stores z min/max
+0x00204d0c func boss_EmitPolygonCommand hand builds quad vertex record and VDP1-style 32-byte command table entry from polygon data and current command pointer
+0x00204ee0 func boss_PlatformInit hand init moving platform: flags, velocity, clears scratch and wave tables, registers global if index 5
+0x00204f3e func boss_PlatformUpdateWave hand platform rise-and-fall states: ripple effect propagating to neighbours, animation stepping with gravity, returns state
+0x00205240 func boss_PlayerUpdate hand player-like object: reads collision flags, sets jump or knockback velocity, dispatches state 0-5 handlers
+0x0020534c func boss_PlayerStateWalk hand state 0: walks horizontally bouncing between x bounds, applies gravity to y and lands to state 1
+0x002053ce func boss_PlayerStateIdle hand state 1: on collision flags goes to state 3, if global trigger set spawns object and goes to state 6
+0x00205410 func boss_PlayerStateHold hand state 2: waits until flag 8 cleared then returns to state 0
+0x0020546c func boss_PlayerStateKnockback hand state 4: moves with velocity and gravity, rotates angle, runs wall collision, bounces off bounds, returns to state 1 on floor
+0x002055a0 func boss_PlayerStateFloat hand state 5: accelerates toward player x with clamps, sine-wave y bob, ends at y limit
+0x002056b0 func boss_CollideWithObjects hand iterates object list, tests rects via overlap helper, pushes object out on x or y and returns side-bit mask
+0x0020591c func boss_EmitRotatedSprite hand builds a rotated scaled sprite command in VDP1-style table using sin/cos corners and camera offset

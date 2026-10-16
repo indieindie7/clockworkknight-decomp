@@ -1,0 +1,75 @@
+0x00200000 func scroll_UpdateCameraTarget hand =seq:GEKAN_AREA52 r=0.03 computes scroll offsets from player position and clamps against world bounds, stores via two helper calls
+0x00200240 func obj_SetupProjectedQuad hand =seq:GEKAN_AREA52 r=0.01 computes screen-space quad corners from world offsets and perspective scale, picks sprite index table entry
+0x002005aa func anim_StepOpenHoldClose hand provisional: state machine stepping animation frame table (obj+0x5c) forward, hold, then reverse and load spawn data from table
+0x002007ba func child_InitFollowA hand provisional =seq:GEKAN_AREA52 r=0.12 =GEKAN_AREA61_LO small child follow init
+0x002007e4 func child_UpdateFollowA hand =seq:GEKAN_AREA52 r=0.03 =GEKAN_AREA61_LO child follow update tied to parent state
+0x00200880 func child_InitFollowB hand =seq:GEKAN_AREA52 r=0.09 =GEKAN_AREA61_LO small child follow init
+0x002008c0 func child_UpdateFollowB hand =seq:GEKAN_AREA52 r=0.04 =GEKAN_AREA61_LO child follow update tied to parent state
+0x002009ea func child_InitFollowC hand =seq:GEKAN_AREA52 r=0.04 =GEKAN_AREA61_LO small child follow init
+0x00200a18 func child_UpdateFollowC hand =seq:GEKAN_AREA52 r=0.03 =GEKAN_AREA61_LO child follow update tied to parent state
+0x00200a64 func obj_UpdateSpawnerPlayer hand =seq:GEKAN_AREA52 r=0.02 provisional: init via obj_InitSpawnThree on first run, then update with obj_Update_00203f12 and tail-call to draw
+0x00200ada func obj_InitSpawnThree hand =seq:GEKAN_AREA52 r=0.05 =GEKAN_AREA61_LO init spawning three objects and checking player proximity
+0x00200c28 func anim_StepProximityRewind hand provisional: waits until player x leaves range, then plays frame table backward until frame zero, state 2
+0x00200ce2 func child_UpdateFollowD hand =seq:GEKAN_AREA52 r=0.09 =GEKAN_AREA61_LO child follow update tied to parent state
+0x00200d40 func child_UpdateFollowE hand =seq:GEKAN_AREA52 r=0.04 =GEKAN_AREA61_LO child follow update tied to parent state
+0x00200de0 func child_InitFollowD hand provisional =seq:GEKAN_AREA52 r=0.12 =GEKAN_AREA61_LO small child follow init
+0x00200eae func obj_LoadSpawnDataFromTable hand provisional: if helper returns nonzero, copies spawn entry fields into globals from level table, sets state 1
+0x00200f4c func obj_UpdateSpawnTrigger hand =seq:GEKAN_AREA52 r=0.03 =GEKAN_AREA61_LO state dispatcher (was obj_Dispatch_0020411e)
+0x00200fd6 func obj_InitSpawnTrigger hand =seq:GEKAN_AREA52 r=0.04 =GEKAN_AREA61_LO object init (was obj_Init_0020416a)
+0x0020100c func obj_CheckTriggerSetGlobals hand provisional: when helper true and level/flag condition holds, sets two globals by parent x sign, state 1
+0x00201078 func obj_UpdateTimedChild hand provisional: loads trigger spawn data once, then runs update every few frames via counter mask 0x18 unless parent state 1
+0x0020110e func obj_CheckTriggerLoadSpawnData hand =seq:GEKAN_AREA52 r=0.06 if triggered, copies spawn record from stage table into globals and sets state 1
+0x002011b8 func obj_UpdateSpawnedChild hand provisional: init once via obj_InitChildSprites, then updates unless parent state is 4, checks flag 0x20
+0x00201244 func obj_InitChildSprites hand provisional: sets state, position fields and fills linked sprite list entries from offset and flag tables
+0x002012f8 func trigger_UpdateFallingAnimated hand provisional: init via trigger_UpdateSetFlag once, then obj_UpdateFallingAnimated and FUN_002014aa bounce check
+0x00201340 func trigger_UpdateSetFlag hand =seq:GEKAN_AREA52 r=0.06 =GEKAN_AREA61_LO update setting a flag, possibly level end trigger
+0x002013a2 func obj_UpdateFallingAnimated hand provisional =seq:GEKAN_AREA52 r=0.11 cycles 30-frame animation forward or reverse, applies velocity and gravity, bounces on tile hit
+0x002014aa func obj_CheckFallingLanding hand provisional: when moving upward calls helper, if collision bits equal 8 sets landing velocity and flags
+0x0020156c func obj_InitIdleAnim hand =seq:GEKAN_AREA52 r=0.05 initializes object fields offset size and sprite table pointer, clears state and ticks
+0x00201594 func obj_UpdateHitFlashToggle hand provisional =seq:GEKAN_AREA52 r=0.12 on hit flag plays sound 7, runs 3-frame animation, toggles facing variant, tail-calls draw
+0x0020169e func obj_InitStateTwoSprite hand =seq:GEKAN_AREA52 r=0.00 sets state 2, sprite table and first frame from parent data, facing 1
+0x002016d4 func obj_UpdateFollowParentAnim hand provisional =seq:GEKAN_AREA52 r=0.14 follows parent object state, plays 9-frame forward or reverse animation, tail-calls draw
+0x00201a0a func obj_FindFreeSlot hand =seq:GEKAN_AREA52 r=0.05 scans 15 three-word slots in a per-index table for the first empty entry
+0x00201a30 func obj_ClampXToRightEdge hand =seq:GEKAN_AREA52 r=0.06 if object X is beyond other's top edge clamps it and returns -1, else 0 (was obj_ClampToPlatformTop)
+0x00201bda func obj_TestPlayerOverlapSide hand =seq:GEKAN_AREA52 r=0.01 depth check then rectangle overlap with player, returns left/right and up/down direction bits
+0x00201dc4 func obj_InitSpriteVariantByType hand =seq:GEKAN_AREA52 r=0.07 picks one of two animation tables by parent type, resets state and sets first frame
+0x00201e42 func obj_UpdateThreePhaseAnim hand =seq:GEKAN_AREA52 r=0.05 state machine: idle loop, play frames until -1 marker with sound 5, then flicker, tail-calls draw
+0x00201f9a func obj_BuildFlagsFromDirection hand =seq:GEKAN_AREA52 r=0.08 calls direction helper and composes flag word into object field 0x28 from direction bits
+0x00202044 func obj_InitEffectSprite hand =seq:GEKAN_AREA52 r=0.07 clears state fields, sets tick 8 and sprite table, resets velocity flags
+0x00202076 func obj_UpdateHitReact hand =seq:GEKAN_AREA52 r=0.04 on contact or hit flag plays sound 4 and spawns effect, hides if off-screen flag, tail-calls draw
+0x002021f8 func obj_SpawnCountdownDebrisSet hand provisional: spawns object per index from 4 down to 0 via spawn function, setting index byte and parent pointer
+0x00202330 func obj_InitDebrisFromTable hand =seq:GEKAN_AREA52 r=0.01 initializes debris position and velocities from per-index table, drag as velocity shifted right 5
+0x002023b8 func debris_UpdateBallistic hand provisional: integrates velocity and acceleration, kills object on sign flip, advances frame, queues sprite via vdp1_QueueObjectSprite
+0x00202450 func obj_UpdateDebrisPhysics hand =seq:GEKAN_AREA52 r=0.04 applies drag to velocities, kills object on sign flip, moves, advances 3-frame anim, draws via sprite-queue helper
+0x00202548 func obj_InitSparkFromTable hand =seq:GEKAN_AREA52 r=0.06 initializes spark position from parent plus per-index table of 12-byte entries and delay
+0x002025aa func obj_UpdateSparkAnim hand provisional =seq:GEKAN_AREA52 r=0.15 waits delay, advances 12-frame animation, kills object at end, draws via sprite-queue helper
+0x00202614 func vdp1_QueueObjectSprite hand provisional =seq:GEKAN_AREA52 r=0.13 appends a 32-byte sprite entry to the VDP1 command buffer with position relative to camera
+0x002027c0 func enemy_InitFromSpawnEntryLarge hand provisional: init from level spawn entry, sets facing, depth flag, sprite size 0x20x0x30, start state 0 or 0xd
+0x00202cce func player_TryHandlerIfEnabled hand =seq:GEKAN_AREA52 r=0.05 calls check helper with constant, if nonzero tail-calls follow-up handler
+0x00202cf8 func player_CheckTileResponse hand =seq:GEKAN_AREA52 r=0.06 tile check result 2 sets state 9, result 0x0f sets flag in object field 0x26
+0x00203146 func player_UpdateHorizontalSpeed hand =seq:GEKAN_AREA52 r=0.02 accelerates velocity 0x40 per frame toward target from per-state speed tables
+0x00203404 func player_DrawShadowOffset hand =seq:GEKAN_AREA52 r=0.09 temporarily sets state 14 and shifts Y offset, runs helper, restores saved fields
+0x0020350a func vdp1_QueueScaledShadowSprites hand provisional =seq:GEKAN_AREA52 r=0.14 scales sprite parts by depth factor and appends VDP1 command entries for each part
+0x00203792 func player_StepCounterSpawnCompanion hand =seq:GEKAN_AREA52 r=0.00 advances 4-step counter, triggers helper call when counter zero and flag 4 set (was player_StepBlinkCounter)
+0x002038b8 func enemy_InitFromSpawnEntryWide hand provisional: init from spawn entry, sprite size 0x48x0x18, state 0 or 0xb, spawns up to three child objects
+0x00203dbc func obj_TryHandlerIfEnabled hand =seq:GEKAN_AREA52 r=0.05 calls check helper with constant, if nonzero tail-calls follow-up handler
+0x00203de6 func obj_CheckTileResponse hand =seq:GEKAN_AREA52 r=0.06 tile check result 2 sets state 6, result 0x0f sets flag in object field 0x26
+0x00204134 func obj_UpdateChargeTarget hand =seq:GEKAN_AREA52 r=0.06 provisional: on anim end compares distance to parent, picks bit index into field 0x38 or sets state 2
+0x00204250 func enemy_UpdateDeathSpawnEffects hand provisional: on state change stops motion, sets flag, spawns two effect objects at position, state 7; else adjusts offset by direction
+0x00204510 func companion_UpdateMain hand =seq:GEKAN_AREA52 r=0.06 init once, handle parent link, state-based ground checks or main state update, sets global self pointer
+0x00204650 func companion_Init hand provisional =seq:GEKAN_AREA52 r=0.12 initializes companion state and sprite table from parent mode bits, sets screen offset and calls follow update
+0x00204764 func companion_UpdateStates hand provisional =seq:GEKAN_AREA52 r=0.08 input-driven state transition via tables, switch states 0-8 handlers, collision helpers and post-state tile checks
+0x002049c0 func companion_CheckParentGone hand =seq:GEKAN_AREA52 r=0.10 returns 1 if parent object gone, otherwise propagates a flag from parent object
+0x00204a1c func obj_FollowParentAttached hand provisional: for states 0-8 copies parent position, velocity and depth flag with offset by facing, sets sprite priority
+0x00204b2c func companion_TryHandlerIfEnabled hand =seq:GEKAN_AREA52 r=0.00 calls check helper with depth-based constant, if nonzero tail-calls follow-up handler
+0x00204b74 func companion_ReactToParentState hand =seq:GEKAN_AREA52 r=0.09 if idle and parent in states 6-7 or 8-10 switches own state to 4 or 6
+0x00204bf8 func companion_CheckGroundAndWalls hand =seq:GEKAN_AREA52 r=0.04 tile and collision helper results, on edge or hit sets state 4 and clears flags
+0x00204d0c func companion_StateIdle hand =seq:GEKAN_AREA52 r=0.04 state 0 handler: when parent in state 2 and field matches enters state 1 and calls helper
+0x00204d76 func companion_StateStart hand =seq:GEKAN_AREA52 r=0.04 state 1 handler: on anim end enters state 2, sets velocity 0x200 and clears parent bit
+0x00204dce func companion_StateFly hand =seq:GEKAN_AREA52 r=0.06 state 2 handler: resets timer at last frame, on flag 4 enters state 4, clears parent bit
+0x00204e74 func companion_StateLand hand =seq:GEKAN_AREA52 r=0.05 state 3 handler: enters state 4, sets timer 0x46, clears parent flag bit
+0x00204ec4 func companion_StateDefeatedSpawn hand =seq:GEKAN_AREA52 r=0.06 state 4 handler: stops motion, spawns two effect objects, enters state 5 with hidden flag
+0x00204fb8 func enemy_AddDirectionOffset3Way hand provisional: adds one of three offsets (0x46 or table values) to field +0x10 by masked direction bits
+0x00204ff8 func companion_AdjustTimerByInput hand provisional =seq:GEKAN_AREA52 r=0.10 adds one of three constants to timer field 0x10 based on previous input bits
+0x0020503e func companion_StateFollowParentEnd hand =seq:GEKAN_AREA52 r=0.02 state 6 handler: moves to state 7 when parent in state 9 or 10, else restores saved state
+0x00205094 func companion_StateWaitParent hand =seq:GEKAN_AREA52 r=0.08 state 8 handler: clears speed and flags, when parent in state 1 returns to state 0

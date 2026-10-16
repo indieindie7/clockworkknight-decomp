@@ -1,0 +1,45 @@
+CK1_A 0x0601f190 math_ArcCosTable RENAME stage_GetScoreTier walks cumulative thresholds from per-stage base table (stage index via stage_GetBossIndex), returns tier 0-5 or -1; no trig
+CK1_A 0x0601f26a menu_InitResultCounters RENAME result_InitCounterState inits result-screen object fields (state 6, timers), clears two 12-halfword buffers, sound 0 and 0x19; result cluster not menu
+CK1_A 0x0601f332 hud_StepCounterDigits CONFIRM hud_StepCounterDigits steps packed counter digits with carry per tick, decrements pending count, flags redraw
+CK1_A 0x0601f398 result_InitScreen CONFIRM result_InitScreen allocs pool, adds child objects, resets flags, switch on low 3 bits of stage code
+CK1_A 0x0601f510 result_SetupVdp2Scene CONFIRM result_SetupVdp2Scene computes bonuses, loads palette/tiles, draws three numbers, copies slot records, sound 2
+CK1_A 0x0601f6ca result_TickBonusCount CONFIRM result_TickBonusCount runs countdown slots then picks next result state 7/8/9 by remaining bonus counters
+CK1_A 0x0601f758 hud_CheckScoreLimit RENAME result_TickBonusDrainA drains first bonus counter DAT_0605bd40 by 10 or chunk each tick, redraws; no clamp or extra life here
+CK1_A 0x0601f804 result_TickScoreDrain RENAME result_TickBonusDrainB same drain for second bonus counter DAT_0605bd44, then state 9
+CK1_A 0x0601f8b0 result_SkipCountOnButtonA CONFIRM result_SkipCountOnButtonA pad A/B/C press adds both bonuses to score at once and zeroes them
+CK1_A 0x0601f928 result_SkipCountOnButtonB CONFIRM result_SkipCountOnButtonB same skip handler, other sound and goes straight to state 9
+CK1_A 0x0601f99e result_TickCountdownSlots CONFIRM result_TickCountdownSlots steps slot records wait/scroll/done, returns 1 when all done (caller is bonus tick)
+CK1_A 0x0601fade vdp2_CopyTileRectWithOffset CONFIRM vdp2_CopyTileRectWithOffset copies w x h halfword tile rect adding tile offset, row stride constant
+CK1_A 0x0601fb26 vdp2_DrawNumberTiles CONFIRM vdp2_DrawNumberTiles 8-digit decimal via divide table, leading zeros blanked, two tile rows
+CK1_A 0x0601fb90 obj_IsOutsideView RENAME vdp2_DrawThreeDigitTiles divides value into 3 digits and writes two-row digit tiles with zero blanking; callers pass counts and tile dest, not objects
+CK1_A 0x0601fc4a result_ComputeBonusValues CONFIRM result_ComputeBonusValues indexes bonus tables by stage and counters, multiplies, adds extra when counters match
+CK1_A 0x0601fc9e stub_0601fc9e RENAME obj_KillDeeperThanAndClear calls obj_KillDeeperThan with a constant then zeroes first field; no callers, weak
+CK1_A 0x0601fd58 result_InitLayerState CONFIRM result_InitLayerState fills layer/scroll state fields with constants for result scene
+CK1_A 0x0601fdb2 stage_GetBossIndex CONFIRM stage_GetBossIndex maps stage*16+area code (boss levels) to index 0-7
+CK1_A 0x0601fe08 game_GetLifeStateCode RENAME game_GetStageClearState returns 2/1/0 from counter and result-active flag; motion_UpdateByType stops camera follow when nonzero
+CK1_A 0x0601ff50 data_CopyResultTileBlock CONFIRM data_CopyResultTileBlock copies halfword block from pointer-table entry to fixed dest; called by result_InitScreen
+CK1_A 0x0601ff6e data_TailCopyBlock RENAME data_DecompressFixedBlock tail-calls data_DecompressDispatch on fixed source/dest; area_UploadMapGraphics uses it as extra graphics upload
+CK1_A 0x06020358 obj_CopyTwoObjectRecords RENAME result_InitCountdownSlots copies selected fields of two 16-byte slot records 06068330 to 0605bd5c used by result_TickCountdownSlots
+CK1_A 0x060203c0 result_InitSecondScene CONFIRM result_InitSecondScene clears blocks, loads palette/tiles, draws two numbers and copies slot records
+CK1_A 0x06020518 sound_ReplayScoreTick RENAME hud_AddScoreAndRedraw adds score via hud add, rebuilds digit tiles, plays 0x13 if lives count changed (not stage 8); callers pass amounts
+CK1_A 0x0602055c enemy_Update_C RENAME result_ConvertCountsOnButton on A/B/C press converts leftover counters to score with cap, redraws, state 6; result screen not enemy
+CK1_A 0x06020650 hud_ResetScoreState CONFIRM hud_ResetScoreState zeroes score, sets next extra-life threshold, clears flag
+CK1_A 0x06020662 hud_AddScore_20662 RENAME hud_AddScoreUnlessLocked adds param to score unless lock flag, runs extra-life check, sets redraw; no numeric suffix
+CK1_A 0x06020682 enemy_Update_D RENAME hud_UpdateScoreExtraLife clamps score to max, tracks high score, steps extra-life thresholds and bumps lives with sound 0x13
+CK1_A 0x060207ae boss_InitPartPoseA RENAME enemy_InitPartPoseA shares enemy reset/hurt/draw helpers with enemy state machines; no boss-specific evidence
+CK1_A 0x0602084c boss_InitPartPoseB RENAME enemy_InitPartPoseB same family: reset fields, state 5, sprite tables on two linked parts
+CK1_A 0x060208f4 boss_UpdatePartStateMachineA RENAME enemy_UpdatePartStateMachineA init/run/end with offscreen free, enemy_CheckHurtBounce, vdp1 draw; generic enemy
+CK1_A 0x06020994 boss_InitPartPoseC RENAME enemy_InitPartPoseC init for state machine A: state 9, sprite tables on linked parts
+CK1_A 0x060209d0 boss_UpdatePartStateMachineB RENAME enemy_UpdatePartStateMachineB same machine as A with pose D init
+CK1_A 0x06020a2a boss_InitPartPoseD RENAME enemy_InitPartPoseD state 0x15, sprite table on child, called by machine B
+CK1_A 0x06020abc boss_UpdatePartStateMachineC RENAME enemy_UpdatePartStateMachineC same machine with pose E init
+CK1_A 0x06020b16 boss_InitPartPoseE RENAME enemy_InitPartPoseE state 0x11, sprite table on child, called by machine C
+CK1_A 0x06020bb4 boss_InitPartPoseF RENAME enemy_InitPartPoseF state 0xd, sprite tables on two linked parts
+CK1_A 0x06020c48 boss_InitPartPoseG RENAME enemy_InitPartPoseG state 0x19, sprite tables on parent and nested child
+CK1_A 0x06020de4 boss_InitPartPoseH RENAME enemy_InitPartPoseH state 0x1d, sprite table on child
+CK1_A 0x06020e2c boss_ResetPartDrawFields RENAME enemy_ResetPartDrawFields near-identical to enemy_InitAnimState_A: clears flag, sets draw offsets and sprite ptr
+CK1_A 0x06020e50 boss_UpdatePartStateMachineD RENAME enemy_UpdatePartStateMachineD five-state machine calling enemy_InitAnimState_A and enemy_UpdateStateMachine_A, blink toggle at +0x26
+CK1_A 0x06020f06 enemy_InitAnimState_A CONFIRM enemy_InitAnimState_A resets sprite offset/size fields and speeds; used as init by state machine
+CK1_A 0x06020f58 enemy_UpdateStateMachine_A CONFIRM enemy_UpdateStateMachine_A four-state gravity/tile-collide update with frame table advance and template spawn
+CK1_A 0x0602128c enemy_InitHopState_A CONFIRM enemy_InitHopState_A resets sprite fields, sets anim 1 and initial vertical speed, sprite ptrs
+CK1_A 0x060212ce enemy_UpdateWrapper_G CONFIRM enemy_UpdateWrapper_G state 0 runs enemy_Update_G then enemy_CheckHurtBounce

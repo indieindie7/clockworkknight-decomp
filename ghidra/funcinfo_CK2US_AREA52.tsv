@@ -1,0 +1,107 @@
+F 00200000 scroll_UpdateCameraTarget USER_DEFINED 136
+F 00200240 obj_SetupProjectedQuad USER_DEFINED 300
+F 002005aa anim_StepOpenHoldClose USER_DEFINED 358
+F 002007ba child_InitFollowA USER_DEFINED 42
+F 002007e4 child_UpdateFollowA USER_DEFINED 76
+F 00200880 child_InitFollowB USER_DEFINED 64
+F 002008c0 child_UpdateFollowB USER_DEFINED 214
+F 002009ea child_InitFollowC USER_DEFINED 46
+F 00200a18 child_UpdateFollowC USER_DEFINED 76
+F 00200a64 obj_UpdateSpawnerPlayer USER_DEFINED 100
+C 00200ada
+C 00200c28
+F 00200ada obj_InitSpawnThree USER_DEFINED 272
+F 00200c28 anim_StepProximityRewind USER_DEFINED 120
+F 00200ce2 child_UpdateFollowD USER_DEFINED 78
+F 00200d40 child_UpdateFollowE USER_DEFINED 102
+F 00200de0 child_InitFollowD USER_DEFINED 42
+F 00200eae obj_LoadSpawnDataFromTable USER_DEFINED 158
+F 00200f4c obj_UpdateSpawnTrigger USER_DEFINED 68
+C 00200fd6
+C 0020100c
+F 00200fd6 obj_InitSpawnTrigger USER_DEFINED 54
+F 0020100c obj_CheckTriggerSetGlobals USER_DEFINED 108
+F 00201078 obj_UpdateTimedChild USER_DEFINED 116
+C 0020110e
+F 0020110e obj_CheckTriggerLoadSpawnData USER_DEFINED 170
+F 002011b8 obj_UpdateSpawnedChild USER_DEFINED 102
+C 00201244
+F 00201244 obj_InitChildSprites USER_DEFINED 140
+F 002012f8 trigger_UpdateFallingAnimated USER_DEFINED 72
+C 00201340
+C 002013a2
+C 002014aa
+F 00201340 trigger_UpdateSetFlag USER_DEFINED 98
+F 002013a2 obj_UpdateFallingAnimated USER_DEFINED 240
+F 002014aa obj_CheckFallingLanding USER_DEFINED 62
+F 0020156c obj_InitIdleAnim USER_DEFINED 40
+F 00201594 obj_UpdateHitFlashToggle USER_DEFINED 150
+F 0020169e obj_InitStateTwoSprite USER_DEFINED 54
+F 002016d4 obj_UpdateFollowParentAnim USER_DEFINED 192
+F 00201a0a obj_FindFreeSlot USER_DEFINED 38
+F 00201a30 obj_ClampXToRightEdge USER_DEFINED 34
+F 00201bda obj_TestPlayerOverlapSide USER_DEFINED 396
+F 00201dc4 obj_InitSpriteVariantByType USER_DEFINED 126
+F 00201e42 obj_UpdateThreePhaseAnim USER_DEFINED 302
+C 00201f9a
+F 00201f9a obj_BuildFlagsFromDirection USER_DEFINED 66
+F 00202044 obj_InitEffectSprite USER_DEFINED 50
+F 00202076 obj_UpdateHitReact USER_DEFINED 146
+F 002021f8 obj_SpawnCountdownDebrisSet USER_DEFINED 182
+F 00202330 obj_InitDebrisFromTable USER_DEFINED 136
+F 002023b8 debris_UpdateBallistic USER_DEFINED 122
+C 00202614
+F 00202450 obj_UpdateDebrisPhysics USER_DEFINED 144
+F 00202548 obj_InitSparkFromTable USER_DEFINED 98
+F 002025aa obj_UpdateSparkAnim USER_DEFINED 80
+C 00202614
+F 00202614 vdp1_QueueObjectSprite USER_DEFINED 212
+F 002027c0 enemy_InitFromSpawnEntryLarge USER_DEFINED 346
+F 00202cce player_TryHandlerIfEnabled USER_DEFINED 42
+F 00202cf8 player_CheckTileResponse USER_DEFINED 68
+F 00203146 player_UpdateHorizontalSpeed USER_DEFINED 220
+F 00203404 player_DrawShadowOffset USER_DEFINED 86
+C 00202cce
+F 0020350a vdp1_QueueScaledShadowSprites USER_DEFINED 608
+F 00203792 player_StepCounterSpawnCompanion USER_DEFINED 78
+F 002038b8 enemy_InitFromSpawnEntryWide USER_DEFINED 444
+F 00203dbc obj_TryHandlerIfEnabled USER_DEFINED 42
+F 00203de6 obj_CheckTileResponse USER_DEFINED 68
+F 00204134 obj_UpdateChargeTarget USER_DEFINED 158
+F 00204250 enemy_UpdateDeathSpawnEffects USER_DEFINED 220
+F 00204510 companion_UpdateMain USER_DEFINED 264
+C 00204650
+C 002049c0
+C 00204b2c
+C 00204764
+F 00204650 companion_Init USER_DEFINED 240
+C 00204a1c
+F 00204764 companion_UpdateStates USER_DEFINED 540
+C 00204d0c
+C 00204d76
+C 00204dce
+C 00204bf8
+C 00204e74
+C 00204ec4
+C 00204ff8
+C 0020503e
+C 00205094
+C 00204b74
+C 00204a1c
+C 00204b2c
+C 00204b2c
+F 002049c0 companion_CheckParentGone USER_DEFINED 92
+F 00204a1c obj_FollowParentAttached USER_DEFINED 264
+F 00204b2c companion_TryHandlerIfEnabled USER_DEFINED 50
+F 00204b74 companion_ReactToParentState USER_DEFINED 126
+F 00204bf8 companion_CheckGroundAndWalls USER_DEFINED 250
+F 00204d0c companion_StateIdle USER_DEFINED 106
+F 00204d76 companion_StateStart USER_DEFINED 88
+F 00204dce companion_StateFly USER_DEFINED 132
+F 00204e74 companion_StateLand USER_DEFINED 80
+F 00204ec4 companion_StateDefeatedSpawn USER_DEFINED 204
+C 00204fb8
+F 00204fb8 enemy_AddDirectionOffset3Way USER_DEFINED 64
+F 00204ff8 companion_AdjustTimerByInput USER_DEFINED 70
+F 0020503e companion_StateFollowParentEnd USER_DEFINED 86
+F 00205094 companion_StateWaitParent USER_DEFINED 46

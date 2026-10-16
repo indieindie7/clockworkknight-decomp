@@ -1,0 +1,82 @@
+0x00200000 func boss_Update hand provisional: boss per-frame entry; state 0 runs boss_Init and plays sound 0x6c, then boss_UpdateState, tail-calls draw
+0x00200078 func boss_Init hand provisional: initializes boss object fields (state 0x10, position/velocity, sprite pointers), clears work arrays, sets countdown timers
+0x0020021c func boss_UpdateState hand provisional: calls boss_ChooseState then switch on state byte (0..0x1c) dispatching to state handlers, clamps X position
+0x0020046a func boss_ChooseState hand provisional: AI chooses next state from lookup table indexed by distance classes and random; keeps recent-state history
+0x00200892 func boss_StateWalkStart hand provisional: state 1 accelerating movement with animation frame advance, sounds 0x5f/0x60, then state 2
+0x0020099c func boss_StateWalkFwd hand provisional: state 2 constant-speed walk along facing direction, animation loop, returns to state 0x17 at end
+0x00200aa0 func boss_StateWalkBack hand provisional: state 3 walk backward (opposite of facing), animation frames, sounds 0x5f/0x60, then state 0x17
+0x00200bae func boss_StateTurnAround hand provisional: state 4 moves by speed times direction, flips facing byte (xor 1) at end of animation
+0x00200cc2 func boss_StateAttack5 hand provisional: state 5 animation with sound 0x5e; spawns two child objects at frame 0x11 via spawn helper
+0x00200e40 func boss_StateJumpAttack6 hand provisional: state 6 jump arc with gravity (+0x44) on Y velocity, sound 0x60 at landing frame
+0x00200f7c func boss_StateJumpAttack7 hand provisional: state 7 sets jump velocity with reversed direction then calls boss_StateJumpAttack6
+0x00200fc6 func boss_StateJumpToPlayer hand provisional: state 8 jump aimed at target X, gravity arc, spawns children at frame 0x10, sound 0x5e
+0x00201170 func boss_StateAnimWait9 hand provisional: state 9 plays fixed animation with long hold on frame 9, then returns to state 0x17
+0x00201218 func boss_StateAttackA hand provisional: state 10 animation with sound 0x5d at frame 0xe and spawns projectile by facing, ends sound 0x5f state 0xb
+0x002012ce func boss_StateAnimC hand provisional: state 12 long animation (0x2e frames) with variable frame delays, sound 0x60 at end, back to 0x17
+0x00201368 func boss_StateDeathHit1 hand provisional: hit-reaction animation, sound 0x65 at start and 0x6e at end, then state 0xe
+0x002013de func boss_StateKnockbackSlide hand provisional: slides X/Y by fixed speed by facing until out of X bounds, flips facing, goes to state 0xf
+0x0020145e func boss_StateFall hand provisional: lowers Z each frame to floor limit then sound 0x6c and state 0x10
+0x002014a2 func boss_StateRise hand provisional: moves X, raises phase counter, sine-table Y arc (>>0xe), starts dash toward player into state 0x11
+0x00201582 func boss_StateDash hand provisional: state 0x11 advances animation, integrates velocity and acceleration for X and Z, state 0x12 when X velocity hits zero
+0x0020160c func boss_StateDive hand provisional: state 0x12 animation, Z velocity until threshold, sounds 0x66/0x6d, stores position in shared record, state 0x13
+0x002016a8 func boss_StateLandDrop hand provisional: state 0x13 integrates Y/Z velocity with gravity until Y limit, picks facing toward player X, state 0x14
+0x00201778 func boss_StateBounceX hand provisional: state 0x14 moves in X until out of bounds, reverses speed, sound 0x6e, state 0x15
+0x002017aa func boss_StateArcUp hand provisional: state 0x15 X move with sine-table Y arc increasing phase 8 per frame, sound 0x65, state 0x16
+0x00201828 func boss_StateGetUp hand provisional: state 0x16 animation counting down frames, sound 0x60 at 4, resets facing and flags, returns to state 0x17
+0x002018f0 func boss_StateWaitReturn hand provisional: state 0x17 short 7-frame wait then restores saved state from extra object and animation table
+0x0020191c func boss_StateWalkLoop hand provisional: state 0x18 walks along direction with animation index stepping, sounds 0x5f/0x60, returns via state 0x17
+0x00201a14 func boss_StateRecover hand provisional: state 0x19 gravity-driven recovery animation, sound 0x60, clears flag and returns to state 0
+0x00201adc func boss_StateDelayToDeath hand provisional: state 0x1a counts 0x3c frames then switches to state 0x1b
+0x00201af8 func boss_StateDefeatFall hand provisional: state 0x1b falling animation with gravity, sound 0x60, selects sound from table then state 0x1c
+0x00201bda func boss_StateDefeatEffect hand provisional: state 0x1c defeat sequence, sound 0x69/0x6a/0x6b, VDP2 line-scroll ripple table via sine tab, spawns debris, state 0x1d
+0x00202102 func boss_GetPlayerDistanceClass hand provisional: classifies horizontal distance to player (0..3) with random fuzz via boss_RandomClass, sets turn flag
+0x002021fe func rng_Next hand provisional: LCG updates seed pointer by multiply and adds low-bit-set counter, returns new seed
+0x0020221c func rng_RandomClass hand provisional: advances LCG, tests bits 24..27 to return skewed random class 0,1,2,1,0
+0x00202272 func boss_GetPlayerRelation hand provisional: compares player state, Y velocity and X delta, returns 0..3 for relative approach/away/airborne state
+0x002024ea func child_InitFromParent hand provisional: initializes child object relative to parent position using animation offset table by child type 0..4
+0x002025d6 func child_UpdateDelayed hand provisional: when state 0 adds Y offset and waits until counter at +0x23 exceeds 3 then tail-calls follow routine
+0x0020260e func boss_AdvanceAnimTimer hand provisional: increments animation tick, on reaching duration table value resets and tail-calls animation advance
+0x002026ce func child_InitRandomOffset hand provisional: initializes child with random LCG, picks sprite offset from parent table with direction flip and stores offset
+0x002027a4 func child_FollowParentOffset hand provisional: positions child at parent plus stored offset, computes sprite scale from Z, calls helper and tail-calls
+0x00202808 func boss_DefeatTickSound hand provisional: increments 6-bit counter, every 4 frames calls spawn helper and plays sounds 0x62/0x63/100 at set points
+0x002028bc func debris_Init hand provisional: initializes debris child with random X offset from LCG, clamped positions, random sprite, flips by parent counter bit
+0x00202994 func child_UpdateDelayed_2 hand provisional: when state 0 and counter at +0x23 exceeds 0x11 tail-calls follow routine, else returns 0x23
+0x00202a1c func child_SetPositionFromParentTable hand provisional: places child at parent position plus per-frame offset table entry (3-byte entries), facing sign
+0x00202a8a func child_UpdateFollowParent hand provisional: per-child-type (0..4) positioning relative to parent boss by its state/frame, sets visibility flag bits at +0x28
+0x00202e70 func boss_TakeHit hand provisional: hit check against attacker, plays sound 0x61, decrements HP at +0x16, sets hurt state 0x19 or defeat 0x1b
+0x00203036 func weapon_Init hand provisional: initializes child object linked to parent, positions it offset by facing direction
+0x002030c0 func weapon_UpdateSwing hand provisional: child follows parent and animates swing using sine table lookup
+0x00203334 func projectile_Init hand provisional: initializes projectile with sine/cosine based launch velocity from angle
+0x002033e2 func projectile_Update hand provisional: state 0 delay then state 1 ballistic motion integrating velocity
+0x00203498 func camera_UpdateScroll hand provisional: scroll target tracking state machine modes 0-7 between player X and boss X
+0x00203a24 func effect_InitRandom hand provisional: initializes particle effect object with randomized offsets from random helper
+0x00203ca4 func player_Init hand provisional: initializes player object state 0x10, HP, size fields and flags
+0x00203d64 func player_UpdateSpawn hand provisional: player spawn state machine calling player_SpawnShots and player_ClearChildren
+0x00203df0 func player_SpawnShots hand provisional: spawns three child objects in a loop over table, flips facing
+0x00203e6e func player_ClearChildren hand provisional: walks object list clearing child links and setting a flag
+0x00203ebe func player_Update hand provisional: player main update, switch on state 0-0x14 dispatching to state handlers
+0x00204362 func player_SelectIdleState hand provisional: chooses idle, walk or attack state after action ends, uses move test
+0x002043dc func player_StateWalk hand provisional: walk state handler for states 0/1/2 with animation and movement
+0x002044cc func player_StateLand hand provisional: state 0x10 land/fall handler
+0x00204568 func player_StateD hand provisional: tiny state 0xd handler
+0x00204598 func player_StateF hand provisional: state 0xf range check, switches to state 5 or 0xe
+0x00204660 func player_StateJump hand provisional: state 7 jump/air handler with gravity and landing
+0x0020480c func player_StateBounce hand provisional: state 10 bounce/knockback handler
+0x00204898 func player_CheckGroundTile hand provisional: tile collision check for ground, halves velocity on contact
+0x00204940 func player_MoveCollide hand provisional: move-and-collide test, returns 1 if blocked
+0x00204a08 func player_StateHit9 hand provisional: state 9 hit handler with counter, spawns effect, goes to state 0x11
+0x00204bf8 func player_StateHit8 hand provisional: state 8 hit reaction with bounce, sets state 9
+0x00204cc6 func player_StateKnockback11 hand provisional: knockback arc state with velocity, bounce halves Y speed, then state 9
+0x00204d8e func player_StateTurnEnd hand provisional: on animation end flips facing and selects next state
+0x00204dae func player_StateTurnIdle hand provisional: at frame 0xd waits for anim end, flips facing, returns to state 0
+0x00204de0 func player_StateTurnWalk hand provisional: on animation end flips facing, enters state 0xf with walk speed
+0x00204e12 func player_StateEndAnim hand provisional: on animation end clears timers and selects next state
+0x00204e4c func player_StateAttackShot hand provisional: state 0x11-ish attack spawning projectile near player, checks collision, ends to select state
+0x00204f30 func player_StateSpin hand provisional: scripted multi-phase animation with scaled sprite draw via vdp1_DrawScaledSpriteList
+0x0020518a func player_DrawOffset hand provisional: temporarily offsets position and state, calls draw helper, restores fields
+0x002051ec func player_DrawSpritePair hand provisional: builds two VDP1 sprite commands scaled by Z from animation table
+0x0020541a func vdp1_DrawScaledSpriteList hand =CK1_AREA73 provisional: emits VDP1 command per sprite part scaled by camera factor with size from param_2, then calls hook
+0x00205670 func player_StateRecoverWait hand provisional: counts down timers then sets state 0x15 and flag
+0x002056c4 func player_StartRecover hand provisional: sets animation by flags, zeroes velocity, plays effect, enters state 0x15
+0x00205744 func player_StateDefeatArc hand provisional: sub-state machine for defeat bounce arcs with gravity, bounds check, flag set
+0x002058de func player_CollideObjects hand provisional: AABB overlap test against object list, pushes player out, returns side flags

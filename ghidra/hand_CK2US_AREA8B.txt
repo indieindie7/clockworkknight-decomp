@@ -1,0 +1,133 @@
+0x00200000 func boss8_UpdateAnimState hand state machine: runs boss8_InitFight, intro entrance, per-frame behaviour, then sets animation frame pointers for body parts
+0x0020017c func boss8_InitFight hand =seq:GEKAN_AREA8B r=0.03 loads B8SPRCG.BIN sprite data, copies VDP data blocks, spawns child parts, resets fight globals and camera
+0x002003d8 func boss8_DispatchBehavior hand switches on boss mode byte: intro wait, choose attack, hurt flash, stunned, projectile attack, defeated
+0x00200500 func boss8_UpdateIntroWait hand =seq:GEKAN_AREA8B r=0.00 counts frames in work counter, then advances boss state to 1 and clears sub-step
+0x00200520 func boss8_ChooseAttack hand =seq:GEKAN_AREA8B r=0.09 sub-step 0 reset, step 1 picks next attack state 2/4/5/6 from phase and attack-pattern index
+0x002005dc func boss8_UpdateProjectileAttack hand =seq:GEKAN_AREA8B r=0.06 sets up and fires projectile spawns at positions depending on boss x, attack states 4-6, then waits and finishes
+0x00200a98 func boss8_UpdateHurtFlash hand =seq:GEKAN_AREA8B r=0.09 plays hurt animation steps, sets flash flag at set frame numbers, advances to state 3 afterwards
+0x00200bc4 func boss8_UpdateStunned hand provisional =seq:GEKAN_AREA8B r=0.15 stunned state timer: sound on frame 0x20, counts and moves to state 7 after delay
+0x00200c58 func boss8_UpdateDefeated hand =seq:GEKAN_AREA8B r=0.02 defeat sequence: sounds, flag set, sets sub-object state 0x13 or 0x51 depending on stage, spawns debris
+0x00200d58 func boss8_StepIntroAnimTimer hand provisional intro phase counter advancing frame index until 0x1d then next phase, phase 2 pins frame 0x1f
+0x00200d9a func boss8_UpdateIntroEntrance hand =seq:GEKAN_AREA8B r=0.08 entrance: sets boss y, spawns child at threshold, on state 2 initialises hand slots and starts fight phase
+0x00200f08 func boss8_InitPartA hand =seq:GEKAN_AREA8B r=0.00 part init: calls base init then sets sprite size and animation table pointer
+0x00200f70 func boss8_UpdateSecondaryPart hand per-mode update of boss sub part: resets frame, body-hit steps, animation advance via function pointers
+0x00201042 func boss8_UpdateBodyHitSteps hand provisional =seq:GEKAN_AREA8B r=0.14 sub-step timing for body part with sound effects and flag bits 2/4 when frame reaches table limit
+0x00201112 func boss8_InitPart_2 hand =seq:GEKAN_AREA8B r=0.00 part init variant: base init, size, animation table pointer, frame 0
+0x00201136 func boss8_UpdatePart_2 hand =seq:GEKAN_AREA8B r=0.04 child part follows parent position plus offset, animates, on low y spawns debris and sets flag bit 4
+0x00201304 func boss8_InitPart_3 hand =seq:GEKAN_AREA8B r=0.00 part init variant with start frame 7
+0x00201328 func boss8_UpdatePart_3 hand =seq:GEKAN_AREA8B r=0.02 child part follows parent position with two sprites (flag 0/1), sets completion flag bit 8
+0x00201500 func boss8_InitPart_4 hand =seq:GEKAN_AREA8B r=0.00 part init variant with start frame 0xe
+0x00201524 func boss8_UpdatePart_4 hand =seq:GEKAN_AREA8B r=0.04 child part follows parent offset, animates, sets completion flag bit 0x10 when low
+0x002016fc func boss8_InitPart_5 hand =seq:GEKAN_AREA8B r=0.00 part init variant with start frame 0x15
+0x00201720 func boss8_UpdatePart_5 hand =seq:GEKAN_AREA8B r=0.02 child part follows parent with two sprites, sets completion flag bit 0x20
+0x002018f8 func boss8_InitLimbA hand =seq:GEKAN_AREA8B r=0.00 limb init: base init, size and animation table pointer
+0x00201918 func boss8_UpdateLimbA hand =seq:GEKAN_AREA8B r=0.08 limb update for states 2,3,7: animates, falls off, sets flag bit 0x40; state 8 explodes
+0x00201a4c func boss8_InitLimbB hand =seq:GEKAN_AREA8B r=0.00 limb init: base init, size and animation table pointer
+0x00201a98 func boss8_UpdateLimbB hand =seq:GEKAN_AREA8B r=0.08 limb update like limb A, sets completion flag bit 0x80
+0x00201bc4 func boss8_InitLimbC hand =seq:GEKAN_AREA8B r=0.00 limb init with facing flag set
+0x00201be8 func boss8_UpdateLimbC hand =seq:GEKAN_AREA8B r=0.09 limb update for states 2,3,7 and explode on state 8, sets completion flag bit
+0x00201d28 func boss8_InitLimbD hand =seq:GEKAN_AREA8B r=0.00 limb init with facing flag set
+0x00201d4c func boss8_UpdateLimbD hand =seq:GEKAN_AREA8B r=0.09 limb update for states 2,3,7 and explode on state 8, sets completion flag bit
+0x00201ece func boss8_InitLimbE hand =seq:GEKAN_AREA8B r=0.06 limb init: base init, size and animation table pointer
+0x00201eec func boss8_UpdateLimbE hand =seq:GEKAN_AREA8B r=0.02 limb update: animates via table, on state 8 sets explosion and completion flag
+0x00202010 func boss8_InitDebrisA hand =seq:GEKAN_AREA8B r=0.00 debris init: calls boss8_ResetObject, sets facing flag, size, animation table
+0x00202032 func boss8_UpdateDebrisA hand =seq:GEKAN_AREA8B r=0.03 debris update: animate via table, state 8 move with velocity then remove and set flag
+0x00202156 func boss8_InitDebrisB hand =seq:GEKAN_AREA8B r=0.00 debris init: calls boss8_ResetObject, size, animation table
+0x002021a4 func boss8_UpdateDebrisB hand =seq:GEKAN_AREA8B r=0.02 debris update using animate and move helpers, state 8 removes and sets flag
+0x002022c0 func boss8_InitDebrisC hand =seq:GEKAN_AREA8B r=0.00 debris init: calls boss8_ResetObject, size, animation table
+0x002022de func boss8_UpdateDebrisC hand =seq:GEKAN_AREA8B r=0.02 debris update using animate and move helpers, state 8 removes and sets flag
+0x002023fe func boss8_InitDebrisD hand =seq:GEKAN_AREA8B r=0.00 debris init: calls boss8_ResetObject, facing flag, size, animation table
+0x00202420 func boss8_UpdateDebrisD hand =seq:GEKAN_AREA8B r=0.02 debris update using animate and move helpers, state 8 removes and sets flag
+0x0020253a func boss8_InitDebrisE hand =seq:GEKAN_AREA8B r=0.00 debris init: calls boss8_ResetObject, facing flag, size, animation table
+0x0020255c func boss8_UpdateDebrisE hand =seq:GEKAN_AREA8B r=0.02 debris update using animate and move helpers, state 8 removes and sets flag
+0x0020263c func boss8_InitDebrisF hand =seq:GEKAN_AREA8B r=0.00 debris init: calls boss8_ResetObject, size, animation table
+0x0020265a func boss8_UpdateDebrisF hand =seq:GEKAN_AREA8B r=0.02 debris update states 2,3 move and animate, state 7 removes and sets flag bit 1
+0x00202770 func boss8_InitDebrisG hand =seq:GEKAN_AREA8B r=0.00 debris init: calls boss8_ResetObject, facing flag, size, animation table
+0x00202792 func boss8_UpdateDebrisG hand =seq:GEKAN_AREA8B r=0.02 debris update states 2,3 move and animate, state 7 removes and sets flag bit 2
+0x00202a8e func boss8_InitProjectileObject hand sets projectile fields: flags, speed, position from table by side index, sprite pointer, direction flip
+0x00202aea func boss8_UpdateFallingObject hand =seq:GEKAN_AREA8B r=0.03 integrates velocity and accel into position, builds sprite commands, removes when below floor
+0x00202df6 func boss8_ClearObjectState hand zeroes boss object and part state fields and the child entry array
+0x00202e78 func boss8_AdvanceAnimFrame hand advances animation frame counter with per-frame delay and wraps frame index from param table
+0x00202eb8 func boss8_AnimateFollowParent hand =seq:GEKAN_AREA8B r=0.00 sets animation pointer from table, positions object at parent plus offset, tail-calls update
+0x00202ef6 func boss8_AnimateSetFrame hand =seq:GEKAN_AREA8B r=0.00 sets animation pointer and current frame from table then tail-calls update
+0x00202f18 func boss8_ApplyVelocitySlotMove hand =seq:GEKAN_AREA8B r=0.05 three-step velocity: load vel/accel from table, wait frames, then integrate into slot position fields
+0x00202fbe func boss8_ApplyVelocityMove hand =seq:GEKAN_AREA8B r=0.05 three-step velocity: load vel/accel from table, wait frames, then integrate into object position
+0x0020306c func boss8_SpawnObjectsFromTable hand =seq:GEKAN_AREA8B r=0.03 loops spawn table entries creating objects, reset, copy state, place x/y, set size and flags
+0x002030e8 func boss8_SpawnObjectsFromParamTable hand =seq:GEKAN_AREA8B r=0.01 loops spawn param table (0x30 bytes each), sets type, flags, position, velocity, accel
+0x00203198 func boss8_BuildSpriteCommands hand =seq:GEKAN_AREA8B r=0.08 builds VDP1 sprite command entries for each object part: rotated quad corners via sine table, texture, priority
+0x0020363c func boss8_UpdateCamera hand =seq:GEKAN_AREA8B r=0.04 camera follow update: saves previous values, dispatches by phase to camera tracking, smooths position
+0x002036f8 func boss8_CameraFollowSimple hand =seq:GEKAN_AREA8B r=0.00 camera target offset from player position and boss, scaled by quarter plus constants
+0x0020372c func boss8_CameraTrackPlayerA hand provisional =seq:GEKAN_AREA8B r=0.12 camera tracking limited by min/max bounds, per-phase state, uses clamp and rand-based shake
+0x00203986 func boss8_CameraTrackPlayerB hand =seq:GEKAN_AREA8B r=0.07 clamps camera x/y bounds, vertical offset depends on boss state, applies shake
+0x00204198 func boss8_InitBossController hand =seq:GEKAN_AREA8B r=0.06 init: base init, loads child object pointers, resets controller fields and attack state
+0x002042dc func boss8_UpdateBossController hand =seq:GEKAN_AREA8B r=0.09 boss controller switch on state 0-11: intro fade, setup, attack choice, defeat; stores hurt checks and flips facing
+0x0020478e func boss8_PickAttackPattern hand =seq:GEKAN_AREA8B r=0.06 picks next controller state from table indexed by life bits, using LCG random
+0x002047f4 func boss8_StartHandAttackA hand provisional =seq:GEKAN_AREA8B r=0.15 picks random attack variant using LCG and sets up two hand slot motion records, counts and state
+0x00204984 func boss8_UpdateHandSlam hand provisional =seq:GEKAN_AREA8B r=0.13 ten-step slam sequence driving both hand objects via slot motion records, sound effects, sets state at end
+0x00204de0 func boss8_UpdateHandSweep hand =seq:GEKAN_AREA8B r=0.01 nine-step sweep sequence for both hands with timers from table, slot targets and sounds
+0x0020526a func boss8_UpdateHandChase hand =seq:GEKAN_AREA8B r=0.03 chase sequence: waits, chooses closer hand to player, random delay via LCG, then restores hands
+0x0020569a func boss_UpdateIntroPhaseSync hand provisional =seq:GEKAN_AREA8B r=0.14 4-state phase machine on state byte +4, timers, sets entity state bytes 0xb/0xe/0xc on both players, calls helper
+0x00205820 func boss_UpdateRoundResetState hand provisional =seq:GEKAN_AREA8B r=0.13 handles round/reset phases 0-2, reinitialises two-entity table (stride 0x1c), swaps entity states, draws via callback
+0x00205bac func boss_UpdateDefeatSequence hand =seq:GEKAN_AREA8B r=0.04 phase machine cases 0-3, LCG random (mult DAT), spawns debris objects with random offsets, moves entity with accel
+0x00205ff4 func boss_InitEffectEntity hand =seq:GEKAN_AREA8B r=0.05 sets position, state 1, anim fields, then tail-calls object state-setter with PTR table
+0x00206068 func boss_UpdateHelperSprite hand =seq:GEKAN_AREA8B r=0.08 switch on state byte +8; follows parent, sine-table orbit motion using LCG, picks sprite frame, calls draw callback
+0x00206360 func boss_UpdateFallingDebris hand =seq:GEKAN_AREA8B r=0.09 4-phase physics for debris (velocity+accel on xyz), spawns child objects with random offsets, bounces
+0x00206640 func boss_InitHelperLeft hand =seq:GEKAN_AREA8B r=0.01 init of helper object side 0, sets position, collision box fields +0x18..0x28, anim words, spawn table
+0x0020674c func boss_InitHelperRight hand =seq:GEKAN_AREA8B r=0.01 same as left helper init but side 1, different position constants and tables
+0x00206804 func boss_UpdateOrbitSegmentChain hand =seq:GEKAN_AREA8B r=0.09 switch on state; positions chain segment relative to parent offsets by side, calls update helpers and recompute rel coords
+0x00206b06 func boss8_UpdateBodyHitStateMachine hand 13-state switch for pieces knocked away and returning, adds or subtracts offsets by side, timers, final state 0xc
+0x00206f18 func boss_UpdateSegmentFall hand =seq:GEKAN_AREA8B r=0.05 initial velocities from table, applies gravity-like accel after 0x78 frames, spawns random debris child objects
+0x00207112 func boss_UpdateFollowTarget3D hand =seq:GEKAN_AREA8B r=0.08 3-state tween of position toward target xyz with random speed, distance-squared clamp and axis arrival checks
+0x00207514 func boss_InitSegmentSideB hand =seq:GEKAN_AREA8B r=0.07 provisional: init object from table position <<8, side flag, state, anim words, then tail-calls state setter
+0x00207634 func boss_InitSegmentSideA hand =seq:GEKAN_AREA8B r=0.08 provisional: init object position <<8 from table, state 1, anim words, then tail-calls state setter
+0x00207694 func boss_UpdateSegmentAnimFrame hand provisional =seq:GEKAN_AREA8B r=0.15 for states 3-10 sets position from player table (y-0x70) and picks anim word by blink counter; state 0xb calls fall
+0x00207748 func boss_UpdateSegmentFallShort hand =seq:GEKAN_AREA8B r=0.05 initial velocity from table, accel loop in phases 1-3, spawns random debris child with offsets from hitbox
+0x00207994 func boss_InitChildFromParent hand =seq:GEKAN_AREA8B r=0.00 calls base init, copies state fields, side flag and sprite pointer from parent object
+0x002079c6 func boss_UpdateHurtboxDamage hand =seq:GEKAN_AREA8B r=0.08 follows parent position with offset table, tests hitboxes vs player, applies damage and hitstop via callbacks, flashes on hit (was boss_UpdateAttackHitCheck)
+0x00207e66 func boss_InitProjectileA hand provisional =seq:GEKAN_AREA8B r=0.12 sets flag, anim words, sprite pointer, anim table; flips anim word if side flag set
+0x00207ea0 func boss_UpdateProjectileMotion hand =seq:GEKAN_AREA8B r=0.04 integrates velocity and accel on xyz, calls update helper, destroys object when y below floor threshold
+0x00207f52 func boss_InitProjectileRandomSide hand provisional =seq:GEKAN_AREA8B r=0.14 init anim words, LCG random side flag and random choice, tail-calls state setter for branches 1 or 3
+0x00207fcc func boss_CallIfConditionTrue hand =GEKAN_AREA8B calls a test function, if nonzero tail-calls action function with same argument
+0x00208130 func boss_InitProjectileRandomSideB hand provisional =seq:GEKAN_AREA8B r=0.11 like projectile init with random side, tail-calls state setter only when random value is 0
+0x002081a0 func boss_CallIfConditionTrue_2081a0 hand =GEKAN_AREA8B calls a test function, if nonzero tail-calls action function with same argument
+0x002081ca func boss_TestPlayerOverlapSide hand =seq:GEKAN_AREA8B r=0.06 builds two rects, calls rect-overlap test, returns bit flags for player left/right and above/below
+0x0020834e func boss_FindOverlappingObject hand =seq:GEKAN_AREA8B r=0.10 walks active object list, builds rect from sprite bounds, returns first overlapping object in same layer
+0x0020849e func boss_SpawnTimerObject hand =seq:GEKAN_AREA8B r=0.00 spawns object via allocator callback and stores a timer/value in its work area +8
+0x002084d4 func boss_AdvanceAnimFrameCounter hand =seq:GEKAN_AREA8B r=0.01 steps frame counter and sequence index from anim table, sets or clears frame-done and end-of-anim flag bits
+0x0020857c func boss_ComputeAimAnglesToTarget hand =seq:GEKAN_AREA8B r=0.08 distance via integer sqrt, atan callbacks, sine tables; stores aim vectors and angles in entity table stride 0x30
+0x0020876a func math_IntegerSqrt hand =seq:GEKAN_AREA8B r=0.03 integer square root by stepped search with coarse then fine increments, returns floor root
+0x00208808 func boss_TransformPointArrayByRotation hand =seq:GEKAN_AREA8B r=0.05 rotates 24 and 16 point arrays by three Euler angles using sin/cos tables, adds origin, 14-bit fixed point
+0x00208c26 func boss_SpawnProjectileObject hand =seq:GEKAN_AREA8B r=0.05 allocates object plus 0x60 and 0x58 work areas, initialises position, velocity, flags and sprite pointers from param block (was boss_SpawnBodyPartObject)
+0x00208e8c func boss_UpdateDebrisBounce hand =seq:GEKAN_AREA8B r=0.07 applies gravity on y, wall/floor clamp against arena bounds, stops and sets state 1 when settled, plays SFX periodically
+0x00208f34 func boss_SpawnShockwaveAtParentHeight hand =seq:GEKAN_AREA8B r=0.04 copies height from parent work area, calls helper, decrements counter on failure, sets flag bit 0x10 (was boss_SetEntityHeightFromParent)
+0x00208f62 func boss_DrawProjectedSpriteStrip hand provisional =seq:GEKAN_AREA8B r=0.14 writes VDP1 command-table entries (0x20 bytes) for sprite parts with perspective scale, then calls secondary draw
+0x00209372 func boss_SpawnShockwaveObject hand =seq:GEKAN_AREA8B r=0.06 provisional: allocates object with work areas, init pos from parent, state 0x16 constants, side from player position
+0x002094b4 func boss_SpawnPlayerLockedObject hand =seq:GEKAN_AREA8B r=0.09 provisional: allocates object, positions relative to player entity, state 0x11, anim word chosen by hp thresholds
+0x00209668 func boss_UpdateMainStateMachine hand provisional =seq:GEKAN_AREA8B r=0.11 per-frame boss AI: transition table by flags, 21-state switch calling boss_* actions, then collision and tile check switch
+0x00209b48 func boss_CheckCeilingTile hand =seq:GEKAN_AREA8B r=0.07 =GEKAN_AREA61_LO tile lookup above head, tile 2 sets state 0x14, tile 0xf sets flag
+0x00209bea func boss8_AdjustOffsetByInput hand adds table delta to param_2 field 0x10 depending on masked flag value of object field 0x2a
+0x00209c38 func boss_DecideApproachOrTurnAround hand =seq:GEKAN_AREA8B r=0.07 if player within x/y range same layer goes to state 0xe, else moves horizontally with tile check and picks state 0 or 3
+0x00209cd4 func boss_UpdateWalkPatrol hand provisional =seq:GEKAN_AREA8B r=0.10 =GEKAN_AREA61_LO state 0 waits anim end then state 1 walk speed 0x66 by facing with jump velocity
+0x00209db6 func boss_UpdateTurnSequence hand =seq:GEKAN_AREA8B r=0.09 flips facing on flag, advances sub-state 0xe to 0xf/0x10 depending on player x, then to state 0x12
+0x00209e30 func boss_StartJumpBackAfterTurn hand =seq:GEKAN_AREA8B r=0.08 on flag sets state 0x13 and launch velocities depending on sub-state 0x12 or 0x13
+0x00209e76 func boss_UpdateLandingRecover hand =seq:GEKAN_AREA8B r=0.08 applies gravity, clamps at floor, on landing resets state to 0xf with horizontal speed by facing
+0x00209f1a func boss_StartWalkTowardState hand provisional =seq:GEKAN_AREA8B r=0.11 =GEKAN_AREA61_LO on anim end state 0xf, substate 0, sets speed by facing
+0x00209f68 func boss_CheckPlayerRangeReturn hand =seq:GEKAN_AREA8B r=0.05 =GEKAN_AREA61_LO on anim end tests player offset window and layer, else state 0xf substate 5
+0x0020a01e func boss_StartAttackJump hand provisional =seq:GEKAN_AREA8B r=0.15 =GEKAN_AREA61_LO state change sets substate 0x14 or 0x15 with different jump velocity by input flags
+0x0020a1f6 func boss_UpdateAttackMove hand provisional =seq:GEKAN_AREA8B r=0.10 =GEKAN_AREA61_LO sets horizontal speed by input flag, tile and player checks during attack
+0x0020a410 func boss_CheckFloorLanding hand =seq:GEKAN_AREA8B r=0.07 =GEKAN_AREA61_LO tile lookup below feet, snaps landing when falling, returns tile
+0x0020a4d2 func boss_MoveHorizontalWithTileCheck hand provisional =seq:GEKAN_AREA8B r=0.11 =GEKAN_AREA61_LO moves x by velocity plus offset by facing, tile check and revert on block
+0x0020a5a6 func boss_UpdateHurtKnockback hand =seq:GEKAN_AREA8B r=0.09 sub-state machine 10/11 with hit counter, hurt sprite frames, spawns effect, goes to state 0x14 or 0xc, recovery on landing
+0x0020a860 func boss_UpdateKnockedAirBounce hand =seq:GEKAN_AREA8B r=0.08 on state change sets launch velocity by sub-state, bounces vertically on wall/floor flag, ends in state 10
+0x0020a998 func boss_EnterHopBackState hand =seq:GEKAN_AREA8B r=0.10 =GEKAN_AREA61_LO plays sound 5, sets horizontal speed by input, hop velocity, substate 0xc
+0x0020aa3c func boss_TurnOnFlagThenDecide hand =seq:GEKAN_AREA8B r=0.00 on flag clears it, flips facing, tail-calls boss_DecideApproachOrTurnAround
+0x0020aa5c func boss_ResetOnAnimFrame0xe hand =seq:GEKAN_AREA8B r=0.07 when anim index is 0xe clears counter, and on flag flips facing and resets to state 0
+0x0020aa8e func boss_TurnAndStartWalkAway hand provisional =seq:GEKAN_AREA8B r=0.11 on flag clears it, flips facing, sets state 0x10 and horizontal speed by facing
+0x0020aadc func boss_StartChargeApproach hand =seq:GEKAN_AREA8B r=0.05 =GEKAN_AREA61_LO on anim end sets AI fields 0x24 0x28, state 0xf substate 5
+0x0020ab04 func boss_HitPlayerObject hand =seq:GEKAN_AREA8B r=0.01 =GEKAN_AREA61_LO when flagged finds target object, sets its hit flags by relative x
+0x0020abc4 func boss8_UpdateThrownPartArc hand provisional phased motion of boss thrown part, moves position, scales to screen, calls boss_DrawSpriteCommand, restores state
+0x0020ae24 func boss_ShiftForAttackSpawn hand provisional =seq:GEKAN_AREA8B r=0.13 =GEKAN_AREA61_LO saves state, sets state 0x16 and offsets position by facing for attack hitbox
+0x0020ae80 func boss8_HitOverlappingObjects hand walks object list, tests box overlap with attacker box, sets knockback flags and damage on overlapping objects
+0x0020b020 func boss_CheckAttackHitObjects hand provisional =seq:GEKAN_AREA8B r=0.14 loops active object list, tests x/y interval overlap with attack box, flags hit objects with hit direction and damage values
+0x0020b24e func boss_DrawSpriteCommand hand =seq:GEKAN_AREA8B r=0.07 =GEKAN_AREA61_LO appends VDP1 command entries for boss sprite from tables
+0x0020b4a4 func boss_EnterSpawnedState hand =seq:GEKAN_AREA8B r=0.10 =GEKAN_AREA61_LO state change calls hook, else zeroes velocity, spawns effects, swaps anim table, state 0x15

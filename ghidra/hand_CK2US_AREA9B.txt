@@ -1,0 +1,80 @@
+0x00200000 func boss_Update hand =seq:GEKAN_AREA9B r=0.04 per-frame entry; runs boss_DispatchState on object data at +0x18
+0x00200030 func boss_Init hand =seq:GEKAN_AREA9B r=0.04 initialises boss struct fields state, position, velocity, frame pointers
+0x00200244 func boss_DispatchState hand =seq:GEKAN_AREA9B r=0.10 switch on state byte at +8 calling the per-state handlers
+0x00200424 func boss_ChooseNextState hand provisional =seq:GEKAN_AREA9B r=0.11 picks next state from random and distance, returns state id
+0x00200578 func boss_StateWalk hand =seq:GEKAN_AREA9B r=0.09 walk state moving x by velocity toward player
+0x0020067a func boss_AnimLoopFrames hand provisional: state 0 resets counters, then cycles frame index 0..0x1b every 2 ticks forever
+0x002006ec func boss_StateTurn hand =seq:GEKAN_AREA9B r=0.13 provisional turn state flipping facing flag at +0xa
+0x002007c0 func boss_StateTurnAround hand provisional =seq:GEKAN_AREA9B r=0.13 attack swing state checking frame counter (was boss_StateAttackSwing)
+0x00200898 func boss_AnimSlideWithSound hand provisional: plays sound at start, slides x by +0x38 speed while frame counts down from 0xe, then sound and state 1
+0x0020092e func boss_AnimPlayToState6 hand provisional: steps frame every 2 ticks up to 0x31, then resets frame and sets state 6
+0x0020097c func boss_StateHopArc hand =seq:GEKAN_AREA9B r=0.09 attack recovery state with velocity decay (was boss_StateAttackRecover)
+0x00200b84 func boss_AnimTauntSequence hand provisional: three substates of timed frames with sounds, toggles facing flag at end and returns to state 1
+0x00200c4c func boss_AnimJumpArc hand provisional: 5 substates: windup, jump with speed +0x38 and gravity +0x44, landing sets y and sound, then back to state 1
+0x00200e00 func boss_AnimMultiPhaseSound hand provisional: substates play sounds and step frame up or down, ending at state 1
+0x00200f0e func boss_StateRiseAndSweep hand =seq:GEKAN_AREA9B r=0.07 airborne update applying gravity at +0x48 (was boss_StateJumpAir)
+0x0020103e func boss_StateFallToFloor hand =seq:GEKAN_AREA9B r=0.09 landing check against floor height returning flag (was boss_StateJumpLand)
+0x002010e2 func boss_StateCharge hand =seq:GEKAN_AREA9B r=0.06 provisional charge state moving fast in facing direction
+0x0020125a func boss_AnimFallAndShake hand provisional: sets globals and sound, drops y to ground limit, shakes, then state 0xe
+0x0020136a func boss_StateGlideToAnchor hand =seq:GEKAN_AREA9B r=0.05 charge end slowing down (was boss_StateChargeEnd)
+0x00201448 func boss_StateWaitAnimMark hand =seq:GEKAN_AREA9B r=0.08 small helper advancing animation frame index (was boss_AnimStepFrame)
+0x00201478 func boss_StateHurtStart hand =seq:GEKAN_AREA9B r=0.15 provisional hurt reaction start sets knockback velocity
+0x0020155a func boss_StateHurtRecover hand =seq:GEKAN_AREA9B r=0.06 provisional hurt recovery advancing animation
+0x00201640 func boss_StateSineSweep hand =seq:GEKAN_AREA9B r=0.00 defend end with state reset (was boss_StateDefendEnd)
+0x0020182c func boss_StateSpecialA hand =seq:GEKAN_AREA9B r=0.09 provisional special attack state A animation
+0x00201a0c func boss_AnimKnockbackFlight hand provisional: sets horizontal and vertical speed by facing, moves until x passes edge limits, then calls next-state function
+0x00201b06 func boss_StateSpecialB hand =seq:GEKAN_AREA9B r=0.12 provisional special attack state B animation
+0x00201c74 func boss_AnimBounceBetweenLimits hand provisional: picks speeds by position and facing, moves x/y until limits crossed with sound, then state 0x17
+0x00201df8 func boss_AnimDropAcrossScreen hand provisional: multi-substate: sound, set flags, call two callbacks, lower y, then move x across screen, ends in state 0x12
+0x00201f6c func boss_StateDeath hand =seq:GEKAN_AREA9B r=0.02 death sequence state with explosions, flags and sub-steps
+0x00202410 func boss_DeathExplosionSequence hand provisional: bounces at screen edges with gravity, then writes per-scanline window table with sine lookup (wipe effect), ends in state 0x1a
+0x002029f2 func boss_StateFadeOut hand =seq:GEKAN_AREA9B r=0.06 death fade out state, ends boss object
+0x00202b12 func boss_PickAttackState hand =seq:GEKAN_AREA9B r=0.00 tiny helper returning attack state id
+0x00202b60 func boss_TakeDamage hand provisional: if hit flag set subtracts damage from HP, flash timer, sound and score, picks hurt or defeat state 0x19 by HP thresholds
+0x00202da0 func boss_InitPartsA hand =seq:GEKAN_AREA9B r=0.05 small helper storing previous state and new state (was boss_SetStateHelper)
+0x00202e38 func boss_PartUpdateFlagSpawns hand provisional =seq:GEKAN_AREA9B r=0.12 adds velocities to x y z fixed point position (was boss_ApplyVelocity)
+0x00203030 func boss_InitPartsB hand =seq:GEKAN_AREA9B r=0.00 adds gravity to vertical velocity (was boss_ApplyGravity)
+0x00203078 func boss_PartUpdateOnPhase6 hand provisional =seq:GEKAN_AREA9B r=0.13 clamps y position to floor level (was boss_ClampToFloor)
+0x002031d4 func boss_InitPartsC hand =seq:GEKAN_AREA9B r=0.00 sets facing flag toward player (was boss_FaceTarget)
+0x00203216 func boss_PartUpdateOnPhaseB hand provisional =seq:GEKAN_AREA9B r=0.13 tests player overlap with boss hitbox (was boss_CheckPlayerHit)
+0x002032d4 func boss_SelectHitboxByFrame hand provisional: copies 3-byte hitbox record from table chosen by anim id and frame thresholds into output
+0x002033d6 func part_InitSimple hand =seq:GEKAN_AREA9B r=0.00 provisional child part init storing parent pointer
+0x002033f8 func part_UpdateHitboxTabled hand =seq:GEKAN_AREA9B r=0.07 child part update following parent with offset (was part_UpdateOrbit)
+0x0020370a func part_InitFollow hand =seq:GEKAN_AREA9B r=0.06 provisional child part init small
+0x0020372c func part_UpdateHitboxFollow hand =seq:GEKAN_AREA9B r=0.07 child part follows parent position (was part_UpdateFollow)
+0x00203906 func part_InitSpriteSet hand =seq:GEKAN_AREA9B r=0.00 child part advance animation (was part_UpdateAnim)
+0x00203950 func part_UpdateWaitDraw hand provisional =seq:GEKAN_AREA9B r=0.11 child part check animation finished returns char (was part_CheckDone)
+0x00203992 func part_StatePlaceAtParent hand =seq:GEKAN_AREA9B r=0.07 child part wait state (was part_StateWait)
+0x00203a48 func part_InitFlyAimed hand =seq:GEKAN_AREA9B r=0.03 child part flying state with velocity (was part_StateFly)
+0x00203ba8 func part_UpdateFlyTimed hand =seq:GEKAN_AREA9B r=0.10 child part hit reaction (was part_StateHit)
+0x00203c4e func part_InitFlying hand =seq:GEKAN_AREA9B r=0.00 child part expiry and removal (was part_StateExpire)
+0x00203cd0 func part_UpdateOrbitBob hand =seq:GEKAN_AREA9B r=0.05 projectile part update returns char flag (was part_UpdateProjectile)
+0x00203e2e func part_InitAtBossX hand provisional =seq:GEKAN_AREA9B r=0.11 projectile movement step (was part_UpdateProjectileMove)
+0x00203ee0 func part_UpdateSpawnTimed hand provisional =seq:GEKAN_AREA9B r=0.11 bounds check returning int (was part_CheckBounds)
+0x00203fcc func part_InitRandomNearParent hand =seq:GEKAN_AREA9B r=0.02 bullet part init (was part_InitBullet)
+0x0020403a func part_UpdateSimpleDraw hand =seq:GEKAN_AREA9B r=0.00 trivial helper returning constant (was part_StubReturnFlag)
+0x002040b8 func part_InitRandomBodyOffset hand =seq:GEKAN_AREA9B r=0.07 bullet part update returns int (was part_UpdateBullet)
+0x0020414c func part_UpdateAtStoredOffset hand =seq:GEKAN_AREA9B r=0.00 child part small state setter (was part_SetStateSmall)
+0x00204204 func part_InitSpriteTables hand =seq:GEKAN_AREA9B r=0.00 tiny child part init (was part_InitSmallA)
+0x00204228 func part_UpdateAimedAtParent hand =seq:GEKAN_AREA9B r=0.00 tiny child part init (was part_InitSmallB)
+0x0020427a func part_InitFalling hand =seq:GEKAN_AREA9B r=0.00 small child part init (was part_InitSmallC)
+0x002042c4 func part_UpdateFalling hand =seq:GEKAN_AREA9B r=0.03 small child part update (was part_UpdateSmall)
+0x0020436e func stub_00204980 hand =seq:GEKAN_AREA9B r=0.00 tiny wrapper function with single call
+0x00204382 func part_SpawnAtRotatedOffset hand =seq:GEKAN_AREA9B r=0.04 spawns part with four parameters returns int (was part_SpawnWithParams)
+0x00204536 func part_InitAtTableOffset hand provisional =seq:GEKAN_AREA9B r=0.10 large child part init (was part_InitLarge)
+0x002045c8 func part_UpdateMain hand =seq:GEKAN_AREA9B r=0.10 provisional large child part update with many sub-states
+0x00204e86 func part_InitAtParentPos hand =seq:GEKAN_AREA9B r=0.00 effect part init (was part_InitEffect)
+0x00204eba func part_UpdateArcPiece hand provisional =seq:GEKAN_AREA9B r=0.11 effect part update returns ushort (was part_UpdateEffect)
+0x00205010 func part_InitFixedPosByParam hand =seq:GEKAN_AREA9B r=0.02 sets part animation frame pointer (was part_SetFrame)
+0x00205078 func boss_DrawScaledSpritesPhase hand provisional: sets +0x14 from global phase masked, then calls part_DrawScaledSprites(obj,1)
+0x002050be func part_InitRing hand provisional =seq:GEKAN_AREA9B r=0.11 part init setting +0x34 +0x50 +0x54 +0x1a by parent index at +0x20
+0x00205134 func part_UpdateRingOrbit hand =seq:GEKAN_AREA9B r=0.09 orbit position from sine table around parent, then draw scaled via part_DrawScaled
+0x00205204 func part_InitRingB hand =seq:GEKAN_AREA9B r=0.02 part init setting flags +0x28 and frame table pointer by parent index
+0x0020528c func part_UpdateRingSpin hand =seq:GEKAN_AREA9B r=0.04 spinning orbit update by parent index with angle step, then part_DrawScaled
+0x002053a0 func part_GetDistanceBucket hand =seq:GEKAN_AREA9B r=0.06 bucket 0-4 from x distance to camera and facing
+0x00205404 func math_RandomState hand =seq:GEKAN_AREA9B r=0.03 LCG random update, returns 0 1 or 2
+0x0020543c func part_DrawRotatedSprites hand =seq:GEKAN_AREA9B r=0.10 builds VDP1 sprite commands with rotation, advances animation, returns -1 at end
+0x002058ae func part_DrawScaledSprites hand =seq:GEKAN_AREA9B r=0.08 builds VDP1 scaled or rotated quads with off-screen cull, advances animation
+0x00205e3e func part_DrawAimedSprites hand =seq:GEKAN_AREA9B r=0.07 builds VDP1 quads aimed using parent boss frame data, advances animation
+0x00206980 func boss_LoadScreenInit hand provisional: calls boss_ResetFields(2), loads BOSS9SCR.BIN, sets up several callbacks, stores player position at +0x4c/+0x50
+0x00206a8c func boss_ResetFields hand provisional: initialises object field block (+0x10..+0xac), speeds and flags when param is 2

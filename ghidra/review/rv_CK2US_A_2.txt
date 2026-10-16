@@ -1,0 +1,45 @@
+CK2US_A 0x0601256a obj_BreakableUpdate CONFIRM obj_BreakableUpdate state machine idle/shake/hit/break, called from breakable task
+CK2US_A 0x06012704 obj_BreakablePlayerPushDir CONFIRM obj_BreakablePlayerPushDir player-relative dx/dy returns push direction with debounce
+CK2US_A 0x060127f4 obj_BreakableMarkAndCheckAll CONFIRM obj_BreakableMarkAndCheckAll ORs bit into mask, true when all four bits set
+CK2US_A 0x06012838 obj_BreakableSpawnSparks CONFIRM obj_BreakableSpawnSparks bumps counter and spawns two parts
+CK2US_A 0x06012856 obj_BreakableSpawnDebris CONFIRM obj_BreakableSpawnDebris every 16 frames spawns debris child with offset table
+CK2US_A 0x0601286a obj_BreakableSpawnPart CONFIRM obj_BreakableSpawnPart allocs part child offset by index*6 table
+CK2US_A 0x06013068 chain_ReleaseSegments CONFIRM chain_ReleaseSegments sets live segments to state 5, spawns more if short
+CK2US_A 0x060131fe obj_InitSpriteDefaults CONFIRM obj_InitSpriteDefaults sets sprite attr fields, frame and state zero
+CK2US_A 0x0601321e obj_DropRespawnTask CONFIRM obj_DropRespawnTask falls with gravity, puff and debris, respawns at table pos
+CK2US_A 0x06013b34 vdp2_WriteTile3x3 RENAME hud_WritePanelTileMap copies tile words plus offset into panel map then builds digit tiles
+CK2US_A 0x06013c0c vdp2_AnimateColorRam RENAME hud_FlashTimerPalette timer low: steps counter and swaps palette copy; called by timer display refresh
+CK2US_A 0x06013ca4 hud_AddTimerValue CONFIRM hud_AddTimerValue adds to timer, clamps, stops alarm, redraws
+CK2US_A 0x06013d78 sound_StopTimerAlarm CONFIRM sound_StopTimerAlarm clears alarm flag and sends sound command 7
+CK2US_A 0x06013de4 vdp2_WriteTile3x3_2 UNSURE vdp2_WriteTile3x3_2 8-step timed state machine calling colour block ptr helper; purpose unclear
+CK2US_A 0x06013fba fade_ResetState RENAME hud_ResetPanelSlide resets state vars used by hud_UpdatePanelSlide
+CK2US_A 0x06013fcc hud_UpdatePanelSlide CONFIRM hud_UpdatePanelSlide slide state machine offset 0..0x28 step 4
+CK2US_A 0x06014218 fade_ResetState2 RENAME hud_ResetScoreState clears score and sets extra-life threshold, matching hud_CheckScoreLimit
+CK2US_A 0x0601422a hud_AddScore CONFIRM hud_AddScore adds to score, checks limit, flags redraw
+CK2US_A 0x0601424a hud_CheckScoreLimit CONFIRM hud_CheckScoreLimit clamps score, grants life at threshold with sound
+CK2US_A 0x060143c4 mem_ClearBuffer CONFIRM mem_ClearBuffer zeroes fixed-length byte buffer
+CK2US_A 0x060143f4 map_SpawnObjectsInView CONFIRM map_SpawnObjectsInView converts camera to cell range and spawns per cell
+CK2US_A 0x060149ce obj_FreeSimple CONFIRM obj_FreeSimple clears active word; used as final free by tasks
+CK2US_A 0x060152c4 enemy_Update_A CONFIRM enemy_Update_A init part type 1, cull, draw, hit then anim death
+CK2US_A 0x06015412 obj_BobPathTask UNSURE obj_BobPathTask cycles 3 table positions on child; bobbing not evident
+CK2US_A 0x06015484 enemy_Update_B CONFIRM enemy_Update_B like A with two-part sprite and spin angle
+CK2US_A 0x0601560c enemy_AnimateFrameTable RENAME enemy_UpdateNoCull same init/draw/hit/death machine as A, no cull or table animation
+CK2US_A 0x0601568c enemy_Update_G CONFIRM enemy_Update_G same machine with part type 5; does not call frame table
+CK2US_A 0x060157f8 enemy_Update_I RENAME enemy_UpdateOrbitParts calls obj_UpdateOrbitOffsets each frame for orbiting parts
+CK2US_A 0x06015892 obj_UpdateOrbitOffsets CONFIRM obj_UpdateOrbitOffsets 0-0x2f counter drives two children from 12-entry circular table
+CK2US_A 0x06015a44 obj_ThrownFlightStateC CONFIRM obj_ThrownFlightStateC gravity and x velocity via obj_MoveAndCollide, then fall-off and free
+CK2US_A 0x06015ea4 obj_ThrownFlightStateE CONFIRM obj_ThrownFlightStateE same as C with part type 6
+CK2US_A 0x0601656e obj_MoveAndCollide CONFIRM obj_MoveAndCollide applies gravity and x velocity, tile probes, object rect overlap, returns hit flags
+CK2US_A 0x06016bd8 obj_SetupPartType1 CONFIRM obj_SetupPartType1 attaches 1 node, init sprite state, type 1 table
+CK2US_A 0x06016c8c obj_SetupPartType6 CONFIRM obj_SetupPartType6 attaches 1 node, type 6 table
+CK2US_A 0x06016cba obj_SetupPartType5 CONFIRM obj_SetupPartType5 attaches 1 node, type 5 table
+CK2US_A 0x06016d14 obj_SetupPartType4 CONFIRM obj_SetupPartType4 attaches 2 nodes, type 4 tables
+CK2US_A 0x06016d54 obj_SetupPartType7 CONFIRM obj_SetupPartType7 attaches 3 nodes, type 7 nested tables
+CK2US_A 0x06016e0a obj_StartAnimTable CONFIRM obj_StartAnimTable resets index, sets death anim table and first offset
+CK2US_A 0x06016e5c obj_StepPartOffsetTable CONFIRM obj_StepPartOffsetTable draws, advances index loads x/y offsets from table else next state
+CK2US_A 0x06017070 map_SpawnVisibleObjects CONFIRM map_SpawnVisibleObjects same cell sweep as map_SpawnObjectsInView but using list at +4 and other cell func
+CK2US_A 0x06017594 obj_SpawnChild CONFIRM obj_SpawnChild allocs child with 0x60 and 0x28 blocks at offset from parent
+CK2US_A 0x060178ec obj_Free CONFIRM obj_Free clears spawn flag byte, frees lists and slot
+CK2US_A 0x06017922 obj_FreeKeepSpawnFlag CONFIRM obj_FreeKeepSpawnFlag same as obj_Free without clearing spawn flag
+CK2US_A 0x06018f30 obj_CollideHorizontalTiles CONFIRM obj_CollideHorizontalTiles probes left/right edge and pushes x out, returns code
+CK2US_A 0x06019098 obj_CollideVerticalTiles CONFIRM obj_CollideVerticalTiles probes top/bottom edge and pushes y out, returns code

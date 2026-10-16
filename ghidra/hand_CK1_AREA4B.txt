@@ -1,0 +1,43 @@
+0x00200000 func boss4b_StateDispatch hand per-phase dispatcher on obj+0x11: runs init once then calls boss4b_UpdateState each frame
+0x00200030 func boss4b_Init hand provisional: sets boss object fields, initial state 7, sprite and anim tables
+0x00200130 func boss4b_UpdateState hand resets substate on state change, switch on obj+8 calls per-state handlers
+0x00200204 func boss4b_StateIdle hand provisional: state 0 handler, substate counter at +0x26, sets anim table, turns at screen limits
+0x00200370 func boss4b_StateWalk hand provisional: state 1 handler, sets walk anim and x velocity by facing
+0x0020046e func boss4b_StateAttack hand provisional: state 2 handler, references player object x, timed attack substates with callbacks
+0x0020063c func boss4b_StateTurn hand provisional: state handler resetting child frame counters, sets turn animation
+0x002006d4 func boss4b_StateJump hand provisional: state handler setting upward velocity and gravity acceleration, jump animation
+0x002007de func boss4b_StateHurt hand provisional: larger state handler with sound calls, knockback and hit flash substates
+0x00200adc func boss4b_StateSpecialAttack hand provisional: state handler with child spawn calls and timers
+0x00200c6c func boss4b_StateFall hand provisional: sets y velocity, anim table, advances substate
+0x00200d0c func boss4b_StateStun hand provisional: state handler with callbacks and sound calls, substate machine
+0x00200f22 func boss4b_StateRecover hand provisional: small state handler, sets anim and resets frame counter
+0x00200fee func boss4b_StateDefeat hand provisional: defeat state handler with sound calls and flag globals
+0x002012f8 func boss4b_InitChild hand provisional: initialises child object relative to parent position, sprite and anim tables
+0x002013a8 func boss4b_UpdateChildMove hand moves child by velocity x/y, calls collision/lifetime check, sets phase 2 when finished
+0x00201432 func boss4b_InitEffect hand provisional: initialises effect object with sprite and anim tables, registers callback
+0x00201464 func boss4b_UpdateEffect hand calls helper each frame, sets phase 2 when helper returns nonzero
+0x002014b2 func boss4b_InitProjectile hand provisional: initialises projectile object, sprite, anim and callbacks from parent
+0x00201558 func boss4b_UpdateSineMove hand provisional: x from sine table (phase +0x40 masked), y decreases, tail-calls helper
+0x002015d4 func boss4b_InitPart hand provisional: initialises body part object with state 7, sprite tables
+0x00201628 func boss4b_UpdatePartState hand copies parent previous state, resets substate on change, switch dispatches part handlers
+0x002016ea func boss4b_PartState0 hand provisional: part handler, loads frame table, steps frames following parent
+0x002017d0 func boss4b_PartState1 hand provisional: part handler, loads frame table, steps frames following parent
+0x002018cc func boss4b_PartStateAttack hand provisional: part state handler with callback and anim tables
+0x00201b86 func boss4b_PartState2 hand provisional: part handler, loads frame table, follows parent
+0x00201c98 func boss4b_PartStateSeq hand provisional: part handler with four-step substate sequence and callback
+0x00201ddc func boss4b_PartAttachToParent hand provisional: positions part from parent x with facing offset times 0x800
+0x00201ea2 func boss4b_PartAnimLoop hand provisional: loads frame table, advances frame counter modulo 4, calls helper each tick
+0x00201f44 func boss4b_PartState3 hand provisional: part handler, loads frame table, callback when parent state changes
+0x00202060 func boss4b_PartStateComplex hand provisional: larger part state handler with callbacks and anim tables
+0x00202340 func boss4b_PartState4 hand provisional: part handler, loads frame table, callbacks
+0x00202452 func boss4b_PartStateSub hand provisional: substate 0..2 sequence then tail-calls helper with global
+0x00202580 func boss4b_InitEffectAtPos hand provisional: clears fields, sets position from stack args, zeroes child velocity words
+0x002025a2 func boss4b_PartFollowParentState hand provisional: copies parent x/y, selects frame by parent previous state
+0x0020280a func boss4b_InitAttachedObject hand provisional: places object relative to parent part table offset scaled 0x100 by facing
+0x0020286c func boss4b_UpdateAttachedObject hand provisional: larger update with callbacks and sound
+0x00202c44 func boss4b_InitMinion hand provisional: initialises object with sprite and anim tables from parent
+0x00202c96 func boss4b_UpdateMinionAnim hand steps frame counter every 4 ticks, calls helpers, sets phase 2 when done
+0x00202d02 func boss4b_InitMinion_2 hand provisional: init object with sprite tables, x offset by parent facing
+0x00202d7c func boss4b_UpdateMinionMove hand moves by velocity x/y, calls helper, sets phase 2 when done
+0x00202e28 func boss4b_SpawnWithArgs hand provisional: large spawn/init function taking position and flag args, sets many fields
+0x00203486 func boss4b_DrawPartsSprites hand provisional: large routine iterating objects building sprite commands with camera offsets

@@ -1,0 +1,45 @@
+CK1_A 0x060122dc camera_FollowPlayerB CONFIRM camera_FollowPlayerB follow with lead, y blend when player high; called by dispatcher
+CK1_A 0x06012398 camera_FollowPlayerC CONFIRM camera_FollowPlayerC same x lead, y offset by player height thresholds; dispatch mode
+CK1_A 0x06012450 camera_FollowPlayerD CONFIRM camera_FollowPlayerD same as C with own thresholds; dispatch modes 0x21-0x45
+CK1_A 0x060124e8 obj_ResetPlayerFlags RENAME camera_FollowPlayerStaged is a camera follower not a flag reset: stage byte 0 runs FollowPlayerB then waits for input bit, stage 1 x-only follow
+CK1_A 0x060125d6 camera_FollowPlayerBob CONFIRM camera_FollowPlayerBob x follow plus sine table y bob
+CK1_A 0x060126ec camera_FollowPlayerForward CONFIRM camera_FollowPlayerForward only advances x forward, optional y by flag; used by motion update
+CK1_A 0x06012760 camera_ClampX CONFIRM camera_ClampX clamp x to min/max globals; 7 camera callers
+CK1_A 0x060127a4 camera_ClampY CONFIRM camera_ClampY adds y offset then clamps to min/max; camera callers
+CK1_A 0x0601282c scene_InitByMode CONFIRM scene_InitByMode big mode switch initializing layers and camera state
+CK1_A 0x060174da motion_UpdateByType RENAME scene_UpdateCameraAndLayerMotion runs camera dispatch (or forward camera) then per-layer motion switch each frame
+CK1_A 0x06017bcc motion_SineHorizontal CONFIRM motion_SineHorizontal position plus trig velocity, tile pattern swap
+CK1_A 0x06017c3c motion_OrbitAroundCamera CONFIRM motion_OrbitAroundCamera offset positions, trig from camera angle; orbit plausible
+CK1_A 0x06017d50 motion_FollowCameraScroll CONFIRM motion_FollowCameraScroll velocity from camera scroll minus anchor times factor
+CK1_A 0x06017db0 motion_SineDrawOffset28 CONFIRM motion_SineDrawOffset28 position, draw y +0x28, trig velocity
+CK1_A 0x06017e24 motion_FollowCameraTwoAxis CONFIRM motion_FollowCameraTwoAxis two pos/vel pairs tracking camera scroll
+CK1_A 0x06017f0a motion_SineWithPatternSwap CONFIRM motion_SineWithPatternSwap position, pattern from top bits, trig velocity
+CK1_A 0x06017fa4 data_UnpackAssetEntry RENAME motion_SineVelocityLayerPos no data unpack at all: updates position from base+offset and sets trig velocity; case 0x23 of motion switch
+CK1_A 0x06017ff2 motion_SineWithCameraRangeAndTimer CONFIRM motion_SineWithCameraRangeAndTimer trig motion, camera x range test, countdown with table entry
+CK1_A 0x06018154 data_UnpackAssetEntryChecked RENAME motion_SineOffsetPosition no unpack or flags: position from offset fields 0xb/0xc, trig velocity
+CK1_A 0x060181c8 motion_InitScaledVelocity CONFIRM motion_InitScaledVelocity saves velocity, recomputes via camera-scaled divisions
+CK1_A 0x060182d0 motion_FollowCameraTwoAxisPatternSwap CONFIRM motion_FollowCameraTwoAxisPatternSwap two-axis camera follow plus pattern swap
+CK1_A 0x060183b8 motion_SineBankSwitch CONFIRM motion_SineBankSwitch position, bank pointer from position bits, trig velocity
+CK1_A 0x06018458 motion_SineHalfVelocityRotate CONFIRM motion_SineHalfVelocityRotate draw offsets, half velocity, rotation values
+CK1_A 0x0601856a motion_SineSimple CONFIRM motion_SineSimple position update plus two trig velocity values
+CK1_A 0x060185dc motion_SineSimple_2 RENAME motion_SineSimpleAlt identical to SineSimple apart from lookup helper; avoid numeric suffix
+CK1_A 0x0601862a motion_SineTenFrameTable CONFIRM motion_SineTenFrameTable frame index 0-9 wrap from position bits, two trig pairs
+CK1_A 0x060186ee motion_SineFrameTableA CONFIRM motion_SineFrameTableA frame index from position bits, table 060646fc
+CK1_A 0x060187ac motion_SineFrameTableB CONFIRM motion_SineFrameTableB same as A with table 06064894; no callers seen
+CK1_A 0x06018880 motion_PendulumPhases CONFIRM motion_PendulumPhases phase counters on bytes 0x59-0x5b, swing and reverse, then trig velocity
+CK1_A 0x06018b14 motion_SineScrollTracking CONFIRM motion_SineScrollTracking position, draw offset, pattern, trig velocity plus camera tracking
+CK1_A 0x06018c3e data_CopyEntryRaw CONFIRM data_CopyEntryRaw table entry lookup, byte copy mode 0 or decompress mode 1
+CK1_A 0x06018c9c data_CopyEntryRawGated CONFIRM data_CopyEntryRawGated same with gate on flag and mask
+CK1_A 0x06018cea data_QueueEntryCopy CONFIRM data_QueueEntryCopy looks up entry, queues copy of its block
+CK1_A 0x06018d1a data_QueueEntryCopyGated CONFIRM data_QueueEntryCopyGated same with flag gate
+CK1_A 0x06018db0 data_ApplyEntryTransferList CONFIRM data_ApplyEntryTransferList decodes mode 0-3 entry then blits transfer list pairs
+CK1_A 0x06018f10 mem_ClearBlock64 UNSURE mem_ClearBlock64 clears a constant-size longword block; callers are debug/error screens, size not verified
+CK1_A 0x06018f28 scene_InitLayerSetC CONFIRM scene_InitLayerSetC loads entry 0xc, fills words, sets register cache flags
+CK1_A 0x06018fa6 scene_InitLayerSetD CONFIRM scene_InitLayerSetD loads entry 0xd, fills, clears position, sets bit
+CK1_A 0x06019030 camera_UpdateScrollTarget RENAME scene_StepLayerOrbitScroll writes layer scroll at reg cache 0x70/0x74 from trig of a stepped counter, not camera targets
+CK1_A 0x0601908a scene_InitLayerSet6 CONFIRM scene_InitLayerSet6 loads entry 6 via copy/queue/transfer helpers
+CK1_A 0x060195ce vdp_FlushQueuedBlockCopies CONFIRM vdp_FlushQueuedBlockCopies flushes queued 2D block copies with row stride and clears count
+CK1_A 0x06019630 mem_ClearBytes16 CONFIRM mem_ClearBytes16 clears 16 bytes of global buffer (byte pointer verified)
+CK1_A 0x06019648 var_ClearGlobalWord RENAME vdp_ResetBlockCopyQueue zeroes the count word consumed by vdp_FlushQueuedBlockCopies; callers stub and vblank
+CK1_A 0x0601972c area_InitObjectFromTable CONFIRM area_InitObjectFromTable resets object, loads area entry pointers, camera init, dispatches init
+CK1_A 0x06019afa map_ActivateRowObjects CONFIRM map_ActivateRowObjects walks grid rows near camera, activates each listed object

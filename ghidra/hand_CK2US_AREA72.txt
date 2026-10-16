@@ -1,0 +1,114 @@
+0x00200000 func camera_UpdateScrollFollowOffset hand =seq:GEKAN_AREA72 r=0.04 computes smoothed camera or follow offset from two globals, calls two helper pointers, stores result at +8/+0xc (was enemy_UpdateScrollFollowOffset)
+0x0020080e func enemy_UpdateFrameAnimState hand provisional: state machine stepping animation frame table (obj+0x5c), states 0-5, loads spawn data into globals at state 4
+0x00200a1e func child_InitFollowA hand provisional =seq:GEKAN_AREA72 r=0.12 =GEKAN_AREA61_LO small child follow init
+0x00200a48 func child_UpdateFollowA hand =seq:GEKAN_AREA72 r=0.03 =GEKAN_AREA61_LO child follow update tied to parent state
+0x00200ae4 func child_InitFollowB hand =seq:GEKAN_AREA72 r=0.09 =GEKAN_AREA61_LO small child follow init
+0x00200b24 func child_UpdateFollowB hand =seq:GEKAN_AREA72 r=0.04 =GEKAN_AREA61_LO child follow update tied to parent state
+0x00200c4e func child_InitFollowC hand =seq:GEKAN_AREA72 r=0.04 =GEKAN_AREA61_LO small child follow init
+0x00200c7c func child_UpdateFollowC hand =seq:GEKAN_AREA72 r=0.03 =GEKAN_AREA61_LO child follow update tied to parent state
+0x00200cc8 func enemy_UpdateSpawnThree hand =seq:GEKAN_AREA72 r=0.02 first frame calls obj_InitSpawnThree, then per-frame update via obj_Update_00203f12 and tail-called handlers
+0x00200d3e func obj_InitSpawnThree hand =seq:GEKAN_AREA72 r=0.05 =GEKAN_AREA61_LO init spawning three objects and checking player proximity
+0x00200e8c func enemy_UpdateRangeTriggerAnim hand provisional: state 0 checks player x within range of obj x, then steps animation frames down until state 2
+0x00200f46 func child_InitFollowE hand =seq:GEKAN_AREA72 r=0.09 =GEKAN_AREA61_LO child follow update tied to parent state (was child_UpdateFollowD)
+0x00200fa4 func child_UpdateFollowE hand =seq:GEKAN_AREA72 r=0.04 =GEKAN_AREA61_LO child follow update tied to parent state
+0x00201044 func child_InitFollowD hand provisional =seq:GEKAN_AREA72 r=0.12 =GEKAN_AREA61_LO small child follow init
+0x002010c6 func obj_InitAnimPointer hand =seq:GEKAN_AREA72 r=0.04 =GEKAN_AREA61_LO object init (was obj_Init_0020416a)
+0x002010fc func enemy_CheckHitLoadReaction hand =seq:GEKAN_AREA72 r=0.00 if state 0 and hit test passes, loads reaction table entry into globals and sets state 1
+0x0020123a func enemy_InitHitFlashState hand =seq:GEKAN_AREA72 r=0.04 sets anim flags, sprite table pointer and frame at +0x5c; sets flag 8 when position +0x34 below threshold
+0x00201270 func enemy_CheckHitSetFlag hand =seq:GEKAN_AREA72 r=0.04 if state 0 and hit test passes with level/char condition, sets global flag 1 or 2 and state 1
+0x002012dc func item_UpdateThrownAction hand calls item_InitThrown on first frame, then dispatches via function pointers depending on parent state and button bit 0x20
+0x00201372 func item_InitThrown hand =seq:GEKAN_AREA72 r=0.08 =GEKAN_AREA61_LO init for thrown item
+0x0020141c func item_UpdateHeldAction hand provisional: init via item_InitThrown-like setup on first frame, dispatches by parent state 4 and button bit 0x20
+0x002014a8 func item_InitHeldObject hand provisional: sets flags, position offset and pose pointer, fills child sprite list entries from tables
+0x0020164e func spawner_SpawnRowObjects hand provisional =seq:GEKAN_AREA72 r=0.15 loops 4 columns per row, spawns object via spawner_CreateObject when in range and slot unused, marks slot 0xff
+0x002016f6 func spawner_CreateObject hand =seq:GEKAN_AREA72 r=0.05 allocates object node plus 0x60 and 0x28 byte blocks, initializes position (<<8), state, sprite pointer from template
+0x00201814 func obj_InitSimpleSprite hand =seq:GEKAN_AREA72 r=0.05 sets facing bit from +0x20, anim size fields at +0x1e/+0x20 and sprite table pointer; clears param_1+0xc
+0x0020183c func obj_UpdateSpriteFrameLookup hand =seq:GEKAN_AREA72 r=0.00 picks frame from index table by flag 0x80 and global index, sets sprite at +0x5c, tail-calls handler
+0x0020187c func obj_IsOffscreenX hand =seq:GEKAN_AREA72 r=0.00 returns 1 if object screen X (pos>>8) lies outside camera horizontal bounds
+0x002018cc func obj_ClearSlotFlagAndJump hand =seq:GEKAN_AREA72 r=0.00 clears a byte flag indexed by ushort at +0x22 then tail-calls a handler
+0x002019a4 func spawner_ScanScreenColumns hand computes camera-based left/right map columns (>>9 &0x3f) and calls spawner_SpawnColumn for each
+0x00201a58 func spawner_SpawnColumn hand loops 4 slots per column, calls spawner_CreateObject if in view range and not yet spawned, marks flag 0xff
+0x00201b28 func obj_InitSimpleSprite_2 hand =seq:GEKAN_AREA72 r=0.05 same as obj_InitSimpleSprite with different constants and sprite table
+0x00201b50 func obj_SetFrameFromGlobalIndex hand =seq:GEKAN_AREA72 r=0.06 sets sprite frame at +0x5c from global index into frame table, tail-calls handler
+0x00201c92 func objlist_ActivateOnScreen hand =seq:GEKAN_AREA72 r=0.07 walks object list; sets active flag 0x28 on first inactive object inside camera bounds, returns 0x28
+0x00202034 func obj_TileCollideProbe hand =seq:GEKAN_AREA72 r=0.05 calls tile collision helper with position/box in 8px tiles; on hit snaps Y with mask, returns tile result
+0x002020be func obj_CheckPlayerHitSetFlags hand =seq:GEKAN_AREA72 r=0.04 calls hit helper; if result&0xc==8 modifies flags at +0x28 and sets +0x40 value, returns 0x40
+0x00202264 func obj_AnimateDoorOpenClose hand provisional =seq:GEKAN_AREA72 r=0.11 steps frame counter at +0xc up to 0x13 or down to 0 by +0x40 sign; plays sound 0x27 on close
+0x002023bc func obj_OverlapsPlayerBox hand =seq:GEKAN_AREA72 r=0.08 returns 1 if player position falls inside this object collision box (same facing flag)
+0x002026b2 func objslot_FindFreeSlot hand =seq:GEKAN_AREA72 r=0.05 scans up to 14 12-byte slots in table for entry with zero first word; returns pointer or 0
+0x002026d8 func obj_PushPlayerLeftEdge hand =seq:GEKAN_AREA72 r=0.06 clamps player X to object right edge via box offset +10; returns -1 if pushed, else 0
+0x00202882 func objlist_CollectOverlapping hand =seq:GEKAN_AREA72 r=0.09 builds rect from object box, scans object list for same-facing nearby objects, stores up to 15 overlapping ones, returns count
+0x00202a70 func obj_InitFollowParent hand =seq:GEKAN_AREA72 r=0.00 copies facing flags from parent object, clears frame counter, sets size fields and sprite table
+0x00202a98 func obj_UpdateParentTriggeredAnim hand =seq:GEKAN_AREA72 r=0.07 4-state animation driven by parent flags at +0xe/+0xf; plays sound 7; sets sprite frame, tail-calls handler
+0x00202d02 func obj_InitLaunchedProjectile hand =seq:GEKAN_AREA72 r=0.04 calls helper with constant, sets flags, angle/speed fields +0x10/+0x12/+0x1a, tail-calls handler (0,1)
+0x00202df6 func vdp1_AddObjectSprite hand provisional =seq:GEKAN_AREA72 r=0.15 appends 32-byte sprite command to buffer, position relative to camera, fields from sprite table at +0x54
+0x00202ef4 func vdp1_AddRotatedObjectSprite hand provisional =seq:GEKAN_AREA72 r=0.11 appends sprite command with four corner points rotated by angle via sin/cos tables (>>14)
+0x002031a2 func obj_CheckPlayerHitSetBoostFlags hand =seq:GEKAN_AREA72 r=0.08 calls hit helper; result bits &3 and &0xc choose flag bits ORed into flags at +0x28, returns 0x28
+0x002033b0 func vdp1_QueueSpriteCommand hand provisional: appends one 0x20-byte sprite command from object frame table, increments command count, camera-relative coords
+0x00203662 func anim_AdvanceTwoCounters hand provisional: advances two frame counters at +8 and +10 by a constant, wrapping at 4 and 3
+0x0020369c func vdp1_QueueTrailSprites hand provisional: emits two runs of sprite commands (count at +0x14) with spaced x positions using random helper for jitter
+0x00203b2c func vdp1_AddFrameIndexedSprite hand =seq:GEKAN_AREA72 r=0.05 appends sprite command using frame index from +0x11 into sprite table, centred vertically by half height
+0x00203c80 func boss_UpdateMainStateMachine hand provisional =seq:GEKAN_AREA72 r=0.10 =GEKAN_AREA62 chooses next state from transition tables per input flags, then switch on state calling handlers
+0x002040b8 func boss_CheckWallAhead hand =seq:GEKAN_AREA72 r=0.09 =GEKAN_AREA62 tile lookup in front of boss, sets state 0xd on tile type 2 or flags on type 0xf
+0x00204170 func obj_ApplyInputSpeedStep hand provisional: adds one of three constant deltas to speed field +0x10 based on masked direction input bits at +0x2a
+0x002041b2 func boss_UpdatePatrolMove hand provisional =seq:GEKAN_AREA72 r=0.12 =GEKAN_AREA62 counts down pattern timer, loads speed from table, reverses on wall or player distance, then boundary check
+0x00204332 func boss_CheckInsideCameraRange hand provisional =seq:GEKAN_AREA72 r=0.11 =GEKAN_AREA62 tests whether object is outside camera rectangle by x and y margins (was boss_CheckOutsideCameraRange)
+0x00204372 func boss_UpdateLeapAttack hand =seq:GEKAN_AREA72 r=0.03 =GEKAN_AREA62 large phase script keyed on parent state 0x14-0x16 and substate 0x2c.., drives animation and state changes (was boss_UpdatePhaseLogic)
+0x00204bfc func boss_UpdateHoverPatrol hand =seq:GEKAN_AREA72 r=0.07 =GEKAN_AREA62 counts down timer, loads vertical speed from table, reverses on collision or player distance limits
+0x00204ca2 func boss_AimVelocityAtPlayer hand =seq:GEKAN_AREA72 r=0.01 =GEKAN_AREA62 computes angle from dx,dy via divide and table search, sets x/y speeds from lookup tables with sign
+0x00204d9c func obj_UpdateBounceKnockback hand provisional: on state change sets knockback velocities, then on flag 0x10 halves and reverses vertical speed, then resets to state 10
+0x00204e5c func boss_StateRecoilLaunch hand =seq:GEKAN_AREA72 r=0.03 =GEKAN_AREA62 plays sound 5, launches with upward velocity by facing, on ground contact bounces then state 10
+0x00204f0c func boss_StateFlipAndLand hand provisional =seq:GEKAN_AREA72 r=0.10 =GEKAN_AREA62 flips facing at frame 0xf/0, moves via helper, lands into state 10 when ground reached
+0x00204fb8 func boss_StateHitReaction hand provisional =seq:GEKAN_AREA72 r=0.13 =GEKAN_AREA62 advances reaction stages by damage counter, adjusts scale, goes to state 0xd when hit points exhausted
+0x00205230 func boss_StateDefeatedSpawnDrops hand =seq:GEKAN_AREA72 r=0.04 =GEKAN_AREA62 provisional: on flag copies facing, spawns objects and sets drop direction bits, then enters state 5 reset
+0x00205318 func boss_StateChargeMove hand provisional =seq:GEKAN_AREA72 r=0.11 =GEKAN_AREA62 aims at player, timer phases 10/11, moves with vertical speed and tile test, resets state 0 on landing
+0x002055c2 func boss_StateRecoilSelect hand =seq:GEKAN_AREA72 r=0.06 =GEKAN_AREA62 picks recoil substate 0xd/0xe by flags, sets velocity, then runs phase logic
+0x00205812 func boss_StateDeathSequence hand =seq:GEKAN_AREA72 r=0.10 =GEKAN_AREA62 on entry runs callback, zeroes speeds, spawns effects, switches animation table to final, state 0xe
+0x00205b28 func boss_UpdateMain hand provisional =seq:GEKAN_AREA72 r=0.05 state-machine update: dispatches per-state handlers 0-0xd, input transition tables, movement, collision, ground checks, damage
+0x00205f00 func obj_CheckHitTailMove hand =seq:GEKAN_AREA72 r=0.05 calls hit helper with constant; if true tail-calls move handler with args
+0x00205f2a func boss_CheckTileLanding hand =seq:GEKAN_AREA72 r=0.06 calls helper; result 2 sets state 9, result 0xf sets flag in +0x26
+0x00205f84 func obj_CheckStateSwitchHit hand provisional: switch on state byte; for default states with hit flags set, saves state, enters state 0xb with velocities
+0x00206004 func boss_ApproachTargetSpeed hand provisional =seq:GEKAN_AREA72 r=0.11 picks speed table by mode and state, ramps velocity at +0x38 toward target by 0x40 steps
+0x002060f8 func boss_StateIdleWait hand provisional =seq:GEKAN_AREA72 r=0.14 state 0: clears speed, waits for flag 1 and position condition then switches to state 1 with speed depending on mode
+0x00206176 func boss_StateWalkStart hand =seq:GEKAN_AREA72 r=0.04 state 1: on flag 1 checks distance to player range, switches state 3, calls attack start helpers
+0x002061fc func boss_StateToggleFacingWalk hand provisional =seq:GEKAN_AREA72 r=0.10 state 2: toggles flag at +10, switches to state 4 or 5, sets sprite table, may start attack
+0x00206266 func boss_StateTurnDecision hand =seq:GEKAN_AREA72 r=0.08 state 3: checks distance to target, goes to state 2, 4 or 5 depending on mode and flags
+0x002062dc func boss_StateCountdownToWalk hand =seq:GEKAN_AREA72 r=0.08 state 5: decrements counter at +0x30; when 0 switches to state 4 with mode 2
+0x00206328 func boss_StateWaitDistanceReturn hand =seq:GEKAN_AREA72 r=0.06 default state: when flag 1 and facing 1 and player distance beyond threshold, returns to state 2
+0x00206362 func boss_StateStartDeath hand =seq:GEKAN_AREA72 r=0.04 state 8: clears flags, sets state 9, sets flag bit and angle field
+0x00206392 func boss_StateDeathExplode hand provisional =seq:GEKAN_AREA72 r=0.13 state 9: spawns two effect objects, sets final state 10, sprite table, calls helper; else adjusts angle by input bits
+0x002064aa func boss_StateHurtKnockback hand provisional =seq:GEKAN_AREA72 r=0.13 state 0xb: either resumes previous state or begins knockback state 0xc with speeds and facing flip
+0x0020652c func boss_StateKnockbackFall hand =seq:GEKAN_AREA72 r=0.03 state 0xc: applies gravity at +0x48 to Y, clamps ground, spawns effect after 0x1e frames, returns to saved state
+0x00206624 func boss_StateIdleWaitDead hand provisional =seq:GEKAN_AREA72 r=0.13 state 0xd: clears speed and flag, waits for position then goes to state 1 with mode-based speed
+0x002066b6 func obj_ProbeCollisionShifted hand =seq:GEKAN_AREA72 r=0.09 temporarily sets state 0xe, offsets Y by constant, calls hit helper, restores state and position
+0x0020670c func obj_ProbeCollisionShiftedAngled hand =seq:GEKAN_AREA72 r=0.08 like obj_ProbeCollisionShifted but also sets angle and flags then calls FUN_00206ebe, restores all fields
+0x002067b4 func vdp1_AddScaledShadowSprites hand provisional =seq:GEKAN_AREA72 r=0.14 draws scaled sprite pieces from frame table, scaled by depth factor from helper, per-part VDP1 command buffer
+0x00206a3c func boss_CheckProjectileSpawn hand =seq:GEKAN_AREA72 r=0.07 if Y within range of global and no cooldown, calls helper and spawns projectile via spawner with direction constant
+0x00206aa8 func boss_UpdateAttackCounter hand =seq:GEKAN_AREA72 r=0.00 if counter zero and flag 4 set calls hit helper and spawn; increments counter wrapping at 4
+0x00206bf8 func boss_InitPartObject hand provisional =seq:GEKAN_AREA72 r=0.11 initializes object and extra data like boss init but size 0x48x0x18; spawns up to 3 child objects, stores bitmask
+0x00207128 func obj_CheckHitTailMove_2 hand =seq:GEKAN_AREA72 r=0.05 same as obj_CheckHitTailMove with different constants and tail-called handler
+0x00207484 func boss2_CheckTileLanding hand =seq:GEKAN_AREA72 r=0.06 calls helper; result 2 sets state 6, result 0xf sets flag in +0x26
+0x002074c8 func boss2_StateChildControl hand =seq:GEKAN_AREA72 r=0.03 tracks child bitmask and distance; chooses state 2 or sub-mode by position, picks child index
+0x002075de func obj_UpdateDeathSpawnDebris hand provisional: on state match zeroes speed, spawns two child objects at position, sets state 7, else applies input speed step
+0x00207790 func boss2_StateDeathExplode hand provisional =seq:GEKAN_AREA72 r=0.10 state death: spawns two effect objects, sets final state 7, sprite table, tail-calls helper; else adjusts angle by input bits
+0x00207904 func boss2_CheckProjectileSpawn hand =seq:GEKAN_AREA72 r=0.06 if Y within range and no cooldown at +0x40 calls helper then tail-calls spawner with direction constant
+0x0020795c func boss2_UpdateChildObject hand calls boss2_InitChildObject, boss2_IsParentFree, boss2_UpdateChild, moves with gravity, obj_CheckHitIndexedTailMove, boss2_CheckProjectileSpawn_2
+0x00207ae2 func boss2_InitChildObject hand provisional =seq:GEKAN_AREA72 r=0.12 initializes child object from parent extra data: state, size 0x18x0x28, sprite offsets by index; calls position sync
+0x00207bfc func boss2_UpdateChild hand provisional =seq:GEKAN_AREA72 r=0.07 state-machine update for child object states 0-8 with transition tables, collision helpers, ground probe
+0x00207e60 func boss2_IsParentFree hand =seq:GEKAN_AREA72 r=0.10 returns 1 if parent object list head empty; else copies parent flag bit into own flags, returns 0
+0x00207ebc func boss2_FollowParentPosition hand provisional: copies parent position, velocities and flip flag into child offset by per-state formula, sets +6 sprite height
+0x00207fb4 func obj_CheckHitIndexedTailMove hand =seq:GEKAN_AREA72 r=0.00 calls hit helper with index-based Y offset then tail-calls move handler
+0x00207fe6 func boss2_CheckParentStateChange hand =seq:GEKAN_AREA72 r=0.09 when state 0 or 1 reacts to parent state: 6/7 to state 4, 8/9/10 to state 6
+0x00208078 func boss2_CheckTileGroundFall hand =seq:GEKAN_AREA72 r=0.04 calls tile collision helpers at feet; if no ground goes to state 4 and clears flags, else sets flag
+0x00208186 func boss2_StateWaitParentAction hand =seq:GEKAN_AREA72 r=0.04 state 0: clears speed; on flag 1 with parent state 2 and matching index goes to state 1, tail-calls helper
+0x002081f0 func boss2_StateLaunch hand =seq:GEKAN_AREA72 r=0.04 state 1: on flag 1 goes to state 2, flips facing, sets speeds 0x200 and gravity, clears parent child bit
+0x00208268 func boss2_StateAirborne hand =seq:GEKAN_AREA72 r=0.09 state 2: resets frame counter at last frame, clears parent child bit via helper
+0x002082b8 func boss2_StateLanded hand =seq:GEKAN_AREA72 r=0.05 state 3: clears flags, goes to state 4, sets angle 100, clears parent child bit
+0x00208308 func boss2_StateDeathSpawn hand =seq:GEKAN_AREA72 r=0.06 state 4: spawns two effect objects, state 5, calls helper; else boss2_StateAngleAdjust; clears parent child bit
+0x002083e2 func obj_ApplyInputSpeedStep_2 hand provisional: variant adding 100 or constant deltas to speed field +0x10 by masked input bits
+0x00208422 func boss2_StateAngleAdjust hand provisional =seq:GEKAN_AREA72 r=0.10 adjusts angle at +0x10 by constants depending on input bits in +0x2a
+0x00208494 func boss2_StateResumeSaved hand =seq:GEKAN_AREA72 r=0.05 state 7: when flag 1 and no velocity restores saved state; clears flag bits
+0x002084e2 func boss2_StateIdleDead hand =seq:GEKAN_AREA72 r=0.08 state 8: clears speed and flags; if parent state is 1 returns to state 0
+0x00208510 func boss2_CheckProjectileSpawn_2 hand =seq:GEKAN_AREA72 r=0.06 if Y within range and no cooldown calls helper then tail-calls spawner with zero arg
+0x00208774 func effect_InitAttachedSprite hand =seq:GEKAN_AREA72 r=0.05 initializes effect object attached to parent offset by extra data, sets sprite tables and angle fields
+0x00208864 func obj_UpdateMovePhysics hand =seq:GEKAN_AREA72 r=0.00 calls helper, tail-calls on hit; integrates position by velocity and velocity by acceleration; tail-calls on flag 1

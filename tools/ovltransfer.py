@@ -25,9 +25,18 @@ def hand(p):
         f = l.split(None, 4)
         if len(f) >= 4: d[int(f[0], 16)] = (f[2], f[4].strip() if len(f) > 4 else '')
     return d
+MASK = os.environ.get('MASK') == '1'  # MASK=1: zero pointer words and bsr/bra/jsr-pool displacements (cross-build transfer)
 def key(b, a, s):
     o = a - BASE; n = max(16, min(s, 96))
-    return (s, b[o:o + n])
+    w = bytearray(b[o:o + n])
+    if MASK:
+        for i in range(0, n - 3, 4):
+            v = int.from_bytes(w[i:i + 4], 'big')
+            if 0x00200000 <= v < 0x00300000 or 0x06000000 <= v < 0x06100000: w[i:i + 4] = bytes(4)
+        for i in range(0, n - 1, 2):
+            if w[i] & 0xf0 in (0xa0, 0xb0): w[i] &= 0xf0; w[i + 1] = 0   # bra / bsr
+            if w[i] & 0xf0 == 0xd0: w[i + 1] = 0                           # mov.l @(disp,pc),Rn
+    return (s, bytes(w))
 table = {}
 for s in srcs:
     b = img(s); h = hand(s)

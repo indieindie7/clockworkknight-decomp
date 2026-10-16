@@ -12,7 +12,7 @@ def hand(fn):
         f = l.split(None, 4)
         if len(f) >= 4: d[f[0][2:].lower().zfill(8)] = f[2]
     return d
-boot = {} if prog.endswith('_A') else hand(os.path.join(g, 'hand_GEKAN.txt'))  # root programs: own names only
+boot = {} if prog.endswith('_A') else hand(os.path.join(g, 'hand_%s.txt' % prog.split('_AREA')[0]))  # overlays: their game's boot names (hand_GEKAN / hand_CK1 / hand_CK2US)
 own = hand(os.path.join(g, 'hand_%s.txt' % prog))
 nm = {**boot, **own}
 src = open(os.path.join(g, 'decomp_%s.c' % prog), encoding='utf-8', errors='replace').read()
@@ -42,6 +42,10 @@ for f in todo:
     if acc >= per and k < n: flush()
 flush()
 t = open(os.path.join(g, 'scripts', 'n1_prompt_ck_area_t.txt'), encoding='utf-8').read()
-t = t.replace('{OVL}', prog + '.BIN').replace('{DESC}', desc)
+GAMES = {'GEKAN': ('Sega Saturn game Clockwork Knight 2 (Sega CS2, Japan GS-9029 "Pepperouchau no Daibouken Gekan" 1995-07; SH-2 code, likely Hitachi SHC or GNU).', 'A.BIN'),
+         'CK1': ('Sega Saturn game Clockwork Knight 1 (Sega CS2, 1994; the build bundled on the US Clockwork Knight 2 disc as JAPUS.BIN; SH-2 code, likely Hitachi SHC or GNU).', 'JAPUS.BIN'),
+         'CK2US': ('Sega Saturn game Clockwork Knight 2 (Sega CS2, US MK-81036 1995; boot program GAPUS.BIN; SH-2 code, likely Hitachi SHC or GNU).', 'GAPUS.BIN')}
+game, bootbin = GAMES[re.sub(r'_A$', '', prog.split('_AREA')[0])]
+t = t.replace('{OVL}', prog + '.BIN').replace('{DESC}', desc).replace('{GAME}', game).replace('{BOOT}', bootbin)
 open(os.path.join(nd, prog + '_prompt.txt'), 'w', encoding='utf-8', newline='\n').write(t)
 print(prog, 'todo', len(todo), ' '.join('%s:%d/%d' % (os.path.basename(a), b, c) for a, b, c in files))

@@ -1,0 +1,44 @@
+CK2US_A 0x06019602 map_SpawnByScrollMode CONFIRM map_SpawnByScrollMode switch on mode 0-3 picks column/three-cell spawn routines
+CK2US_A 0x0601997e map_SpawnCellColumnsA CONFIRM map_SpawnCellColumnsA spawns object lists of two cells in one row
+CK2US_A 0x060199b0 map_SpawnCellColumnsB CONFIRM map_SpawnCellColumnsB same with other row argument
+CK2US_A 0x0601a040 obj_DespawnRelease CONFIRM obj_DespawnRelease decrements spawn counter, clears active word
+CK2US_A 0x0601a7dc obj_PushOutOfSolidObjects CONFIRM obj_PushOutOfSolidObjects walks list, rect overlap, pushes out, returns side bits
+CK2US_A 0x0601b020 obj_PushOutOfObjectsB CONFIRM obj_PushOutOfObjectsB variant skipping flag 8 objects, resolves y before x
+CK2US_A 0x0601bb20 obj_LandOnGround CONFIRM obj_LandOnGround ground probe under feet, bounces/zeroes vy, or lands on strip object
+CK2US_A 0x0601bd44 obj_LandOnGroundOrPlatform CONFIRM obj_LandOnGroundOrPlatform tile probe then platform strip query, sets flags
+CK2US_A 0x0601c4ec vdp1_QueueObjectSpritesA CONFIRM vdp1_QueueObjectSpritesA builds 0x20-byte VDP1 cmds per part with depth scale
+CK2US_A 0x0601cd2e vdp1_QueueObjectSpritesE CONFIRM vdp1_QueueObjectSpritesE builds VDP1 cmds per part; callers are projectile/debris updaters
+CK2US_A 0x0601e9f4 vdp1_QueueSingleSprite CONFIRM vdp1_QueueSingleSprite builds one scaled VDP1 cmd for current frame part
+CK2US_A 0x0601f1d0 obj_QueryTileAhead RENAME obj_InitChildSpriteAtParent no tile query; initializes child object state, position from parent, sprite tables
+CK2US_A 0x0601f260 fx_UpdateRadialParticles CONFIRM fx_UpdateRadialParticles sin/cos table offsets per part, shrink and queue scaled parts
+CK2US_A 0x060200d2 obj_PhysicsStepStateMachine RENAME obj_UpdatePeriodicMoverSpawner no integration; spawns a mover object at parent offset by counter cycle
+CK2US_A 0x06020aa6 obj_UpdateBobbingStateMachine CONFIRM obj_UpdateBobbingStateMachine sine bob substates 0-4 plus dispatch to states 5-12
+CK2US_A 0x06020dd2 obj_UpdateAnimLoopSlotHighlight CONFIRM obj_UpdateAnimLoopSlotHighlight 0x14-frame loop, highlight flag if slot matches selection, draws mesh
+CK2US_A 0x060210c8 obj_UpdateBounceArcTimeout CONFIRM obj_UpdateBounceArcTimeout sine arc, frame counter, after 14 frames goes to state 9
+CK2US_A 0x060211a8 obj_UpdateFallAccelerate CONFIRM obj_UpdateFallAccelerate arc with accumulating velocity, state 10 past limit
+CK2US_A 0x0602125a obj_UpdateWaitFrames CONFIRM obj_UpdateWaitFrames draws, waits 60 frames, sets flag, state 13
+CK2US_A 0x060212d4 obj_UpdateArcAnimTwoSprite CONFIRM obj_UpdateArcAnimTwoSprite arc, 14-frame anim, two sprite slots, then state 12
+CK2US_A 0x060214d0 obj_InitEffectAtParentOffset CONFIRM obj_InitEffectAtParentOffset allocs 0x60, position from parent plus y offset
+CK2US_A 0x06021574 fx_UpdateSparkleRings CONFIRM fx_UpdateSparkleRings four rotating rings of 7 sparkle parts, drifts up then kills self
+CK2US_A 0x0602172a fx_InitFallingSprite CONFIRM fx_InitFallingSprite allocs 0x60 at parent position, sprite table by parent index
+CK2US_A 0x0602189c vdp2_InitLineScrollWindowTables CONFIRM vdp2_InitLineScrollWindowTables fills two tables with 0x10/0 and window coords
+CK2US_A 0x06021962 vdp2_UpdateCircleWindowWipe CONFIRM vdp2_UpdateCircleWindowWipe sin-moved circle window rows written to two scanline tables, ends with sound and flags
+CK2US_A 0x06022394 obj_UpdateProximityPopUp CONFIRM obj_UpdateProximityPopUp waits for player in box, steps anim, then pops to next state
+CK2US_A 0x0602277e vdp1_BuildSpriteCommandsFromPartList CONFIRM vdp1_BuildSpriteCommandsFromPartList writes 0x20-byte VDP1 cmd per part, unscaled
+CK2US_A 0x0602449c gfs_OpenFileCloseOnError RENAME gfs_OpenLockCloseFile name to id, open, error screen on failure, lock handle then close
+CK2US_A 0x06024520 sys_ReadErrorScreen CONFIRM sys_ReadErrorScreen resets video, prints error text, loops forever
+CK2US_A 0x06024f7a heap_Free_6024f7a RENAME area_LoadStageTileAndCharFiles not heap; loads two area data files by stage letter, sets task state; caller area_InitScreenSetup
+CK2US_A 0x06025b78 bup_ReadBlock RENAME bup_WriteBlockWithHeader builds header and writes caller buffer via device vtable; caller modifies buffer then calls this
+CK2US_A 0x06026638 gfs_OpenFileById UNSURE gfs_OpenFileById opens dir/file and reads entries into buffer, else error; no callers
+CK2US_A 0x060269b2 gfs_HandleStartRead UNSURE gfs_HandleStartRead checks handle, size nonzero then divide and transfer; no callers
+CK2US_A 0x060278f8 gfs_GetDirEntryOffset CONFIRM gfs_GetDirEntryOffset returns base plus offset or sector-scaled position
+CK2US_A 0x06027a24 gfs_GetHandleField58 CONFIRM gfs_GetHandleField58 returns field at +0x58, compared to 1 in error mapper
+CK2US_A 0x06027b44 cdc_CallAndReturn0 RENAME cdc_ReadStatusRegsToBuf wrapper fills local buffer for caller, which reads first byte as status
+CK2US_A 0x0602802c sh2_DisableIntRestoreSR UNSURE sh2_DisableIntRestoreSR masks interrupts, calls fn with const, clears flag; role unclear
+CK2US_A 0x06028b28 gfs_DispatchSlot2 CONFIRM gfs_DispatchSlot2 calls vtable slot at +8 chosen by mode field
+CK2US_A 0x06029e74 gfs_StreamSetCallback CONFIRM gfs_StreamSetCallback stores callback at +0x18, queues cd cmd, pumps on failure
+CK2US_A 0x0602a15a gfs_StreamOpenPipe CONFIRM gfs_StreamOpenPipe queues cdq task with pipe id then pumps until idle, 0 on success
+CK2US_A 0x0602a6b0 cdq_ConnectPipeToFilter CONFIRM cdq_ConnectPipeToFilter two cdc calls, error -10 on failure, then caches status
+CK2US_A 0x0602aab2 cdq_ReleaseSlotCheck RENAME cdq_GetSlotSectorInfo validates slot 0-0x17 in use then calls cdc_GetSectorInfo; no release
+CK2US_A 0x0602ba6c cdc_GetHirqClearConst CONFIRM cdc_GetHirqClearConst returns constant passed by gfs_StreamSeek
+CK2US_A 0x0602bcac cdc_CallCmdPtr RENAME cdc_InitCmdPacket 45 callers pass local buffer then set command byte; it copies template into it

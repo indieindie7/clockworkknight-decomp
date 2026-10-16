@@ -1,0 +1,45 @@
+CK1_A 0x06003000 stub_06003000 RENAME cdc_CallCmdTrampoline tail-jumps to FUN_06003034; only caller cdc_ResetSelector passes a command buffer through it
+CK1_A 0x0600a14a player_UpdateCarryWalkA CONFIRM player_UpdateCarryWalkA called from state machine; walk while holding object, object follows hand offset table
+CK1_A 0x0600a2d2 player_UpdateCarryWalkB CONFIRM player_UpdateCarryWalkB same walk variant with facing flip, held object placed by frame table
+CK1_A 0x0600a49e player_UpdateCarryJumpA CONFIRM player_UpdateCarryJumpA gravity add to vel +0x40, landing to 0x26/0x2d/0x34, held object moved
+CK1_A 0x0600a642 player_UpdateCarryJumpB CONFIRM player_UpdateCarryJumpB jump variant with facing flip, same landing logic
+CK1_A 0x0600a850 player_UpdateCarryIdleA CONFIRM player_UpdateCarryIdleA idle with held object tracked; button release goes to 0x12
+CK1_A 0x0600a9bc player_UpdateCarryLiftA UNSURE player_UpdateCarryLiftA object follows hand frames 0-3 then flags changed at frame 4 (could be throw release not lift)
+CK1_A 0x0600ab0c player_UpdateCarryLiftB UNSURE player_UpdateCarryLiftB same hand-follow then release flags at frame 3; lift vs throw unclear
+CK1_A 0x0600ac68 player_UpdateCarryWalkC CONFIRM player_UpdateCarryWalkC second carry walk state set 0x2f/0x30/0x37/0x38
+CK1_A 0x0600ade0 player_UpdateCarryWalkD CONFIRM player_UpdateCarryWalkD second carry walk with facing flip
+CK1_A 0x0600afc8 player_UpdateCarryJumpC CONFIRM player_UpdateCarryJumpC second carry jump set, gravity and landing states
+CK1_A 0x0600b154 player_UpdateCarryJumpD CONFIRM player_UpdateCarryJumpD second carry jump with facing flip
+CK1_A 0x0600b374 player_UpdateCarryIdleB CONFIRM player_UpdateCarryIdleB second carry idle, sound call and held object hold
+CK1_A 0x0600b4e2 player_UpdateCarryLiftC UNSURE player_UpdateCarryLiftC twin of LiftA; lift vs throw release unclear
+CK1_A 0x0600b634 player_UpdateCarryLiftD UNSURE player_UpdateCarryLiftD twin of LiftB; lift vs throw release unclear
+CK1_A 0x0600b790 player_UpdateThrowWindupA CONFIRM player_UpdateThrowWindupA counter +0x16 counts down, release to 0x15/0x16, sound call, direction flip 0x1d
+CK1_A 0x0600b880 player_UpdateThrowWindupB CONFIRM player_UpdateThrowWindupB windup variant timing out to 0x16, turn 0x1d
+CK1_A 0x0600b942 player_UpdateThrowTurn CONFIRM player_UpdateThrowTurn handles direction flip into state 0x13 then 0x16/0x1b on timeout
+CK1_A 0x0600ba36 player_UpdateThrowFallA CONFIRM player_UpdateThrowFallA airborne gravity, landing to 2/3/0x17
+CK1_A 0x0600bb30 player_UpdateThrowFallB CONFIRM player_UpdateThrowFallB airborne with facing flip, landing to 2/3/0x17
+CK1_A 0x0600bc94 player_UpdateRideIdleA RENAME player_UpdateIdleStateA no mount evidence; plain idle: decay x vel, sound (0xd,1), pad to 2/0xc/1, fall to 0xe
+CK1_A 0x0600bd40 player_UpdateHoldA CONFIRM player_UpdateHoldA zeroes x speed, dir released to 1, anim end to 0x3e; generic but fits
+CK1_A 0x0600be02 player_UpdateHoldB CONFIRM player_UpdateHoldB hold with child callback and direction plus flag bits
+CK1_A 0x0600bece player_UpdateHoldC CONFIRM player_UpdateHoldC validates held contact object pointer, zero x speed, anim end 0x3c
+CK1_A 0x0600bfa6 player_UpdateHoldD CONFIRM player_UpdateHoldD sets contact object flags relative x/y, sound (10,1)
+CK1_A 0x0600c0de player_UpdateHoldE CONFIRM player_UpdateHoldE contact object check, anim end 0x3b
+CK1_A 0x0600c1cc player_UpdateHoldF CONFIRM player_UpdateHoldF dir check plus object flag update, sound (10,1)
+CK1_A 0x0600c326 pad_UpdateAutoRepeatState RENAME player_UpdateAirLandState called as player state; adds gravity, on ground picks 2/6/3 by dir and speed, else sets 0x15 and timer 0x5a; no pad repeat logic
+CK1_A 0x0600c3f8 sound_InitCommandTable RENAME player_UpdateIdleStateB player state not sound init; decay x vel, sound (0xd,1) on first frame, anim end to 1, falls to 0xe/0x15
+CK1_A 0x0600c4b0 obj_UpdateFallBelowLimit CONFIRM obj_UpdateFallBelowLimit gravity, y limit check resets state (pit), returns 0x26 or 0
+CK1_A 0x0600c50c sys_ResetGameState RENAME player_UpdateIdleFidget standing state 0x45 entered when idle counter +4 exceeds limit; this clears counter at anim end
+CK1_A 0x0600c654 vdp2_CopyMapRows23 RENAME player_UpdateCollisionAndMotion calls HitScan, MoveClampDrawBox, CollideWithObjectList, clamp, input motion; no VDP2 map copy
+CK1_A 0x0600c686 obj_ClampVelocityByRange RENAME obj_ClampXToScrollRange clamps position +0x2c between limits from scroll/camera globals, not velocity
+CK1_A 0x0600c6ce pad_MergeInputBits RENAME player_MergeContactFlags ORs three collision result words (from move, object collide, hit scan) masked 0x3f; callers test bit 0 as on-ground
+CK1_A 0x0600c6f2 obj_HitObjectsInBox RENAME player_CheckFootingAhead scans map rows with map_ScanRowForSolid, sets state 0x25/0x46 when no solid ground; no object hit
+CK1_A 0x0600c95e obj_MoveClampDrawBox RENAME player_MoveAndCollideTiles clamps velocities, integrates position, tile column/row solid checks, returns contact flags
+CK1_A 0x0600ceca obj_CollideWithObjectList CONFIRM obj_CollideWithObjectList iterates object list, rect overlap, pushes out, pickup via player_CollectItem
+CK1_A 0x0600d4e8 player_HitScanObjects CONFIRM player_HitScanObjects builds player box, tests enemy list, sets hit flags on overlaps
+CK1_A 0x0600d6da data_DecompressToBuffer RENAME player_FindGrabObject not decompression; checks input history held, builds front box, returns overlapping object pointer after flagging it
+CK1_A 0x0600d8b6 input_CheckHistoryAllHeld CONFIRM input_CheckHistoryAllHeld scans last 15 history entries for mask, -1 if any missing
+CK1_A 0x0600d9fc player_ApplyXFriction RENAME player_ApplyXMoveInput accelerates toward +/-max by pad direction, decelerates when released; more than friction
+CK1_A 0x0600da9e obj_DecayXVelocity CONFIRM obj_DecayXVelocity moves vel +0x38 to zero by friction +0x10
+CK1_A 0x0600db60 pad_TestButtonMask CONFIRM pad_TestButtonMask tests pad word vs mask; note returns 0 when set, -1 when clear
+CK1_A 0x0600db7a player_FindAttackTarget RENAME player_AttackHitEnemies builds attack box by state, scans enemy list 0x561e4, flags hit, returns 0 if any hit
+CK1_A 0x0600ddc0 player_AttackHitObjects CONFIRM player_AttackHitObjects same attack box vs object list 0x417d0, collects items or flags hit

@@ -1,0 +1,94 @@
+0x00200000 func boss5b_ObjectUpdate hand =seq:GEKAN_AREA5B r=0.07 boss object state dispatcher by param+0x11 (init, run, state 2, state 3), decrements two timers
+0x002000e4 func boss5b_Init hand provisional =seq:GEKAN_AREA5B r=0.11 boss init, copies VRAM/palette data, clears state vars, builds history table and spawns child tasks
+0x0020042a func boss5b_IntroWaveAnim hand provisional =seq:GEKAN_AREA5B r=0.11 part animation update, frame counter 0x7e wrap, sound 100, records trail via UpdateTrail (was boss5b_PartUpdateA)
+0x00200560 func boss5b_MainUpdate hand provisional: 7326-byte function, decompile timed out; likely main boss5b object update and state dispatcher
+0x002027f0 func boss5b_UpdateHeadAnimTrailed hand provisional: head frame cycle 0..0x7e, sound 100 at frame 6, turn rate ramps +-5, records trail via FUN_00203542/002033ec
+0x00202912 func boss5b_PartTrackAndAnimate hand provisional =seq:GEKAN_AREA5B r=0.12 record trail, steer facing, select animation frame by angle bits then run frame script
+0x0020297c func boss5b_UpdateTurnFrameFromAngle hand provisional: if not paused adds 0x40 to angle at +0x12 and picks animation frame from angle>>6
+0x002029d4 func boss5b_UpdateLoopAnimSfx62 hand provisional: loops 48-frame animation, plays sound 0x62 every few loops via counter, sound 99 on flag
+0x00202a74 func boss5b_UpdateFadeCounter hand =seq:GEKAN_AREA5B r=0.06 ramps a counter between 1 and 0x20 up or down by direction flag, calls setter
+0x00202acc func boss5b_PartFrameAdvance hand provisional =seq:GEKAN_AREA5B r=0.11 trail record, frame step by 3 up to 0x1f, sound 0x6d at frame 3, spawn child at frame 9
+0x00202b58 func boss5b_UpdateLoopAnimSfx64 hand provisional: loops 63-frame animation, plays sound 100 at loop start, sound 99 when flag set
+0x00202bc8 func boss5b_UpdateLoopAnimFlagSfx hand provisional: loops 48-frame animation, plays sound 100 and clears flag at loop start when flag set
+0x00202c2c func boss5b_AdvanceFrameClamp19 hand provisional: increments frame at +0xe clamped at 0x13, loads animation pointer into +0x5c
+0x00202c5e func boss5b_AdvanceFrameClamp47 hand provisional: increments frame at +0xe clamped at 0x2f, loads animation pointer into +0x5c
+0x00202cb0 func boss5b_UpdateLoopAnimSfx64_2 hand provisional: 48-frame looping animation, sound 100 at loop start or 99 on flag, variant with other flag addresses
+0x00202d20 func boss5b_UpdateFrameCountdownFade hand provisional: when counter above 0x25 counts frame down to zero then clears flags and fades value at +0x18 by 5
+0x00202d98 func boss5b_FadeStepDown hand provisional: ramps level byte up or down between 1 and 0x20 and applies it via callback; starts descending at 0x20
+0x00202dec func boss5b_FadeStepUp hand provisional: ramps level byte between 1 and 0x20 and applies it; starts ascending when level is 1
+0x00202e40 func boss5b_UpdateAttackStates hand states 0-8 switch: steers facing to trail, fade steps, boss5b_PartTrackAndAnimate, sound 0x6b, death/sink at state 8
+0x002030ba func boss5b_UpdateDeathExplosionAnim hand provisional: advances frame by 3 per tick to 0x1f, sound 0x6d at frame 3, spawns child at frame 9, loads anim pointer
+0x00203168 func boss5b_PickNextAttackState hand provisional: after 60-tick delay selects next state number 0x12-0x53 from request byte and transition tables, may sink and spawn
+0x002033ec func boss5b_RecordTrailPoint hand records position (>>8) into 16-entry ring buffer of 10-byte entries when moved, with animation state and mode byte
+0x00203542 func boss5b_SteerAngleToTrail hand provisional: computes angle from ring buffer points via helper and turns angle at +0x12 by 0x40 toward it
+0x002035cc func boss5b_UpdateTrail hand =seq:GEKAN_AREA5B r=0.02 appends position/anim to 16-entry history ring when moved, classifies anim frame ranges to pick type byte
+0x0020377a func boss5b_UpdatePatrolPath hand provisional: advances angle by 0x20, positions object along sine table offsets and patrol box limits from table entry 16 bytes
+0x00203902 func boss5b_SteerFacingToTrail hand provisional =seq:GEKAN_AREA5B r=0.13 computes heading from trail positions via atan helper and turns facing by 0x40 step
+0x002039c8 func boss5b_MoveToHomePos hand =seq:GEKAN_AREA5B r=0.06 eases x/y/z toward home table entry by step, increments state when all three arrive
+0x00203a90 func boss5b_MoveToHomePosWait hand =seq:GEKAN_AREA5B r=0.06 like MoveToHomePos but advances state only when flag mask is also set, then clears it
+0x00203b70 func boss5b_UpdatePartsExplodeSequence hand provisional: three part counters stepping through states with fall velocity, timer, sounds 0x6d, effects spawn on state 5 to 6
+0x00203f66 func boss5b_SnapToBasePosition hand provisional: sets object x/y/z from base table entry (value<<8) with y offset
+0x00203f82 func boss5b_MoveToHomePosStart hand =seq:GEKAN_AREA5B r=0.03 eases x/y/z toward home table entry, increments state when all arrive, alternate constants (was boss5b_MoveToHomePos_2)
+0x0020406a func boss5b_MoveToTargetPointStepA hand provisional: moves x/y/z toward target table position by step; advances state at +8 when all three axes arrive
+0x00204136 func boss5b_MoveToTargetPointStepB hand provisional: variant moving x/y/z toward target table position with different step constants; advances state when arrived
+0x00204200 func boss5b_OrbitAroundHome hand provisional =seq:GEKAN_AREA5B r=0.14 rotates angle by speed, sin/cos table offsets x/y/z around home point with direction clamps
+0x00204388 func boss5b_SegmentSwayLeft hand =seq:GEKAN_AREA5B r=0.09 segment sway: when idle slide left, else sine-swing with random via helper for segments 5-17
+0x00204460 func boss5b_SegmentSwayRight hand =seq:GEKAN_AREA5B r=0.09 mirror of SegmentSwayLeft sliding right with sine swing for segments 5-17
+0x00204538 func boss5b_SegmentCirclePos hand =seq:GEKAN_AREA5B r=0.10 places segment 5-17 on circle using sin/cos tables and random helper, radius from parent
+0x002045fe func boss5b_SegmentArcLeft hand provisional =seq:GEKAN_AREA5B r=0.13 segments below 7 move y down, 7-13 arc position using sin table and random helper
+0x002046a8 func boss5b_SegmentArcRight hand provisional =seq:GEKAN_AREA5B r=0.13 segments below 7 move y up, 7-13 arc position using sin table and random helper
+0x00204738 func boss5b_UpdateSegmentDispatch hand copies parent state, dispatches segment init, update (FUN_00204824) or boss5b_SegmentStateUpdate by sub-state
+0x00204786 func boss5b_SegmentInitFindFree hand provisional =seq:GEKAN_AREA5B r=0.11 init sets anim fields, scans flags table for first free flagged slot, claims it, runs script
+0x00204824 func boss5b_UpdateSegmentAnimA hand provisional: calls trail follow FUN_002056ac, advances 15-frame animation, loads animation pointer
+0x00204878 func boss5b_SegmentStateUpdate hand =seq:GEKAN_AREA5B r=0.07 state switch 0x18-0x52 calling sway/arc helpers, flag 0x20 spawns five children, steps frame
+0x00204a18 func boss5b_UpdateSegmentFalling hand provisional: segment falls with velocity and bounces, plays animation, clears parent flags when below limit
+0x00204b72 func boss5b_SegmentInitClaimSlot hand =seq:GEKAN_AREA5B r=0.09 init anim fields, finds free slot with flags&3==0, claims it, random-seeds frame and runs script
+0x00204c0c func boss5b_UpdateSegmentAnimB hand provisional: calls trail follow FUN_002056ac, steps 15-frame animation every second tick
+0x00204c9c func boss5b_SegmentStateUpdateSlowAnim hand =seq:GEKAN_AREA5B r=0.07 same state switch as SegmentStateUpdate with extra frame field write on spawn, steps frame (was boss5b_SegmentStateUpdate_2)
+0x00204e44 func boss5b_SegmentThrownUpdate hand provisional =seq:GEKAN_AREA5B r=0.14 thrown part: applies velocity in x/y, gravity, sound 0x6c on landing, compares to parent position to attach
+0x0020502c func boss5b_SegmentSpawnLast hand =seq:GEKAN_AREA5B r=0.04 init anim fields, takes last slot flags, sets flag 1, increments counter, runs script
+0x002050cc func boss5b_UpdateSegmentRiseAndPalette hand provisional: follows trail, rises to height, runs 64-frame animation, palette color index from table
+0x00205186 func boss5b_MainBodyUpdate hand provisional =seq:GEKAN_AREA5B r=0.14 boss body per-frame: flag 8 fall, state 8-0x3f switch calls move helpers and projectile spawn, animates
+0x00205554 func boss5b_BodyFalling hand =seq:GEKAN_AREA5B r=0.06 applies velocity to y/z, decelerates by 0x80, clears task when y reaches floor
+0x002055dc func boss5b_UpdateEyeFlashPalette hand provisional: by mode byte runs two flash animations of 40 ticks, writes palette index from table into color register
+0x002056ac func boss5b_FollowTrailPoint hand provisional: moves segment to next ring-buffer trail point, circle placement for some modes, writes own position to ring buffer
+0x00205906 func boss5b_FollowTrailPointSimple hand provisional: snaps segment to next trail ring-buffer position, circle placement mode 2 for first segment, records position
+0x00205a76 func boss5b_PaletteCycleAnim hand =seq:GEKAN_AREA5B r=0.03 three-state palette/frame cycler indexing tables, timer 0x28, writes VDP color word
+0x00205b7a func boss5b_PlaceOnCircleB hand provisional =seq:GEKAN_AREA5B r=0.13 positions from home table plus sin/cos of trail angle times radius, alternate table pointer
+0x00205c74 func boss5b_MoveToFormationPoint hand provisional: per-segment-index computes target on circle/formation using sine table scaled 0x5000, moves axes toward it
+0x00205f38 func boss5b_FormationMoveTo hand =seq:GEKAN_AREA5B r=0.04 eases x/y/z toward formation slot (segment index ranges 0-6, 7-12, 13-18, 19) with sin wave 0x5000, sets mask when done
+0x002062d6 func boss5b_MoveToTrailSlot hand =seq:GEKAN_AREA5B r=0.07 eases x/y/z toward trail slot ring entry, ORs bit mask result from helper when all arrive
+0x00206464 func boss5b_ChildInit hand provisional =seq:GEKAN_AREA5B r=0.12 child task init copies segment index from parent, sets start frame from parent, loads script ptr
+0x002064a0 func boss5b_PartHitReaction hand provisional =seq:GEKAN_AREA5B r=0.11 hit/flag state machine on +0x28 flags, plays sound 0x68, spawns effect, damage counters, sets flag 1
+0x002067aa func boss5b_SetFlagReturnState hand =seq:GEKAN_AREA5B r=0.10 sets bit 1 in flags +0x28 and returns state byte
+0x0020683a func boss5b_ShadowInit hand =seq:GEKAN_AREA5B r=0.03 provisional: reset object fields, set anim fields, zero position, spawn four child tasks
+0x00206882 func boss5b_RunScriptToEnd hand provisional =seq:GEKAN_AREA5B r=0.13 runs frame script entries until null, resets index and loads loop pointer
+0x002068f8 func boss5b_ShadowRun hand =seq:GEKAN_AREA5B r=0.11 provisional: checks y range, clears or sets flag, per-state position table selection, runs script entries
+0x00206a8c func boss5b_RunScriptToEndAlt hand provisional =seq:GEKAN_AREA5B r=0.13 runs frame script entries until null, resets index and loads loop pointer (was boss5b_RunScriptToEnd_2)
+0x00206b38 func boss5b_EffectInit hand =seq:GEKAN_AREA5B r=0.03 reset fields, set anim fields, if flag bit 2 clear spawn two child tasks
+0x00206b7c func boss5b_EffectDrawFrame hand provisional =seq:GEKAN_AREA5B r=0.12 loads frame script pointer by index and jumps to it (was boss5b_EffectJumpFrame)
+0x00206b9a func boss5b_UpdateAnimByState hand provisional: per state selects animation table and steps frame counter to 0x4f with wrap
+0x00206c94 func boss5b_EffectDrawFrameAlt hand provisional =seq:GEKAN_AREA5B r=0.11 loads frame script pointer by index and jumps to it (was boss5b_EffectJumpFrame_2)
+0x00206e12 func boss5b_EffectInitFrame hand provisional =seq:GEKAN_AREA5B r=0.12 reset fields, set anim fields, frame index from parent field, load script ptr
+0x00206e98 func boss5b_SparkleInit hand =seq:GEKAN_AREA5B r=0.04 sets pos near parent with random offset via LCG, y from parent minus camera, sound 0x6f
+0x00206f42 func boss5b_CallIfCheckPasses hand provisional: calls a check function and if nonzero tail-calls second function with same argument
+0x00206fcc func boss5b_ShadowTrackInit hand =seq:GEKAN_AREA5B r=0.02 copies parent position, sets sprite fields, y screen offset from camera plus 0x40
+0x0020701e func boss5b_CallIfNonzero hand =seq:GEKAN_AREA5B r=0.06 calls a helper and tail-calls second helper with argument only if first returned nonzero
+0x00207080 func boss5b_DebrisInit hand =seq:GEKAN_AREA5B r=0.05 sets sprite fields, random offset within parent frame box via LCG, y from camera, flag 1 on rare roll
+0x0020714e func boss5b_DebrisTick hand =seq:GEKAN_AREA5B r=0.00 calls helper, if nonzero runs update and clears a global when frame field is zero
+0x00207aa6 func boss5b_ResetObjectFields hand zeroes state, animation, velocity and flag fields of the object and its extension block
+0x00207aec func boss5b_CameraFollowUpdate hand provisional =seq:GEKAN_AREA5B r=0.10 camera follow task: dispatch by state, picks target-follow routine, writes camera x/y/z globals
+0x00207b80 func boss5b_CameraInit hand =seq:GEKAN_AREA5B r=0.00 sets camera position constants and copies them to previous position slots
+0x00207b9c func boss5b_UpdateScrollTrackPlayerA hand provisional: tracks distance between object and player x, scroll speed and direction, clamps with limits, then y scroll
+0x00207e0a func boss5b_UpdateScrollTrackPlayerB hand provisional: like boss5b_UpdateScrollTrackPlayerA but uses max of x/y distance and depth, adjusts camera speeds
+0x00208020 func boss5b_BgInit hand =seq:GEKAN_AREA5B r=0.08 init background: set VDP2 scroll fields, copies pattern data via DMA helpers, sets flags
+0x0020819c func boss5b_BgRegsReset hand =seq:GEKAN_AREA5B r=0.08 sets VDP2-like background registers struct constants, clears flags
+0x002081e2 func boss5b_SetPartDisplayFlags hand provisional: by index param sets flags 1 and 2 at +0x20 and frame fields, high values clear bit 2
+0x0020827c func boss5b_BuildLineScrollTable hand provisional: fills per-line left/right clipped x-pair table (4 shorts per 2 lines) for a distorted circle shape using sine table, sets flag
+0x002086a2 func boss5b_ClearAndSetFlag hand provisional: clears one global and sets another global to 1
+0x002086b0 func obj_CheckPlayerOverlapA hand AABB overlap between object hitbox (+0x5c frame) and player box, returns direction bits 1/2 and 4/8, 0 if none
+0x002087b8 func obj_CheckPlayerOverlapB hand provisional: AABB overlap using center-narrowed hitbox vs player, returns direction bits 1/2 and 4/8
+0x002088b8 func obj_CheckPlayerOverlapC hand provisional: AABB overlap with margin of 2 vs player, returns direction bits 1/2 and 4/8, 0 if none
+0x002089b4 func boss5b_CopyTwoBlocks hand provisional: calls copy routine twice with same source and two destinations, same size
+0x002089d4 func boss5b_SetBgFadeMode hand provisional =seq:GEKAN_AREA5B r=0.12 sets bg flags and fade parameter, mode by arg 0, 1-0x20, above 0x20
+0x00208aa4 func boss5b_BuildLineScrollTable_08aa4 hand =seq:GEKAN_AREA5B r=0.05 builds per-line scroll table from sine and camera offset clamped 0..max, sets update flag

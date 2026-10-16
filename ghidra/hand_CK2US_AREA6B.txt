@@ -1,0 +1,121 @@
+0x00200000 func boss6b_UpdateMain hand =seq:GEKAN_AREA6B r=0.09 boss object update; switches on state byte +0x11 (init, intro, fight, dispatch via pointers), clamps position, sets sprite value
+0x002000f4 func level_InitArea6BObjects hand provisional: loads A6BSPRCG.BIN sprite data, copies tables, zeroes level globals, then calls an init callback per object table
+0x002004e2 func boss6b_UpdateIntro hand provisional =seq:GEKAN_AREA6B r=0.12 intro substate machine; sets sprite frame pointers via +0x5c, counts timers, calls sound id 0x72 and 0x71
+0x002006f4 func boss6b_UpdateFightAI hand provisional =seq:GEKAN_AREA6B r=0.03 big boss AI switch on substate +8 (0..0x2b) choosing attacks by player distance, plays sounds 0x72 0x7c 0x77 0x79
+0x002011ac func boss6b_UpdateFightPhase2 hand provisional =seq:GEKAN_AREA6B r=0.01 second large boss behaviour switch on substate; moves toward player x/y, calls attack handlers and DMA-like helper loops
+0x00201a54 func boss6b_UpdateFightPhase3 hand provisional =seq:GEKAN_AREA6B r=0.13 largest boss state machine with four args; attack, hit-reaction and defeat substates, many handler calls
+0x002026da func boss6b_AnimStepDown hand provisional =seq:GEKAN_AREA6B r=0.13 sets two sprite frame pointers from frame index +0xe, advances timer, decrements frame then next substate
+0x00202750 func anim_StepTwoFramesUpThenAdvance hand provisional: sets two frame tables, loads sprite frames at +0xe, timer +0xc rolls; frame counts down then bumps state +8
+0x002027d8 func boss6b_AnimLoop32 hand =seq:GEKAN_AREA6B r=0.00 sets sprite frames from index +0xe, loops frame counter 0 to 0x1f forever
+0x0020285c func anim_StepTwoFramesDownWrap7 hand provisional: two frame tables, timer +0xc rollover decrements frame +0xe, at 0 resets to 7 and bumps state +8
+0x002028e4 func anim_StepTwoFramesLoop32 hand provisional: two frame tables, timer rollover increments frame +0xe, loops back to 0 at 32 frames
+0x00202954 func boss6b_AnimStepDown32 hand provisional =seq:GEKAN_AREA6B r=0.13 sets sprite frames, counts frame index down to 0, reloads 0x1f and advances substate
+0x002029e8 func boss6b_AnimPingPong hand provisional =seq:GEKAN_AREA6B r=0.13 frame index up to 0xf then back to 0 by direction flag; returns 1 when peak reached
+0x00202a8c func boss6b_AnimStepUp15Advance hand provisional =seq:GEKAN_AREA6B r=0.15 sets sprite frames, counts up past 0xe then advances substate each tick
+0x00202b20 func boss6b_AnimStepUp8 hand provisional =seq:GEKAN_AREA6B r=0.13 sets sprite frames, counts to 7 then advances substate
+0x00202b96 func anim_StepTwoFramesDownWrap31 hand provisional: two frame tables, frame +0xe counts down, reset to 0x1f and state +8 incremented at zero
+0x00202c18 func boss6b_AnimHoldUp16FastDown hand =seq:GEKAN_AREA6B r=0.08 like AnimHoldUp16 but lowers index by up to three per tick
+0x00202d0c func boss6b_AnimHoldUp16B hand =seq:GEKAN_AREA6B r=0.01 sets sprite frames, direction flag raises index to 0xf or lowers to 0 (was boss6b_AnimHoldUp16_2)
+0x00202da6 func anim_StepTwoFramesUpToState hand provisional: two frame tables, frame +0xe counts up; past 0xe bumps state +8
+0x00202e34 func anim_StepTwoFramesUpClamp7 hand provisional: two frame tables, frame +0xe counts up to 7, then bumps state +8
+0x00202ea6 func anim_StepTwoFramesDownToState hand provisional: two frame tables same as 00202e34, frame +0xe counts down, at zero bumps state +8
+0x00202f28 func boss6b_AnimStepUp16Advance hand =seq:GEKAN_AREA6B r=0.04 sets sprite frames, counts to 0xf then advances substate
+0x00202faa func boss6b_AnimStepDownAdvanceB hand =seq:GEKAN_AREA6B r=0.08 sets sprite frames, counts index down to 0 then advances substate (was boss6b_AnimStepDownAdvance_2)
+0x0020305c func boss6b_AnimConditionalStep hand =seq:GEKAN_AREA6B r=0.06 sets sprite frames, increments frame index when direction flag zero and condition holds
+0x002030d8 func boss6b_AnimLoop16 hand =seq:GEKAN_AREA6B r=0.06 sets sprite frames, loops frame counter 0 to 0xf
+0x00203170 func boss6b_AnimStepUp32Advance hand =seq:GEKAN_AREA6B r=0.04 sets sprite frame, counts to 0x1f then advances substate
+0x002031e2 func boss6b_AnimPingPongReturnDone hand provisional =seq:GEKAN_AREA6B r=0.12 frame index up to 0xf then down; returns 1 when back at zero
+0x002032bc func boss6b_AnimStepUp16AdvanceB hand =seq:GEKAN_AREA6B r=0.00 sets sprite frame, counts to 0xf then advances substate (was boss6b_AnimStepUp16Advance_2)
+0x0020332c func boss6b_AnimLoop32B hand provisional =seq:GEKAN_AREA6B r=0.11 loops frame counter 0 to 0x1f (was boss6b_AnimLoop32_2)
+0x0020339c func boss6b_AnimLoop32C hand provisional =seq:GEKAN_AREA6B r=0.11 loops frame counter 0 to 0x1f (was boss6b_AnimLoop32_3)
+0x00203430 func boss6b_AnimLoop32D hand provisional =seq:GEKAN_AREA6B r=0.12 loops frame counter 0 to 0x1f (was boss6b_AnimLoop32_4)
+0x00203488 func anim_StepPingPongFrames15 hand provisional: one frame table, ping-pong frame 0..15 by direction flag; returns 1 when back at zero
+0x00203508 func boss6b_AnimCountUp hand =seq:GEKAN_AREA6B r=0.02 sets sprite frame, increments frame counter each tick
+0x0020357c func anim_StepSingleLoop32_A hand provisional: one frame table, timer rollover increments frame +0xe, wraps after 31
+0x002035ce func anim_StepSingleLoop32_B hand provisional: same as 0020357c but different frame table; frame loops 0..31
+0x00203620 func anim_StepSingleLoop32_C hand provisional: same loop animation with third frame table; frame wraps at 31
+0x00203688 func anim_StepSingleClamp4 hand provisional: one frame table, timer rollover advances frame +0xe, stops at 4
+0x002036d4 func anim_StepSingleClamp16 hand provisional: one frame table, timer rollover advances frame +0xe, stops at 16
+0x00203720 func boss6b_AnimCountUpB hand =seq:GEKAN_AREA6B r=0.07 sets sprite frame, increments frame counter each tick (was boss6b_AnimCountUp_2)
+0x00203776 func boss6b_AnimStepDownAdvanceC hand provisional =seq:GEKAN_AREA6B r=0.13 sets sprite frame, counts down to 0 then advances substate (was boss6b_AnimStepDownAdvance_3)
+0x002037ec func boss6b_AnimLoop32E hand provisional =seq:GEKAN_AREA6B r=0.12 sets sprite frames, loops frame counter 0 to 0x1f (was boss6b_AnimLoop32_5)
+0x00203882 func anim_StepSingleDownToState hand provisional: one frame table, frame counts down, at zero bumps state +8
+0x002038ec func boss6b_AnimCountUpC hand =seq:GEKAN_AREA6B r=0.10 increments frame counter each tick (was boss6b_AnimCountUp_3)
+0x0020395c func boss6b_AnimCountDownAdvance hand =seq:GEKAN_AREA6B r=0.00 sets sprite frame, counts down to 0 then advances substate
+0x002039c6 func anim_StepSingleDownWrap31 hand provisional: one frame table, frame counts down, resets to 0x1f and bumps state +8 at zero
+0x00203a38 func anim_StepSingleUpToState30 hand provisional: one frame table, frame counts up, at 30 resets to 0 and bumps state +8
+0x00203a90 func boss6b_AnimPlaySoundOnce hand =seq:GEKAN_AREA6B r=0.05 sets sprite frames, plays sound at frame 1, returns 1 after 0x20 ticks
+0x00203b58 func anim_StepTwoFramesLoop32Sound hand provisional: two frame tables, frame loops 32; plays a sound on frame 1, returns 1 on wrap
+0x00203be8 func boss6b_AnimPlaySoundOnceB hand provisional =seq:GEKAN_AREA6B r=0.12 sets sprite frames, plays sound at frame 1, returns 1 after 0x1f ticks (was boss6b_AnimPlaySoundOnce_2)
+0x00203c9c func boss6b_AnimSoundAtFrames hand =seq:GEKAN_AREA6B r=0.08 sets sprite frames from index, plays a sound when frame index is 1 or 8
+0x00203cfe func boss6b_SetSpriteFrames hand =seq:GEKAN_AREA6B r=0.08 sets two sprite frame pointers from frame index +0xe via draw helper
+0x00203d40 func boss6b_SetSpriteFramesB hand =seq:GEKAN_AREA6B r=0.08 sets two sprite frame pointers from frame index +0xe via draw helper (was boss6b_SetSpriteFrames_2)
+0x00203d82 func boss6b_MoveToTablePosition hand =seq:GEKAN_AREA6B r=0.07 steps boss x/y/z toward table target position; returns 1 when all axes arrived
+0x00203e6c func boss6b_TrackPlayerX hand =seq:GEKAN_AREA6B r=0.04 moves boss x toward player x with clamping and speed limit, uses math helper; substate in +0x14
+0x00204010 func boss_ActionMashBreakFree hand provisional =seq:GEKAN_AREA6B r=0.11 state machine counting button presses, sounds 0x78/0x7b, knocks boss back after ten presses
+0x002041ca func boss_ActionHoldDirBreakFree hand provisional =seq:GEKAN_AREA6B r=0.14 state machine reading pad direction bits, sounds 0x78/0x7b, launches boss away from player
+0x002043be func boss_ActionLeapAtPlayer hand =seq:GEKAN_AREA6B r=0.07 computes clamped velocity toward player X, arcs with gravity, sounds 0x7a/0x7b
+0x002045d0 func boss_ActionJumpArcLand hand =seq:GEKAN_AREA6B r=0.04 random-scaled jump velocity, arcs up and lands at floor Y, sets flags, sound 0x76/0x7b
+0x00204798 func boss_ActionDropToFloor hand =seq:GEKAN_AREA6B r=0.09 drops boss to fixed Y and Z with decaying velocity, sound 0x7b when settled
+0x00204856 func enemy_StepJumpArcPhases hand provisional: phase machine at +0x14: rise with gravity table, random speed, direction flip with x bounds, returns 1 when done
+0x00204a7a func boss_ActionSwoopAcrossArena hand provisional =seq:GEKAN_AREA6B r=0.12 picks side by X, travels across arena using speed table, reverses at edge, depth ease
+0x00204bc2 func enemy_StepHopWithGravity hand provisional: starts hop with sound 0x80, applies velocity +0x38 with decay +0x3c, clamps x bounds by direction, returns 1 at end
+0x00204cbc func boss_MoveToWaypoint hand =seq:GEKAN_AREA6B r=0.07 steps XYZ toward table waypoint, snaps when near, returns true when all axes arrived
+0x00204d72 func boss_ApplyVelocityGravity hand =seq:GEKAN_AREA6B r=0.03 integrates velocity into position with gravity until ground height table reached
+0x00204dd8 func enemy_StepLeapAttackPhases hand provisional: phases 0-4 at +0x14: windup timer from table, rise y +0x30, move x by direction, returns true at landing
+0x00204f1a func enemy_StepLeapAttackPhasesAlt hand provisional: similar to 00204dd8 with table-driven velocities per phase; returns true when final phase reached
+0x0020505c func boss_IntroSequence hand provisional =seq:GEKAN_AREA6B r=0.14 multi-state boss entrance, drops in, spawns many child parts, plays sound, sets flags
+0x002054f0 func boss_AnimateParts hand provisional =seq:GEKAN_AREA6B r=0.14 sets sprite frame from two animation tables and advances frame counter wrapping at 32
+0x00205580 func boss_BounceInArena hand =seq:GEKAN_AREA6B r=0.00 moves by velocity and reflects off six XYZ bounds, returns true on any bounce
+0x0020563e func boss_ConvergeToHome hand =seq:GEKAN_AREA6B r=0.01 eases X and Y toward home point, bounces depth, returns true when at home
+0x00205850 func boss_InitPartFromParent hand =seq:GEKAN_AREA6B r=0.00 calls base clear, copies facing from parent, sets anim frame and sprite pointer from table
+0x00205894 func boss_UpdatePartHurtboxB hand provisional =seq:GEKAN_AREA6B r=0.10 hit flag check, decrements hitpoints, parent states 0x18/0x1c, sound by table
+0x00205b1c func boss_UpdatePartHurtboxC hand =seq:GEKAN_AREA6B r=0.03 hit check, damages, at zero hitpoints resets phase and plays sound, else parent state 0x26
+0x00205cf4 func boss_UpdateHitReactionA hand provisional: attached to parent object, checks hit flags +0x28, decrements hit points, sets timer 0x3c and parent anim state, handles death
+0x00205f24 func boss_InitPartAnim hand provisional =seq:GEKAN_AREA6B r=0.13 clears flags, sets animation frame and sprite pointer from table via parent
+0x00205f58 func boss_UpdateAttachedPartAndHit hand provisional: positions part from parent offset tables by frame +0xe, checks hits, decrements hp, selects hurt or death anim
+0x002061f6 func boss_UpdateAttachedPartAndHit_2 hand provisional: variant of 00205f58 with frames 5 and 6 special offsets, hit points, sets parent anim 0x18 or 0x1c
+0x00206488 func boss_UpdatePartFollowParentC hand provisional =seq:GEKAN_AREA6B r=0.13 position from offset table, hit check, hitpoints to zero resets phase, parent state 0x26
+0x00206698 func boss_InitChildFromParent hand =seq:GEKAN_AREA6B r=0.00 calls obj_ClearState, copies facing, sets anim frame and sprite from parent table
+0x002066ce func part_FollowParentOffset hand provisional: copies parent position plus offset table entries to this part when flag set, else copies from fixed object
+0x0020679c func part_InitSpriteFlipByPosition hand provisional: sets sprite size fields and frame tables, flips direction flag +0xa if x has high bit
+0x002067d0 func boss_UpdateShadowFollow hand provisional =seq:GEKAN_AREA6B r=0.13 places linked object at parent offset by table when flag is 1 else copies position from global
+0x00206916 func effect_InitAtOrigin hand =seq:GEKAN_AREA6B r=0.00 calls obj_ClearState, sets sprite frame and pointer, zeroes position
+0x002069d0 func effect_InitAtOriginB hand =seq:GEKAN_AREA6B r=0.00 calls obj_ClearState, sets sprite frame and pointer, zeroes position (was effect_InitAtOrigin_2)
+0x00206a4e func effect_InitSprite hand =seq:GEKAN_AREA6B r=0.00 sets flags, sprite frame, sprite pointer and animation data pointer
+0x00206a72 func boss_UpdateHomingProjectile hand provisional =seq:GEKAN_AREA6B r=0.14 three-state projectile, homes toward player, spawns objects, plays sound, kills itself, hit check
+0x00206d9e func projectile_MoveBounceX hand =seq:GEKAN_AREA6B r=0.04 moves with velocity and gravity, reflects X at limits, flags done at low Y, returns 0x40
+0x00206dfa func projectile_MoveBounceXB hand =seq:GEKAN_AREA6B r=0.04 moves with velocity and stronger gravity, reflects X at limits, flags done at low Y, returns 0x40 (was projectile_MoveBounceX_2)
+0x00206e9c func projectile_InitSideSpawn hand =seq:GEKAN_AREA6B r=0.02 sets sprite, copies parent position, offsets and velocity by side flag, increments live counter
+0x00206f08 func projectile_UpdateBounceFlicker hand provisional =seq:GEKAN_AREA6B r=0.13 calls projectile_MoveBounceX, alternates call on odd frames, kills when below Y limit
+0x00206f74 func projectile_MoveBounceBetweenWalls hand provisional: moves by velocities +0x38 and +0x40, applies gravity, reverses x speed at left and right limits; returns 0x40
+0x00206fea func projectile_InitAtTablePos hand =seq:GEKAN_AREA6B r=0.07 sets sprite and position from six-byte table entry by index, frame by parity
+0x00207116 func particle_InitRandomBurst hand =seq:GEKAN_AREA6B r=0.01 random-seed multiply, sine table lookup gives velocities, positions near parent with random offset
+0x00207230 func effect_InitAboveParent hand =seq:GEKAN_AREA6B r=0.00 sets sprite, animation pointers, copies parent position with Y offset
+0x002072ae func part_InitAttachedToParentFlip hand provisional: sets sprite fields, positions part at parent plus offset table entry with left/right flip
+0x00207372 func projectile_InitFromTable hand =seq:GEKAN_AREA6B r=0.06 sets sprite, position from table by index, X velocity and facing by parameter
+0x0020740e func projectile_MoveBounceXThenCheckY hand provisional: calls projectile_MoveBounceX, a callback, then jumps to a handler when y at or below limit
+0x002074f0 func obj_ResetState hand provisional: zeroes object fields +4..+0x4c and sub-struct +8..+0x14
+0x00207536 func camera_UpdateByMode hand =seq:GEKAN_AREA6B r=0.09 dispatches camera scroll mode from global state, saves previous position, stores result
+0x002075de func camera_ScrollFollowTargetX hand provisional: smooths camera x speed toward midpoint of target and player with clamps; far distance calls camera_ScrollFollowFar
+0x00207746 func camera_ScrollFollowTargetX_2 hand provisional: duplicate of 002075de for second object set, smoothed x speed with far case calling camera_ScrollFollowFar
+0x002078cc func camera_FollowMidpoint hand =seq:GEKAN_AREA6B r=0.06 scrolls toward midpoint of two actors X with smoothing and clamp, falls back to camera_FollowPlayerOnly when far
+0x00207a54 func camera_ScrollFollowFar hand provisional: pulls camera x and y toward player with speed proportional to distance, clamped
+0x00207b62 func camera_FollowPlayerOnly hand =seq:GEKAN_AREA6B r=0.05 scrolls X and Y toward one actor with proportional easing and clamps
+0x00207cdc func obj_InitRandomPosVel hand provisional: uses random callback to set fields +0x70..+0x7c position and velocity shifted by 8; returns 0x74
+0x00207f70 func camera_FollowSingleActor hand =seq:GEKAN_AREA6B r=0.04 scrolls X and Y toward one actor with limits, flags done when at limit
+0x002080b0 func obj_TestBoxHitPlayer hand =seq:GEKAN_AREA6B r=0.06 builds hitbox from sprite bounds and player rect, calls rect overlap, returns side bits
+0x00208268 func obj_InitFromSpawnTable hand provisional: loads x y z from spawn entry shifted by 8, resets state, sets frame tables and flags
+0x002082ee func debris_UpdateDispatch hand =seq:GEKAN_AREA6B r=0.08 reads state flags, sets velocity, dispatches debris_Update* state handlers by state byte
+0x00208542 func debris_UpdateState0Fall hand =seq:GEKAN_AREA6B r=0.05 =GEKAN_AREA81 state 0 ballistic move with tile collision, bounce, rotate, hit check, to state 4
+0x00208650 func debris_UpdateState1Slide hand provisional =seq:GEKAN_AREA6B r=0.12 =GEKAN_AREA81 state 1 fixed vertical drop with tile collision, goes to 0, 3 or 4
+0x002086d8 func debris_UpdateState2Hit hand =seq:GEKAN_AREA6B r=0.07 =GEKAN_AREA81 state 2 checks overlap with objects, to state 4 on hit
+0x00208720 func debris_UpdateBounceMove hand =seq:GEKAN_AREA6B r=0.01 =GEKAN_AREA61_LO moves with gravity, bounces off wall and floor, state 5 or 1 on settle
+0x002087bc func debris_UpdateState4Break hand =seq:GEKAN_AREA6B r=0.06 =GEKAN_AREA81 state 4 spawns fragments once per type, spawns two child objects, remove flag
+0x002088cc func debris_UpdateSpinningFall hand =seq:GEKAN_AREA6B r=0.08 =GEKAN_AREA61_LO moves with gravity, wall bounce, rotates angle, state 6 when landed or low
+0x002089e6 func debris_InitFromParent hand provisional =seq:GEKAN_AREA6B r=0.11 =GEKAN_AREA61_LO copies parent position, sets gravity, initial speed by facing, anim and hitbox 0x20
+0x00208a6c func debris_UpdateTumble hand =seq:GEKAN_AREA6B r=0.08 moves with gravity, bounces off horizontal and vertical tile collision, animates, times out after 60 frames
+0x00208b5a func obj_CollideHorizontalTiles hand =seq:GEKAN_AREA6B r=0.05 =GEKAN_AREA61_LO tile checks both sides with push-out then object list scan, returns hit code
+0x00208f14 func obj_CollideVerticalTiles hand =seq:GEKAN_AREA6B r=0.05 =GEKAN_AREA61_LO tile checks floor and ceiling with slopes then object list scan, returns hit code
+0x0020933c func obj_FindOverlappingObject hand =seq:GEKAN_AREA6B r=0.10 =GEKAN_AREA81 walks object list, tests box overlap with other, sets hit flags on it, returns 1
+0x0020951c func obj_AppendSpriteCommandRotated hand =seq:GEKAN_AREA6B r=0.09 =GEKAN_AREA61_LO appends 0x10-short VDP1 command with scale, rotation and offscreen cull

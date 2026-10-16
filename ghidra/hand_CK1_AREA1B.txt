@@ -1,0 +1,33 @@
+0x00200000 func boss1b_StateDispatch hand per-phase dispatcher on obj+0x11: calls init, intro wait, then main AI update
+0x00200050 func boss1b_Init hand provisional: sets boss object fields, difficulty-based HP/speed tables by level, resets globals, anim setup
+0x002001cc func boss1b_IntroWaitCountdown hand provisional: counts down delay then sets start x position and facing from side of screen
+0x002002a0 func boss1b_UpdateAI hand big boss state machine (obj+8: walk, turn, hurt, charge, jump, fall) with sound calls and timers
+0x00200ce4 func boss1b_SetPartAnims hand sets animation frame tables and offsets for the 7 chained body parts based on boss state
+0x002018ee func boss1b_SpawnProjectile hand provisional: initialises child object at boss position with velocity by pattern index, sets update callback
+0x002019e4 func boss1b_UpdateProjectile hand provisional: moves child by facing, applies gravity to y velocity, kills when y below zero
+0x00201a84 func rand_Next3Bits hand increments counter, LCG-style multiply of seed, returns 3-bit random value, tail-calls helper when zero
+0x00201b06 func boss1b_InitDebrisRandom hand provisional: initialises particle object near boss with random position and velocity from LCG seed
+0x00201b70 func boss1b_CheckPartHitA hand provisional: if state 0 and anim 0x0b substate 3, tail-calls hit handler
+0x00201be0 func boss1b_ObjTickRand hand provisional: increments counter, calls helper, if zero re-registers object with next callback
+0x00201c3c func boss1b_InitEffectAtBoss hand provisional: init effect object copying boss x/y/z position, sets sprite and frame
+0x00201c84 func boss1b_CheckPartHitB hand provisional: if state 0 and anim 3 substate 1, tail-calls hit handler
+0x00201d2c func boss1b_InitEffectAtBoss_2 hand provisional: init effect object copying boss x/y, fixed z, sets sprite and frame
+0x00201d6e func boss1b_CheckPartHitC hand provisional: if state 0 and anim 0x0b substate 3, tail-calls hit handler
+0x00201da4 func boss1b_ClearPartVelocities hand clears two fields of four pairs of chained parts (loop over linked list)
+0x00201dc4 func boss1b_UpdateCameraTrack hand provisional: computes scroll target from player and boss x distance, sets camera mode and smoothed position
+0x00201fa0 func boss1b_ClampScrollY hand provisional: adds 100 to helper result and clamps between min and max depending on flag
+0x00202170 func boss1b_SetPartsFrame hand sets frame byte at offset 0x23 for selected parts of chained list depending on level
+0x00202204 func boss1b_UpdateDefeatSequence hand boss defeat state machine: float up, bounce, explode with sounds, signals end when done flag is 2
+0x00202a36 func boss1b_InitBodyPart hand provisional: initialises body part object with position, sprite tables, difficulty-based timers via sound/helper calls
+0x00202b88 func boss1b_UpdateBodyPart hand body part state machine following parent boss state, animation tables, particles spray on state 0x0b
+0x002031ec func boss1b_PartSyncParentAnim hand provisional: copies parent frame to part and positions it relative to parent facing
+0x0020326c func boss1b_PartPlayStateAnim hand provisional: plays frame table with per-frame durations, sound 0x42/0x44 at frame 10, offsets 0x300 by facing
+0x00203334 func boss1b_PartAttachOffsets hand provisional: sets part position relative to parent by frame index and facing
+0x002033e8 func boss1b_PartFollowParent hand provisional: copies parent x, adjusts x and y by frame index range
+0x00203448 func boss1b_UpdateAttackPhase1 hand provisional: sub-state machine for attack movement with velocities and gravity
+0x00203720 func boss1b_UpdateAttackPhase2 hand provisional: sub-state machine rising/falling movement with sound 0x44 and wait timer
+0x0020391c func boss1b_UpdateAttackPhase3 hand provisional: sub-state machine for final attack movement, velocity from globals and direction by x
+0x00203df0 func boss1b_RegisterFiveCallbacks hand calls object-register helper five times with five callback table pointers
+0x00203fe8 func boss1b_InitSpriteObjAt hand provisional: initialises sprite object at given x,y,z with sprite tables and frame
+0x0020401c func boss1b_CheckPartHitD hand provisional: if state 0 and anim 3 substate 1, tail-calls hit handler
+0x002041cc func boss1b_DrawPartsSprites hand provisional: iterates part chain, builds VDP1 sprite commands from frame tables with camera offsets

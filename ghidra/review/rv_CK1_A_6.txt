@@ -1,0 +1,45 @@
+CK1_A 0x06021344 enemy_InitHopState_B CONFIRM enemy_InitHopState_B init: resets sprite fields, state 5, initial vertical speed and gravity, sets part pointers
+CK1_A 0x060213bc enemy_UpdateWrapper_G_2 RENAME enemy_UpdateWrapperG_Blink per-frame wrapper for the blink part variant; numeric suffix not allowed
+CK1_A 0x060213ec enemy_UpdateBlinkPart CONFIRM cycles a 3-entry offset table to blink the part
+CK1_A 0x06021508 enemy_InitHopState_C CONFIRM same init pattern as hop state B with its own tables
+CK1_A 0x0602157c enemy_UpdateWrapper_F CONFIRM if state 0 runs bounce move then hurt check and wraps frame; else hurt check only
+CK1_A 0x06021672 enemy_InitHopState_D CONFIRM init for hop state D, same pattern
+CK1_A 0x060216f0 enemy_UpdateWrapper_Fall CONFIRM wrapper with fall behaviour
+CK1_A 0x060217a6 enemy_Update_E RENAME enemy_InitHopState_E sets state 0x19, nested sprite parts and direction speed; it is an init not an update
+CK1_A 0x06021834 enemy_UpdateWrapper_F_2 RENAME enemy_UpdateWrapperF_Wobble wrapper that drives the wobble part; numeric suffix not allowed
+CK1_A 0x06021864 enemy_UpdateWobblePart CONFIRM updates wobble part offsets
+CK1_A 0x06021994 enemy_ResetSpriteFields CONFIRM clears sprite draw fields, called by init routines
+CK1_A 0x060219b2 enemy_Update_F RENAME enemy_UpdateBounceMoveF adds gravity to vy, moves with tile collide, flips vx on side hit, bounces vy on floor hit
+CK1_A 0x06021a60 enemy_Update_G RENAME enemy_UpdateBounceMoveG identical logic to variant F with different constants
+CK1_A 0x06021b10 enemy_ApplyGravityBounce CONFIRM gravity plus tile-collide bounce
+CK1_A 0x06021be2 enemy_CheckHurtBounce CONFIRM hit check via collide_MoveWithTiles, sets hurt state; name acceptable
+CK1_A 0x06021fa0 mem_ClearBytes_Table RENAME map_ClearSpawnedFlags clears byte-pair table at 0603fa88 used as spawned-object flags by map spawn code
+CK1_A 0x0602217a map_SpawnVisibleObjects CONFIRM spawns level objects of one cell if not yet flagged, checks mode bits and bounds, allocs parts; called from map_SpawnObjectsInView
+CK1_A 0x06022482 obj_SpawnFromTemplate CONFIRM allocs slot, sprite part and child chain from template with offset from parent, bumps counters
+CK1_A 0x06022610 obj_OffscreenFlags CONFIRM compares bbox to scroll, bit0 horizontal off, bit1 vertical off; callers free when nonzero
+CK1_A 0x060227a8 obj_Free_WithSpawnFlag RENAME obj_FreeAndClearSpawnFlag frees slot parts and clears spawn flag byte unless flagged persistent; underscore-suffix style avoided
+CK1_A 0x060227f4 obj_Free CONFIRM frees parts and slot, decrements live count
+CK1_A 0x06022844 obj_AnimateFromTable CONFIRM steps frame delay and index per state from 4-byte table, sets done bit at +0x26, loads frame pointer
+CK1_A 0x06022906 map_SpawnObjectsInCell_0184ce RENAME obj_UpdateBlinkPaletteSequence no spawning: per-frame state machine on tile id 0x10/0x12 stepping timers and copying palette entries; address suffix not allowed
+CK1_A 0x0602347c obj_SpawnChildAndSetFlags CONFIRM calls obj_SpawnChild and sets direction/collision flag bits from result
+CK1_A 0x060237d4 collide_PlayerAttackHitEnemies CONFIRM builds attack box, tests each active object, sets hit flag and side bits
+CK1_A 0x06023988 collide_FindObjectOverlap_Offset CONFIRM tests offset box against active objects including z range, sets flags, returns hit node; called by collide_MoveWithTiles
+CK1_A 0x06023ca8 collide_FindObjectOverlap CONFIRM same overlap test without flag writes, returns first hit node
+CK1_A 0x06023edc collide_MoveWithTiles CONFIRM moves by dx,dy resolving objects and tile columns/rows, returns contact bit mask; used by all enemy movers
+CK1_A 0x06024414 obj_ClearAllAttackLinks CONFIRM walks active list zeroing +0x18/+0x1c pointers of each sub-record
+CK1_A 0x0602498c snd_QueueTrackCommand CONFIRM looks up 5-byte entry for current level/index and enqueues 16-byte command
+CK1_A 0x060249e2 snd_QueueTrackCommand_2 RENAME snd_QueueTrackCommandChecked returns -1 when entry is 0xff else enqueues from alternate table; suffix not allowed
+CK1_A 0x06024c12 gfs_VerifyFileSize CONFIRM opens file, sets transfer mode, computes sector count, reads and errors if size differs from expected
+CK1_A 0x06024ce8 gfs_LoadFileWithError CONFIRM name to id then read whole file, error handler on failure
+CK1_A 0x06024d58 obj_AnimateFromTable_24d58 RENAME sys_ShowReadError fatal read-error screen: resets VDP, prints error text and prompt, loops forever; called on GFS failures
+CK1_A 0x06025412 vdp2_RestoreAfterMovie CONFIRM restores saved VDP2 palettes and tables after movie playback; called by movie routines
+CK1_A 0x060255b2 heap_FreeBlock CONFIRM returns block to pool, merges with adjacent free blocks via size/flag headers
+CK1_A 0x060258b6 map_SpawnByScrollMode CONFIRM switch on scroll mode byte picks column or three-cell spawn routines
+CK1_A 0x06025c26 map_SpawnCellColumnsA CONFIRM spawns object lists for two columns in one row
+CK1_A 0x06025c58 map_SpawnCellColumnsB CONFIRM same for the second row variant
+CK1_A 0x060261d4 obj_IsNearCamera CONFIRM tests position against camera margins and optional bounds, returns 1 if near; callers free object when not near
+CK1_A 0x06026314 obj_FreeWithAnimInput RENAME obj_FreeWithBlinkCounter on free updates counter byte from player flag 0x10 then frees parts and slot; keep close to current meaning
+CK1_A 0x06026370 obj_FreeSlot CONFIRM frees parts, clears slot head, decrements live counter
+CK1_A 0x06026390 obj_DespawnRelease RENAME obj_AllocDebrisAt allocs object with simple child at given x,y and function; used by debris code, not a release
+CK1_A 0x06026418 obj_AllocSimple CONFIRM allocs slot, part and simple child, rolls back on failure
+CK1_A 0x060264ce obj_ReleaseSimple RENAME obj_PopSimpleChild pops head of simple-child free list and returns it; callers use it as alloc

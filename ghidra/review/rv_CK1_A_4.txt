@@ -1,0 +1,45 @@
+CK1_A 0x06019c28 mesh_LoadAnimFrameParams CONFIRM mesh_LoadAnimFrameParams name fits
+CK1_A 0x06019cfc collide_ScanTileGridObjects CONFIRM collide_ScanTileGridObjects name fits
+CK1_A 0x06019e76 mesh_StepKeyframeInterp CONFIRM mesh_StepKeyframeInterp name fits
+CK1_A 0x0601a0bc collide_ComputeRowSpan CONFIRM collide_ComputeRowSpan name fits
+CK1_A 0x0601a354 collide_ComputeColumnSpan CONFIRM collide_ComputeColumnSpan name fits
+CK1_A 0x0601ad82 collide_TestMeshObject CONFIRM collide_TestMeshObject name fits
+CK1_A 0x0601ae24 collide_TransformMeshVerts CONFIRM collide_TransformMeshVerts name fits
+CK1_A 0x0601b2e4 collide_TailCallMapLookup RENAME map_LoadMapData decompresses data into map buffer 0x0604452c, called from area init
+CK1_A 0x0601b2ec map_GetTileAt CONFIRM map_GetTileAt name fits
+CK1_A 0x0601b314 map_ScanColumnForSolid CONFIRM map_ScanColumnForSolid name fits
+CK1_A 0x0601b362 map_ScanRowForSolid CONFIRM map_ScanRowForSolid name fits
+CK1_A 0x0601b3aa collide_RectsOverlap CONFIRM collide_RectsOverlap name fits
+CK1_A 0x0601b3f0 collide_TestMeshFaces CONFIRM collide_TestMeshFaces name fits
+CK1_A 0x0601b848 mesh_PrepareAndDrawFaces RENAME mesh_TranslateVertsToBuffer only offsets mesh verts into scratch buffer, no drawing
+CK1_A 0x0601b8dc rect_TestOverlap RENAME mesh_ProjectVertsToScreen divides x,y by z for each vertex, not a rect test
+CK1_A 0x0601b920 collide_ComputeFaceFacing CONFIRM collide_ComputeFaceFacing name fits
+CK1_A 0x0601b9de collide_TestMeshFacesFromList CONFIRM collide_TestMeshFacesFromList name fits
+CK1_A 0x0601bdc0 vdp1_QueueMeshFaceSprite CONFIRM vdp1_QueueMeshFaceSprite name fits
+CK1_A 0x0601c1a4 math_ClampShortX CONFIRM math_ClampShortX name fits
+CK1_A 0x0601c1ca math_ClampShortY CONFIRM math_ClampShortY name fits
+CK1_A 0x0601c2a0 state_ClearCounters CONFIRM state_ClearCounters name fits
+CK1_A 0x0601ccac scene_CopyResourceBlocks CONFIRM scene_CopyResourceBlocks name fits
+CK1_A 0x0601cd44 chain_ReleaseSegments CONFIRM chain_ReleaseSegments name fits
+CK1_A 0x0601cefe obj_InitSpriteDefaults CONFIRM obj_InitSpriteDefaults name fits
+CK1_A 0x0601cf48 enemy_UpdateBounceDebrisState CONFIRM enemy_UpdateBounceDebrisState name fits
+CK1_A 0x0601d1c0 vdp1_QueueSimpleSprite8x8 CONFIRM vdp1_QueueSimpleSprite8x8 name fits
+CK1_A 0x0601d4f8 effect_SpawnPuff CONFIRM effect_SpawnPuff name fits
+CK1_A 0x0601d898 vdp2_WriteTile3x3 CONFIRM vdp2_WriteTile3x3 name fits
+CK1_A 0x0601d8f8 vdp2_WriteTile3x3Indexed CONFIRM vdp2_WriteTile3x3Indexed name fits
+CK1_A 0x0601d970 vdp2_AnimateTile3x3Blink CONFIRM vdp2_AnimateTile3x3Blink name fits
+CK1_A 0x0601da08 hud_AddTimerValue CONFIRM hud_AddTimerValue name fits
+CK1_A 0x0601dac8 sound_StopFlaggedCommand CONFIRM sound_StopFlaggedCommand name fits
+CK1_A 0x0601dbb0 vdp2_WriteTile3x3FromTable CONFIRM vdp2_WriteTile3x3FromTable name fits
+CK1_A 0x0601dc22 hud_DrawValueFrame0 CONFIRM hud_DrawValueFrame0 name fits
+CK1_A 0x0601dd0a hud_ResetSlideState CONFIRM hud_ResetSlideState name fits
+CK1_A 0x0601dd1c hud_UpdateSlidePanel CONFIRM hud_UpdateSlidePanel name fits
+CK1_A 0x0601e564 obj_TickBlinkFlag CONFIRM obj_TickBlinkFlag name fits
+CK1_A 0x0601e852 enemy_InitFallingItem CONFIRM enemy_InitFallingItem name fits
+CK1_A 0x0601e940 obj_TickAnimFrameList CONFIRM obj_TickAnimFrameList name fits
+CK1_A 0x0601e976 obj_TickAnimFrameBackward CONFIRM obj_TickAnimFrameBackward name fits
+CK1_A 0x0601ebb8 enemy_InitSpawnedItem CONFIRM enemy_InitSpawnedItem name fits
+CK1_A 0x0601ed5a enemy_InitSimpleDrifter CONFIRM enemy_InitSimpleDrifter name fits
+CK1_A 0x0601ee8e enemy_InitRandomXFixedFrame CONFIRM enemy_InitRandomXFixedFrame name fits
+CK1_A 0x0601ef08 vdp1_QueueScaledSprite CONFIRM vdp1_QueueScaledSprite name fits
+CK1_A 0x0601efe8 vdp1_QueueScaledRect CONFIRM vdp1_QueueScaledRect name fits

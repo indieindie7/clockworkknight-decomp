@@ -1,0 +1,133 @@
+0x00200000 func boss7b_ControllerUpdate hand =seq:GEKAN_AREA7B r=0.07 boss controller per-frame: init once via boss7b_ControllerInit, runs phase state, decrements timers, flashes via callback
+0x002000b0 func boss7b_ControllerInit hand =seq:GEKAN_AREA7B r=0.04 controller init: sets difficulty-based counts, links child objects through lookup callback, copies tables, clears buffers
+0x0020035e func boss7b_ResetState hand Zeroes boss object state fields (timers, substate, positions, flags) at obj+0x18 data block
+0x00200450 func boss7b_AttackTargetedMinions hand provisional =seq:GEKAN_AREA7B r=0.08 attack: orders nearest or flagged minions to state 5 in sequence, delay by difficulty, then ends attack
+0x0020067c func boss7b_AttackSequentialMinions hand =seq:GEKAN_AREA7B r=0.01 attack: activates minions in table order by index/position thresholds, delay by difficulty, ends attack
+0x002007f6 func boss7b_AttackStateMachine hand Boss attack-pattern switch on substate at +0xb; picks attack by phase, dispatches boss7b_Attack* handlers
+0x00200cf4 func boss7b_PickThreeMinionIndices hand provisional =seq:GEKAN_AREA7B r=0.11 selects three minion indices from player position thresholds, stores in controller bytes 8-10
+0x00200d80 func boss7b_AttackRandomMinions hand provisional =seq:GEKAN_AREA7B r=0.14 attack: LCG random minion choice (multiply, bits 16-17), activates minions until count by difficulty
+0x00200ef6 func boss7b_AttackTargetMinion hand Attack substate 5: picks minion index by hit flag or distance, sets state 5, timer by difficulty
+0x0020101a func boss7b_AttackSingleMinion hand =seq:GEKAN_AREA7B r=0.09 attack: activates one minion (flagged or nearest to player), sets its timer by difficulty
+0x0020114e func boss7b_AttackSequentialMinions_0114e hand Attack substate 7: repeatedly picks hit/nearest minion, sets state 5 with decreasing timer per round
+0x00201322 func boss7b_AttackMinionPair hand =seq:GEKAN_AREA7B r=0.02 attack: activates two minions chosen by player position, timers by difficulty, then waits
+0x00201494 func boss7b_AttackAlternatingPair hand =seq:GEKAN_AREA7B r=0.03 attack: alternates between minion pairs, timers by difficulty, toggles side and repeats
+0x002016a0 func minion_AddFrameOffsetA hand Adds constant DAT_002017cc to field +0x14 of parent block at obj+0x1c
+0x002016ac func minion_AddFrameOffsetB hand Adds constant DAT_002017cc to field +0x16 of parent block at obj+0x1c
+0x002016b8 func boss_UpdateSpriteFromFrameTable hand =seq:GEKAN_AREA7B r=0.06 copies frame entry from table by index into sprite words, chooses palette/size block by frame range
+0x00201734 func boss_AnimLoopTableA hand =seq:GEKAN_AREA7B r=0.08 advances counter, wraps at 30, looks up frame index from byte table
+0x00201764 func boss_AnimLoopTableB hand =seq:GEKAN_AREA7B r=0.08 advances counter, wraps at 15, looks up frame index from byte table
+0x00201794 func minion_UpdateAnimStateFromParent hand provisional =seq:GEKAN_AREA7B r=0.14 maps parent state (0-6) to child animation state when anim timer expires
+0x0020183c func minion_Init hand =seq:GEKAN_AREA7B r=0.00 minion object init: clears state, sets flags, position constants, attaches state table via setup callback
+0x002018ac func minion_Update hand =seq:GEKAN_AREA7B r=0.06 minion per-frame: dispatches by state 0-6 to handlers, updates animation, sets frame pointer, draws via callback
+0x0020194e func minion_UpdateWithParentReset hand If state +8 changed resets substate and parent state, then calls minion_UpdateAnimStateFromParent
+0x00201968 func minion_StateIdleSync hand =seq:GEKAN_AREA7B r=0.10 minion state 1: resets substate on state change, calls animation state update
+0x00201992 func minion_WakeStateMachine hand Minion wake-up substate switch: spawn parts, rise, wait 60 frames, fall start, fall, finish
+0x00201a1a func minion_AdvanceSubstate hand Clears counter at +4 and increments substate at +0xb
+0x00201a30 func minion_WakeSpawnParts hand =seq:GEKAN_AREA7B r=0.02 wake step: sets rise velocity, spawns five child objects numbered 1-5 via lookup callback, plays sound
+0x00201ada func minion_WakeRise hand =seq:GEKAN_AREA7B r=0.09 wake step: waits 120 frames then accelerates Y position up to limit, plays sound at top
+0x00201b3a func minion_WakeFallStart hand =seq:GEKAN_AREA7B r=0.10 wake step: sets fall velocity and gravity, sets timer to 64, advances substate
+0x00201b7c func minion_WakeFall hand provisional =seq:GEKAN_AREA7B r=0.14 wake step: applies gravity to Z position, counts timer down, clears velocities at end
+0x00201bb8 func minion_StateAttackDispatch hand =seq:GEKAN_AREA7B r=0.06 minion state 4: runs attack start once then attack tick
+0x00201bf4 func minion_AttackStart hand =seq:GEKAN_AREA7B r=0.10 attack start: sets upward velocity -128, child state 3, advances substate
+0x00201c18 func minion_AttackTick hand =seq:GEKAN_AREA7B r=0.09 attack tick: counts frames, plays sound, moves position by velocity, invokes callback every 4th frame
+0x00201ca4 func minion_StateDead hand provisional =seq:GEKAN_AREA7B r=0.13 minion state 6: sets child state 1 once on entry
+0x00201cd8 func minion_ActivateParent hand On state change reset; substate 0 sets parent state +8 to 1 and advances substate
+0x00201d08 func minion_StateStun hand provisional =seq:GEKAN_AREA7B r=0.12 minion state 3: sets child state 2 once on entry
+0x00201d40 func minion_UpdateChildState hand =seq:GEKAN_AREA7B r=0.02 dispatches child object state 0-7 to its handler and stores previous state
+0x00201dbc func minion_PulseBlinkCounter hand Ping-pong counter 0..0x1f stored at +0xe using direction flag +0xf and tick +0xc
+0x00201e06 func minion_ChildStateIdle hand provisional =seq:GEKAN_AREA7B r=0.13 child idle: picks sprite set and palette by player position thresholds, updates fade and animation
+0x00201ee0 func minion_ChildStateAttackAnim hand =seq:GEKAN_AREA7B r=0.10 child state 4: sets attack animation pointer on entry, advances animation
+0x00201f18 func minion_ChildStateRise hand provisional =seq:GEKAN_AREA7B r=0.12 child state 2: sets animation on entry, increments fade counter to 31, advances anim frame
+0x00201f72 func minion_ChildStateFall hand =seq:GEKAN_AREA7B r=0.10 child state 3: sets animation on entry, wraps fade counter at 32, advances anim frame
+0x00201fce func minion_ChildStateHurtAnimA hand =seq:GEKAN_AREA7B r=0.03 child state 5: sets hurt animation on entry, fade counter and animation update
+0x00202014 func minion_ChildStateHurtAnimB hand =seq:GEKAN_AREA7B r=0.03 child state 6: same as state 5, sets hurt animation, fade counter and animation update
+0x0020205a func minion_ChildStateFinalAnim hand =seq:GEKAN_AREA7B r=0.04 child state 7: sets animation on entry, fade counter, advances frame clamped to 7
+0x002020d0 func minion_ChildStateSwing hand provisional =seq:GEKAN_AREA7B r=0.15 child state 1: sets animation and plays sound on entry, swings angle, fade counter, countdown timer
+0x00202142 func boss7b_StepSwingAngle hand Adds delta to angle +0x16, wraps at 0x2d, sets flip flag, looks up frame from table into +0x14
+0x002021d4 func satellite_Init hand =seq:GEKAN_AREA7B r=0.03 satellite object init: sets flags, picks start position constants by index 0-3, copies to home position
+0x00202266 func satellite_Update hand =seq:GEKAN_AREA7B r=0.07 satellite per-frame: dispatches state 0-7 to handlers, flags 0x10 forces state 7, sets frame pointer
+0x00202364 func boss7b_InitStateOnce hand On state change resets substate; substate 0 sets velocity field, calls animation setter, advances
+0x002023a2 func satellite_StateFlash hand =seq:GEKAN_AREA7B r=0.02 satellite state 4: sets animation on entry, fade counter 0-15 ping-pong
+0x0020245a func boss7b_UpdateBobbingAnim hand Sine-table bobbing position update plus 0x1f ping-pong blink counter, per-direction speed from +0x20
+0x002025fc func boss7b_UpdateShortPulseAnim hand Short 0..0xf pulse counter on +0xe in two phases after anim set on state change
+0x0020267e func satellite_StateAttackSequence hand provisional =seq:GEKAN_AREA7B r=0.11 satellite state 5: multi-step rise, spawn projectile via callback, fall, timed sound by difficulty
+0x002028d0 func satellite_StateReturn hand provisional =seq:GEKAN_AREA7B r=0.13 satellite state 6: sets animation, accelerates position back down, fade counter, clears active flag
+0x0020298c func satellite_StateDefeated hand provisional =seq:GEKAN_AREA7B r=0.11 satellite state 7: sets fall velocity, waits timer, moves position until below threshold
+0x00202a40 func satellite_ChildInit hand =seq:GEKAN_AREA7B r=0.00 child object init: flags, setup callback, position constants, state 5, animation pointer
+0x00202a8a func boss_UpdateMain hand provisional =seq:GEKAN_AREA7B r=0.15 dispatches boss body state 0-5 to handlers, applies per-frame offset table, then draws
+0x00202c40 func boss7b_MoveAttackStateMachine hand Thirteen-substate boss movement: slide to lane picked by boss_PickLaneByPlayerX, accelerate, blink, repeat
+0x00203056 func boss7b_ChargeAttackStateMachine hand Four-substate charge: set anim, ramp counter, wait hit flag +0x28 bit2, countdown fade
+0x00203178 func boss7b_RiseAndSettle hand Two substates: set anim and velocity, then integrate +0x30 position by +0x40 until counter 0x1f
+0x00203200 func boss_StateHurtSlide hand =seq:GEKAN_AREA7B r=0.05 provisional: state 3 two-step: set animation and velocity, then move y until frame 0x1f
+0x002032b0 func boss_StateRetreat hand =seq:GEKAN_AREA7B r=0.11 provisional: state 4: reset, then move y by velocity until threshold, return to state 3
+0x00203340 func boss_StateDefeatedInit hand =seq:GEKAN_AREA7B r=0.14 provisional: state 5 one-shot: set animation and y position
+0x002033c6 func bossPart_ApplyFrameOffsetAndDraw hand Selects offset table by anim pointer, offsets position by 6-byte entry with flip, calls draw, restores position
+0x002034da func bossPart_Init hand =seq:GEKAN_AREA7B r=0.00 child part init: copies parent position, clears fields, sets sprite words and animation
+0x00203530 func bossPart_AddFrameOffsetA hand Adds constant DAT_002035a4 to field +0x14 of parent block at obj+0x1c
+0x0020353c func bossPart_AddFrameOffsetB hand Adds constant DAT_002035a4 to field +0x16 of parent block at obj+0x1c
+0x00203548 func bossPart_LookupFrameOffset hand =seq:GEKAN_AREA7B r=0.05 copies two halfwords from per-animation table indexed by part fields 0x10 and 0x14
+0x00203570 func bossPart_StepAnimTable hand =seq:GEKAN_AREA7B r=0.08 advances field 0x16, wraps at 0x0f, loads field 0x14 from byte table
+0x002035d4 func bossPart_UpdateFromParent hand Dispatches bossPart_State* by state +8, looks up frame offset, copies parent position and flip, draws
+0x00203644 func bossPart_StateBody hand provisional =seq:GEKAN_AREA7B r=0.15 dispatches 13 substates to handlers, copies parent substate
+0x002036f4 func bossPart_SubInit hand =seq:GEKAN_AREA7B r=0.00 sets animation script and clears frame
+0x00203712 func bossPart_CopyFrameFromParent hand =GEKAN_AREA7B copies parent frame field 0xe
+0x0020371e func bossPart_SetAnimStubB hand =GEKAN_AREA7B only sets animation script (was bossPart_SetAnimStub_2)
+0x00203726 func bossPart_CopyFrameStep hand =GEKAN_AREA7B copies parent frame then steps animation table
+0x00203732 func bossPart_SetAnimStubB_203732 hand =GEKAN_AREA7B only sets animation script (was bossPart_SetAnimStub_2)
+0x0020373a func bossPart_CopyFrameStepB hand =GEKAN_AREA7B copies parent frame then steps animation table (was bossPart_CopyFrameStep_2)
+0x00203746 func bossPart_SubSetAnimLaneDist hand =seq:GEKAN_AREA7B r=0.02 sets animation, flags whether parent facing differs from global by more than 1 (was bossPart_SubSetAnimTurn)
+0x0020379a func bossPart_UpdateFiringArm hand Copies parent counter and flip; five-substate arm raise, boss_SpawnProjectile twice, lower
+0x002038e6 func bossPart_SubSetAnimCopyFrame hand =seq:GEKAN_AREA7B r=0.05 sets animation script and copies parent frame
+0x0020390c func bossPart_CopyFrameStepC hand =seq:GEKAN_AREA7B r=0.00 copies parent frame then steps animation table (was bossPart_CopyFrameStep_3)
+0x00203918 func bossPart_StateBodyB hand =seq:GEKAN_AREA7B r=0.09 state 2 handler, substate dispatch, steps animation, copies parent substate
+0x00203988 func bossPart_StateBodyB_Init hand =seq:GEKAN_AREA7B r=0.00 clears fields, sets flag 1 and animation script
+0x002039aa func bossPart_CopyFrameStub_A hand =GEKAN_AREA7B copies parent frame field only
+0x002039b6 func bossPart_CopyFrameStub_B hand =GEKAN_AREA7B copies parent frame field only
+0x002039c2 func bossPart_StateBodyC hand =seq:GEKAN_AREA7B r=0.10 state 3 handler, two substates, copies parent substate
+0x00203a0c func bossPart_StateBodyC_Init hand =seq:GEKAN_AREA7B r=0.00 clears fields and sets animation script
+0x00203a1c func bossPart_CopyFrameStepB_203a1c hand =GEKAN_AREA7B copies parent frame then steps animation table (was bossPart_CopyFrameStep_2)
+0x00203a28 func bossPart_StateIdle hand provisional =seq:GEKAN_AREA7B r=0.12 state 0 handler with two substates, copies parent substate
+0x00203a6e func bossPart_StateIdle_Init hand =seq:GEKAN_AREA7B r=0.00 clears fields, sets animation script, clears facing and counter
+0x00203a96 func bossPart_StateIdle_Step hand =GEKAN_AREA7B copies parent frame and facing then steps animation table
+0x00203aa6 func bossPart_StateEnd hand =seq:GEKAN_AREA7B r=0.10 state 4 handler with two substates, copies parent substate
+0x00203af0 func bossPart_StateEnd_Init hand =GEKAN_AREA7B clears fields 0x10 and 0x14
+0x00203afa func bossPart_UpdateBlinkEyes hand Copies parent counter and flip, cycles frame counter &7 toggling anim index 4 or 5, returns 0x15
+0x00203b40 func boss_SpawnProjectile hand =seq:GEKAN_AREA7B r=0.05 creates object, places it at one of 4 targets plus offset by facing, copies facing
+0x00203c04 func boss_PickLaneByPlayerX hand =seq:GEKAN_AREA7B r=0.04 classifies player x into 4 zones, dispatches by pattern variable to lane pickers
+0x00203c82 func boss_PickLanePatternA hand =seq:GEKAN_AREA7B r=0.09 maps zone and facing to lane index or -1
+0x00203cd0 func boss_PickLanePatternB hand provisional =seq:GEKAN_AREA7B r=0.13 maps zone and facing to lane index or -1
+0x00203d22 func boss_PickLanePatternC hand =seq:GEKAN_AREA7B r=0.09 maps zone and facing to lane index or -1
+0x00203dbc func debris_Init hand =seq:GEKAN_AREA7B r=0.00 sets sprite words, clears flags, calls launch, resets substate
+0x00203e02 func debris_Update hand provisional =seq:GEKAN_AREA7B r=0.13 integrates velocity and acceleration, animates, lifetime countdown, draws
+0x00203f42 func debris_Launch hand =seq:GEKAN_AREA7B r=0.02 sets velocity from aim helper calls toward target, lifetime 0x60
+0x00203ff8 func fragment_Init hand =seq:GEKAN_AREA7B r=0.00 random frame via LCG multiply, sets sprite words, flags, draw
+0x00204084 func fragment_FollowParent hand provisional =seq:GEKAN_AREA7B r=0.02 positions on parent frame offset, advances state when parent flag set
+0x002040d8 func bossPart_AttachToParentFrame hand Positions part at parent position plus frame table offset; advances state when parent +0x14 nonzero
+0x0020411e func fragment_StateFlight hand =seq:GEKAN_AREA7B r=0.04 first tick launches, later ticks update motion
+0x0020414c func fragment_Launch hand =seq:GEKAN_AREA7B r=0.03 random lifetime and velocity via LCG multiply and helper calls
+0x00204224 func fragment_UpdateMotion hand =seq:GEKAN_AREA7B r=0.05 integrates velocity, bounces off floor with sound, ends when above screen top
+0x00204378 func waveSurface_Init hand =seq:GEKAN_AREA7B r=0.06 sets sprite words, masks index to 0-7, clears facing (was target_Init)
+0x002043f8 func waveSurface_Update hand =seq:GEKAN_AREA7B r=0.10 draws, on state 1 refreshes wave and stores value to global (was target_Update)
+0x00204464 func wave_UpdatePositions hand =seq:GEKAN_AREA7B r=0.03 fills sine table from lookup and writes 16-bit y coords into polygon vertex table
+0x00204682 func bossPart_InitObject hand Init part: clear flags +0x28, register in slot table by +0x21 & 3, set sizes, set anim if flag zero
+0x002046ea func floater_Update hand provisional =seq:GEKAN_AREA7B r=0.15 sine bobbing of y by phase, input bit steers phase, draws
+0x002049c8 func pickup_SpawnRandomA hand =seq:GEKAN_AREA7B r=0.00 provisional: creates object at random x,y from LCG, zero velocity, random frame 0-15
+0x00204a4c func pickup_SpawnRandomB hand =seq:GEKAN_AREA7B r=0.06 provisional: creates object near parent at random offset from LCG, frame 0-3
+0x00204b40 func shadow_Init hand =seq:GEKAN_AREA7B r=0.11 provisional: sets sprite words, computes anim from y diff, flips by x bit
+0x00204b94 func shadow_Update hand =seq:GEKAN_AREA7B r=0.00 provisional: adds velocity to y, tests helper, calls follow-up if hit
+0x00204c0a func hand_Init hand =seq:GEKAN_AREA7B r=0.06 calls base init, sets sprite words, clears state, flag, substates
+0x00204c6c func hand_Update hand provisional =seq:GEKAN_AREA7B r=0.12 dispatch by kind, advances frame 0..0xe, draws
+0x00204cd2 func hand_PlaceKind0 hand =seq:GEKAN_AREA7B r=0.00 sets position from parent with y offset from global
+0x00204cf6 func hand_PlaceKindN hand provisional =seq:GEKAN_AREA7B r=0.11 x from parent by kind, 4-state y motion, slides then lowers, calls helper at end
+0x00204e8a func hitbox_Init hand =seq:GEKAN_AREA7B r=0.04 calls base init, clears flags and sub fields, sets mode 8
+0x00204eba func hitbox_Update hand provisional =seq:GEKAN_AREA7B r=0.14 picks frame set by kind 1-7, positions relative to parent, runs hit check, or kind 8
+0x002050c0 func bossPart_HandleHit hand Processes hit flags +0x28 from parent state; decrement hit points, play sound, set damage or defeat flags
+0x00205214 func bossPart_FollowParentCheckPlayer hand Copies parent position and frame; sets flag if player Z distance exceeds threshold; calls update
+0x0020528a func hitbox_HandleHit hand =seq:GEKAN_AREA7B r=0.01 processes hit bits, decrements counter, plays sound, spawns effect, sets parent flags
+0x002053d6 func camera_UpdateTargets hand provisional =seq:GEKAN_AREA7B r=0.12 copies previous camera values, calls handler by mode, stores new target values
+0x00205458 func boss7b_UpdateCameraTracking hand Per boss state eases camera X/Y toward boss and player midpoint with clamp, divides by 8; state 0/1 calls FUN_00205890
+0x00205724 func camera_FollowMidpoint hand =seq:GEKAN_AREA7B r=0.07 tracks midpoint of two objects x with clamped velocity and damped scroll values
+0x00205890 func boss7b_UpdateCameraTrackingDefault hand Eases camera X toward player with divide by 16, clamps, eases Y and zoom toward target
+0x002059bc func particle_InitRandomPos hand =seq:GEKAN_AREA7B r=0.01 sets random x,y positions and zero velocities in particle fields (was particle_InitVelocity)
+0x00205c1c func rng_StepLcg hand provisional =seq:GEKAN_AREA7B r=0.12 scrambles 16-bit seed global by multiply by 3 with byte add
+0x00205c50 func bossPart_SetAnimTable hand Stores animation table pointer into obj+0x1c block and clears counters +0xc..+0xf

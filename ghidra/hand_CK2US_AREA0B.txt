@@ -1,0 +1,95 @@
+0x00200000 func boss_RunStateMachine hand =seq:GEKAN_AREA0B r=0.03 dispatches boss state byte 0x11 to init, phase handlers and hit check
+0x002000a8 func boss_InitIntro hand =seq:GEKAN_AREA0B r=0.03 sets object fields, runs helper calls on table pointers, clears flags, sets timers for intro state
+0x0020029a func boss_UpdateIntro hand =seq:GEKAN_AREA0B r=0.08 per-frame intro movement, increments counter, advances state byte when thresholds reached
+0x00200370 func boss0b_UpdateMainBody hand big per-frame state machine of boss body: idle, attack phases, hit flags, sound calls 0x4c/0x4e/0x58, spawns children
+0x00201582 func boss_UpdateDefeatSequence hand =seq:GEKAN_AREA0B r=0.04 falling and explosions, random sound ids 0x54 0x55 0x60 0x61 via LCG, frame animation
+0x0020191c func boss_InitPart1 hand =seq:GEKAN_AREA0B r=0.03 init body part: reset, visibility, size fields, random byte from LCG masked
+0x0020195a func boss_FollowParentPart1 hand =seq:GEKAN_AREA0B r=0.05 copies parent frame index, offsets position each frame, calls handler past limit
+0x002019d0 func boss_UpdatePosePart1 hand =seq:GEKAN_AREA0B r=0.03 switch on boss substate 0-10 choosing frame table and position offsets, RNG timer reroll
+0x00201c10 func boss_FollowParentPart1b hand =seq:GEKAN_AREA0B r=0.06 offsets position and copies parent animation frame, selects frame pointer table
+0x00201ce4 func boss_InitPart2 hand =seq:GEKAN_AREA0B r=0.05 stores object in global, resets, sets visibility and size fields
+0x00201d0e func boss_FollowParentPart2 hand =seq:GEKAN_AREA0B r=0.05 copies parent frame, offsets xyz, calls handler when below limit
+0x00201d88 func boss_UpdatePosePart2 hand =seq:GEKAN_AREA0B r=0.08 switch on boss substate 0-10 selecting animation table and xyz offset per pose
+0x00201ffe func boss_FallPart2 hand =seq:GEKAN_AREA0B r=0.01 part detaches: applies stored velocity to position, gravity, kills below floor
+0x00202148 func boss_InitPart3 hand =seq:GEKAN_AREA0B r=0.05 stores object in global, resets, sets visibility and size fields
+0x00202194 func boss_FollowParentPart3 hand =seq:GEKAN_AREA0B r=0.05 copies parent frame, offsets xyz, calls handler when below limit
+0x002021fc func boss_UpdatePosePart3 hand =seq:GEKAN_AREA0B r=0.05 switch on boss substate 0-10 selecting animation table and xyz offset per pose
+0x0020247e func boss_FallPart3 hand =seq:GEKAN_AREA0B r=0.01 part detaches: applies velocity to position with gravity, kills below floor
+0x002025cc func boss_InitPart4 hand =seq:GEKAN_AREA0B r=0.05 stores object in global, resets, sets visibility and size fields
+0x00202618 func boss_FollowParentPart4 hand =seq:GEKAN_AREA0B r=0.05 copies parent frame, offsets xyz, calls handler when below limit
+0x00202680 func boss_UpdatePosePart4 hand =seq:GEKAN_AREA0B r=0.07 switch on boss substate 0-10 selecting animation table and xyz offset per pose
+0x00202906 func boss_FallPart4 hand =seq:GEKAN_AREA0B r=0.01 part detaches: applies velocity to position with gravity, kills below floor
+0x00202a4c func boss_InitPart5 hand =seq:GEKAN_AREA0B r=0.05 stores object in global, resets, sets visibility and size fields
+0x00202aa8 func boss_FollowParentPart5 hand =seq:GEKAN_AREA0B r=0.05 copies parent frame, offsets xyz, calls handler when below limit
+0x00202b10 func boss_UpdatePosePart5 hand =seq:GEKAN_AREA0B r=0.02 switch on boss substate 0-10 selecting animation table and xyz offset per pose
+0x00202da6 func boss_FallPart5 hand =seq:GEKAN_AREA0B r=0.01 part detaches: applies velocity to position with gravity, kills below floor
+0x00202eee func boss_InitPart6 hand =seq:GEKAN_AREA0B r=0.05 stores object in global, resets, sets visibility and size fields
+0x00202f4c func boss_FollowParentPart6 hand =seq:GEKAN_AREA0B r=0.05 copies parent frame, offsets xyz, calls handler when below limit
+0x00202fb4 func boss_UpdatePosePart6 hand =seq:GEKAN_AREA0B r=0.07 switch on boss substate 0-10 selecting animation table and xyz offset per pose
+0x0020323a func boss_FallPart6 hand =seq:GEKAN_AREA0B r=0.01 part detaches: velocity applied with gravity, kills below floor
+0x002033ac func boss_InitPart7 hand =seq:GEKAN_AREA0B r=0.05 stores object in global, resets, sets visibility and size fields
+0x002033d6 func boss_FollowParentPart7 hand =seq:GEKAN_AREA0B r=0.05 copies parent frame, offsets xyz, calls handler when below limit
+0x00203450 func boss_UpdatePosePart7 hand =seq:GEKAN_AREA0B r=0.08 switch on boss substate 0-10 selecting animation table and xyz offset per pose
+0x002036cc func boss_FallPart7 hand =seq:GEKAN_AREA0B r=0.01 part detaches: applies velocity to position with gravity, kills below floor
+0x00203800 func boss_InitPart8 hand =seq:GEKAN_AREA0B r=0.05 stores object in global, resets, sets visibility and size fields
+0x0020385c func boss_FollowParentPart8 hand =seq:GEKAN_AREA0B r=0.05 copies parent frame, offsets xyz, calls handler when below limit
+0x002038c4 func boss_UpdatePosePart8 hand =seq:GEKAN_AREA0B r=0.05 switch on boss substate 0-10 selecting animation table and xyz offset per pose
+0x00203b26 func boss_BobPart8 hand =seq:GEKAN_AREA0B r=0.05 part bobs with velocity, plays sound 0x54 via LCG timer, spawns effects
+0x00203d0a func boss_InitPartTail hand =seq:GEKAN_AREA0B r=0.03 stores object in global, resets, sets visibility, y speed, size fields
+0x00203d7c func boss_UpdatePartTail hand provisional =seq:GEKAN_AREA0B r=0.10 switch on parent substate poses, hit-box check on parent substate 0x19 or 0x3b
+0x00203fb4 func boss_FallPartTail hand =seq:GEKAN_AREA0B r=0.02 part falls with y velocity and gravity until reaching parent y
+0x00204118 func boss0b_InitAttachedPart hand sets up child part following parent boss, picks side from flags, positions from parent offsets, sets sprite entry
+0x002042ba func boss_StoreWeaponOffset hand =seq:GEKAN_AREA0B r=0.06 updates hitbox record at table plus side times 0x3c from object position
+0x00204348 func boss0b_UpdateArmPart hand large per-frame state machine of boss arm/limb part driven by parent boss state, hit flags and player x
+0x00205740 func boss_ComputeLimbAngles hand =seq:GEKAN_AREA0B r=0.06 computes distance and angles using sqrt and atan helpers and sine table, fills angle fields
+0x002059d8 func math_IntSqrt hand =seq:GEKAN_AREA0B r=0.03 integer square root by stepped search
+0x00205a7a func boss_TransformLimbVertices hand =seq:GEKAN_AREA0B r=0.03 rotates three joint point groups by Euler angles using sin cos tables
+0x00206162 func boss_InitArmPart hand =seq:GEKAN_AREA0B r=0.00 init of part using reset helper 0x00207476, visibility, size fields, then tail jump
+0x00206198 func boss0b_UpdateFollowerPart hand follower part animation by parent state counter, falls under gravity, draws sprite command, scroll-relative screen scaling
+0x002065e0 func boss_DetachArmPart hand =seq:GEKAN_AREA0B r=0.01 part death and knock-off: sets launch velocities by side, falls until below floor
+0x0020671a func boss_ResetPartStub hand =seq:GEKAN_AREA0B r=0.07 calls reset helper, sets visibility flag, returns 0x28
+0x00206736 func boss_UpdateArmChild hand =seq:GEKAN_AREA0B r=0.10 follows parent state, collision check sets flag, ends on detach
+0x00206822 func boss_CheckPartDoneFlag hand =seq:GEKAN_AREA0B r=0.04 if flag byte is set jumps to finish handler
+0x00206886 func boss_InitDefeatedPart hand =seq:GEKAN_AREA0B r=0.02 init head or main part: reset, places by player side, size fields, calls two helpers
+0x0020692c func boss_UpdateDefeatedPartFrame hand =seq:GEKAN_AREA0B r=0.03 calls physics 0x00206f9a and jitter 0x00207084, then draws or tail jumps
+0x00206978 func boss_UpdateDefeatedPhysics hand =seq:GEKAN_AREA0B r=0.04 gravity and jump physics bouncing off floor, flags in byte 0xf
+0x00206a68 func boss_JitterPositionX hand =seq:GEKAN_AREA0B r=0.04 random call result shifts x position left or right by constant
+0x00206a98 func boss0b_UpdateHiddenPartWrapper hand copies parent position, init once via boss_InitHiddenPart then boss_UpdateHiddenPart each frame
+0x00206acc func boss_InitHiddenPart hand =seq:GEKAN_AREA0B r=0.00 resets object, flags cleared, size fields set
+0x00206af4 func boss_UpdateHiddenPart hand =seq:GEKAN_AREA0B r=0.05 conditional tail call chosen by flag
+0x00206b4e func boss_InitSparkPart hand =seq:GEKAN_AREA0B r=0.00 resets object, init with sprite data and anim pointer
+0x00206bbc func boss0b_StepSpriteOffsetFrame hand cycles 3-frame offset table into sprite fields 0x10/0x14 shifted 8 then tail-calls draw function
+0x00206c02 func boss_UpdateSparkPart hand =seq:GEKAN_AREA0B r=0.03 animates spark then branches by flag to draw or other handler
+0x00206c80 func boss_InitFlashPart hand =seq:GEKAN_AREA0B r=0.00 resets object, visibility, size fields
+0x00206ca4 func boss_UpdateDefeatFade hand =seq:GEKAN_AREA0B r=0.02 timer-based effect: calls palette fade 0x00207374 and flash 0x00207430, ends on parent y
+0x00206d26 func boss_FadeDefeatPalette hand =seq:GEKAN_AREA0B r=0.08 increments frame counter, sound 0x51 at count 0x50, shifts palette colours
+0x00206e08 func boss_FlashDefeatPalette hand =seq:GEKAN_AREA0B r=0.06 sets palette entries and plays sounds 0x51 and 0x53
+0x00206e4a func boss_ResetObject hand =seq:GEKAN_AREA0B r=0.07 zeroes frame, state, velocity, position delta and counters of object and extension
+0x00206f20 func boss_InitDebrisParticle hand provisional =seq:GEKAN_AREA0B r=0.10 random choice via LCG picks source and positions particle, plays sound
+0x00207032 func boss_SpawnDebrisIfReady hand =seq:GEKAN_AREA0B r=0.06 conditional tail call to spawn handler
+0x002070c4 func boss_InitSmokePuff hand =seq:GEKAN_AREA0B r=0.05 init particle at random offset from parent position
+0x002071a8 func boss_InitExplosionSpark hand =seq:GEKAN_AREA0B r=0.08 places spark randomly near parent with LCG masks, picks sprite
+0x00207250 func boss_SpawnSparkIfReady hand =seq:GEKAN_AREA0B r=0.06 conditional tail call to spawn handler
+0x002072d4 func boss_InitHitSpark hand =seq:GEKAN_AREA0B r=0.08 positions effect from parent or weapon data, sets sprite table
+0x002073aa func boss_SpawnHitSparkIfReady hand =seq:GEKAN_AREA0B r=0.06 conditional tail call to spawn handler
+0x002073f4 func boss0b_UpdateFaceAnimation hand face expression state switch calling boss_Advance*FaceFrame helpers, sets face sprite size and palette frame, random byte
+0x00207618 func boss_AdvanceIdleFaceFrame hand =seq:GEKAN_AREA0B r=0.06 animation counter increment wrapping at 0x40
+0x00207638 func boss0b_StepIdleFaceTimer hand provisional face timer picks idle expression frame by elapsed counter ranges and resets after limit
+0x002076ae func boss_AdvanceFaceFrameShort hand provisional =seq:GEKAN_AREA0B r=0.12 short animation frame sequence by counter
+0x002076dc func boss_AdvanceHurtFaceFrame hand =seq:GEKAN_AREA0B r=0.03 animation frame sequence then advances phase after timeout
+0x00207714 func boss_AdvanceDizzyFaceFrame hand =seq:GEKAN_AREA0B r=0.00 animation frame sequence cycling then advances phase
+0x0020776a func boss_AdvanceRecoverFaceFrame hand =seq:GEKAN_AREA0B r=0.09 animation frame sequence then resets phase
+0x002077a4 func boss_UpdateCamera hand provisional =seq:GEKAN_AREA0B r=0.13 camera and scroll update dispatcher by state, stores target position
+0x00207892 func boss0b_UpdateCameraTrackBoss hand provisional camera scroll follows midpoint between player and boss, clamps and eases scroll speed, else calls camera fallback
+0x00207a7c func boss_TrackCameraDefault hand provisional =seq:GEKAN_AREA0B r=0.01 camera scroll smoothing toward player position with shifts and clamps
+0x00207bca func boss0b_UpdateCameraTrackPlayer hand provisional camera scroll eases toward player x with direction and clamp, fallback of camera tracking
+0x00207d5c func boss_InitScene hand =seq:GEKAN_AREA0B r=0.02 VDP2 scroll and display setup init, clears display flags, sets camera fields
+0x00207e1c func boss_InitPlayerFields hand =seq:GEKAN_AREA0B r=0.08 resets camera and state record fields to initial values
+0x00207ec4 func boss_ReadPadSetFacing hand =seq:GEKAN_AREA0B r=0.00 converts pad direction input to player flag bits
+0x00207f0c func boss_ReadPadSetFlagsAlt hand =seq:GEKAN_AREA0B r=0.09 converts pad direction input to flags variant
+0x00207f5c func boss_TickBlinkTimer hand =seq:GEKAN_AREA0B r=0.04 blink or flash timer, rerolls from LCG when it reaches zero
+0x00207fb2 func boss_CallHelperStub hand =seq:GEKAN_AREA0B r=0.00 tail call wrapper with constant arguments
+0x00208042 func boss_StepPaletteFade hand =seq:GEKAN_AREA0B r=0.01 palette fade steps with countdown timers
+0x00208110 func boss_LoadPaletteFrame hand =seq:GEKAN_AREA0B r=0.00 copies 0x10 bytes from table entry for palette or DMA
+0x00208130 func boss_FindOverlappingObject hand =seq:GEKAN_AREA0B r=0.00 loops object list, builds bounding box, tests overlap and returns hit object
+0x0024b652 func stub_0024be6e hand =GEKAN_AREA0B bad instruction data halt, two byte stub

@@ -1,0 +1,42 @@
+CK1_A 0x060264de obj_FreeParts CONFIRM obj_FreeParts pushes child node onto free list and frees pool block, clears +0x1c
+CK1_A 0x060265a6 collide_FindObjectUnderPoint CONFIRM collide_FindObjectUnderPoint scans object list for live object whose x and y range holds the point; callers use for landing
+CK1_A 0x060266e0 collide_ObjectVsPlayerBox CONFIRM collide_ObjectVsPlayerBox compares object extents with player x/y box; caller sets contact flags on hit
+CK1_A 0x060267a4 collide_ObjectFrontVsPlayer CONFIRM collide_ObjectFrontVsPlayer front edge point by facing byte vs player box; returns 1/0
+CK1_A 0x06026880 obj_SpawnWithParams RENAME collide_PlayerInRect no spawn: tests player box against caller-given x1,x2,y1,y2 range, returns 1/0
+CK1_A 0x06026956 collide_PushOutOfObjects CONFIRM collide_PushOutOfObjects pushes object out of overlapping list objects on x/y, returns side mask; caller maps to contact flags
+CK1_A 0x06026bd2 obj_PushOutAndLandOnObjects CONFIRM obj_PushOutAndLandOnObjects variant push-out with side/top flags and dlist_PushPair when standing on object
+CK1_A 0x06027108 obj_MoveWithTileCollision CONFIRM obj_MoveWithTileCollision applies velocity, clamps map width, scans column/row tiles, falls back to obj_ApplyVelocity on flag 8
+CK1_A 0x06027418 obj_IsLedgeAhead RENAME obj_IsTileSolidAhead scans tile row one step ahead (sign by facing) and returns true if solid; no ledge logic, no callers to show use
+CK1_A 0x060277fc obj_LandOnGroundOrObject CONFIRM obj_LandOnGroundOrObject tile row below then object beneath; bounces vy, sets hit flags on supporting object by mode
+CK1_A 0x06027974 obj_UpdateContactFlags CONFIRM obj_UpdateContactFlags runs push-out and maps result bits to +0x26 contact flags
+CK1_A 0x06027a0c obj_LandOnGround CONFIRM obj_LandOnGround tests tile under feet by type, falls to object-under check, sets ground flag; does not zero vy but fits landing
+CK1_A 0x06028030 obj_StepAnimFrames CONFIRM obj_StepAnimFrames per-state frame timer/index advance with loop and end flags; 7 sprite-updating callers
+CK1_A 0x060280d8 vdp1_QueueObjectSpritesA CONFIRM vdp1_QueueObjectSpritesA builds 0x20-byte VDP1 commands per part with depth-scaled corners and flip
+CK1_A 0x0602891e vdp1_QueueObjectSpritesE CONFIRM vdp1_QueueObjectSpritesE same per-part VDP1 command builder as A without per-part scale; used by debris and effect objects
+CK1_A 0x060299d6 obj_QueueOffscreenState RENAME snd_SendCommandByCameraDist compares object to camera box and sends state 2 (far) or 1 (near) to sound command queue
+CK1_A 0x06029ae4 obj_QueryTileBelowBox RENAME obj_UpdateEffectSpawner state0 spawns effect object and sound cmd, state1 animates while near camera else frees slot; no tile query on box
+CK1_A 0x06029f88 obj_SpawnerChildStateMachine RENAME obj_InitChildFromParent initialises child object fields (pos from parent, velocity table by type, anim pointers); no state machine, no counter
+CK1_A 0x0602a058 map_IsSpecialTile RENAME obj_InitEffectFromParent writes object fields (pos from parent, anim ptrs, flags); no tile test
+CK1_A 0x0602a0aa cam_IsPlayerPastThreshold RENAME obj_UpdateOneShotAnim steps anim, queues sprites, frees slot when end flag set; no camera/player compare
+CK1_A 0x0602a0f4 enemy_UpdateThrownDebris UNSURE enemy_UpdateThrownDebris falling object with gravity, anim state and spawn at ground line; debris label unproven, no callers shown
+CK1_A 0x0602a1fe enemy_UpdateSplitDebris CONFIRM enemy_UpdateSplitDebris draws two offset sprite pieces per frame with timed state and gravity, frees below ground line
+CK1_A 0x0602a450 vdp1_DrawShadowSprite UNSURE vdp1_DrawShadowSprite builds full 4-corner scaled VDP1 quad; only caller picks it by table flag over QueueObjectSpritesE, shadow role unproven
+CK1_A 0x0602a844 vdp1_DrawRotatedPartsSprites CONFIRM vdp1_DrawRotatedPartsSprites per part builds scaled VDP1 command at sine-table offset then vdp1_RotateQuad
+CK1_A 0x0602ac8c vdp1_DrawSpinningObject CONFIRM vdp1_DrawSpinningObject bumps fall speed/rotation angle and counter, then draws parts rotated via vdp1_RotateQuad
+CK1_A 0x0602b310 obj_UpdateWaitFrames RENAME obj_UpdateParentAttachedEffect no 0x3c wait: state0 inits effect at parent offset, then follows parent via enemy_FollowParentUpdate until parent gone or flag 0x10, else frees
+CK1_A 0x0602b3d2 enemy_FollowParentUpdate CONFIRM enemy_FollowParentUpdate copies parent x and y+offset, picks anim from parent child-state byte, steps anim and queues sprites
+CK1_A 0x0602bd60 obj_InitDefaultPlayerSlot RENAME obj_InitSelectScreenSprite RLE-decodes table, zeroes object 0605afc4 and sets sprite/anim pointers; sole caller is select screen init, not a player slot
+CK1_A 0x0602bdb0 scene_InitParallaxLayerTable RENAME vdp1_UpdateSelectScreenSprite steps anim of the select-screen sprite object and fills two VDP1 command entries; no parallax layers
+CK1_A 0x0602cda8 gfs_OpenFileById RENAME gfs_LoadDirTable opens id, gets size, reads directory entries into caller buffer, closes; param 0 path returns current/ error
+CK1_A 0x0602d122 gfs_HandleStartRead UNSURE gfs_HandleStartRead errors on null handle, returns 0 if size zero, else divides; no callers, purpose unproven
+CK1_A 0x0602e068 gfs_GetDirEntryOffset RENAME gfs_FileOffsetToSector entry start plus offset, or interleave-unit scaled (offset/unit*(unit+gap)+start): maps file offset to sector
+CK1_A 0x0602e194 gfs_GetHandleField58 CONFIRM gfs_GetHandleField58 returns handle field +0x58; caller compares it to 1 for error mapping
+CK1_A 0x0602e2b4 cdc_CallAndReturn0 UNSURE cdc_CallAndReturn0 calls one routine with caller buffer, returns 0; caller reads buf[0] as status; real job unclear
+CK1_A 0x0602e79c sh2_DisableIntRestoreSR UNSURE sh2_DisableIntRestoreSR sets SR mask, calls routine with (const,0), clears flag; called once in init, result ignored, role unclear
+CK1_A 0x0602f298 gfs_DispatchSlot2 CONFIRM gfs_DispatchSlot2 indirect call to slot at offset 8 of 0x10-byte transfer-mode table indexed by object +0x1c
+CK1_A 0x060305e4 gfs_StreamSetCallback UNSURE gfs_StreamSetCallback stores arg at +0x18, queues simple cdq command, pumps until idle on failure path; callback role unproven
+CK1_A 0x060308ca gfs_StreamOpenPipe UNSURE gfs_StreamOpenPipe queues cdq task1 with stream fields and pumps until idle, returns 1 on success; listed caller does not call it, pipe role unproven
+CK1_A 0x06030e20 cdq_ConnectPipeToFilter RENAME cdq_GetFilterModeAndSubheader calls cdc filter-mode and op43 (get subheader conditions) with filter id and out buffer, -10 on failure; no connect op
+CK1_A 0x06031222 cdq_ReleaseSlotCheck RENAME cdq_GetSectorInfoChecked validates index 0..0x17 and in-use byte, calls cdc_GetSectorInfo, caches status; no release
+CK1_A 0x060321dc cdc_GetHirqClearConst UNSURE cdc_GetHirqClearConst returns a data constant; listed caller never calls it, HIRQ meaning unverified
+CK1_A 0x0603241c cdc_CallCmdPtr RENAME cdc_InitCmdPacket all 45 callers pass a 12-byte local buffer first, then set buf[0]=command and execute; routine prepares the packet
